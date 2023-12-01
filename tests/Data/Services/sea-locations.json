@@ -1,0 +1,109 @@
+[
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "CBR",
+    "globalIdLocal": 1060526,
+    "idLocal": 302,
+    "latitude": "40.1417",
+    "local": "Figueira da Foz, Costa",
+    "longitude": "-8.8783"
+  },
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "FAR",
+    "globalIdLocal": 1080526,
+    "idLocal": 306,
+    "latitude": "37.0017",
+    "local": "Faro, costa",
+    "longitude": "-8.0"
+  },
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "FAR",
+    "globalIdLocal": 1081526,
+    "idLocal": 305,
+    "latitude": "37.0",
+    "local": "Sagres, costa",
+    "longitude": "-8.9383"
+  },
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "LSB",
+    "globalIdLocal": 1111026,
+    "idLocal": 303,
+    "latitude": "38.65",
+    "local": "Lisboa, costa",
+    "longitude": "-9.31"
+  },
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "PTO",
+    "globalIdLocal": 1130826,
+    "idLocal": 301,
+    "latitude": "41.175",
+    "local": "Porto, costa",
+    "longitude": "-8.76"
+  },
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "STB",
+    "globalIdLocal": 1151326,
+    "idLocal": 304,
+    "latitude": "37.95",
+    "local": "Sines, costa",
+    "longitude": "-8.8833"
+  },
+  {
+    "idRegiao": 1,
+    "idAreaAviso": "VCT",
+    "globalIdLocal": 1160926,
+    "idLocal": 300,
+    "latitude": "41.67",
+    "local": "Viana do Castelo, costa",
+    "longitude": "-8.8333"
+  },
+  {
+    "idRegiao": 2,
+    "idAreaAviso": "MCS",
+    "globalIdLocal": 2310326,
+    "idLocal": 308,
+    "latitude": "32.64",
+    "local": "Funchal, costa",
+    "longitude": "-16.91"
+  },
+  {
+    "idRegiao": 2,
+    "idAreaAviso": "MCS",
+    "globalIdLocal": 2320126,
+    "idLocal": 307,
+    "latitude": "33.04",
+    "local": "Porto Santo, costa",
+    "longitude": "-16.34"
+  },
+  {
+    "idRegiao": 3,
+    "idAreaAviso": "AOR",
+    "globalIdLocal": 3420226,
+    "idLocal": 309,
+    "latitude": "37.68",
+    "local": "Ponta Delgada, costa",
+    "longitude": "-25.67"
+  },
+  {
+    "idRegiao": 3,
+    "idAreaAviso": "ACE",
+    "globalIdLocal": 3470126,
+    "idLocal": 310,
+    "latitude": "38.57",
+    "local": "Horta, costa",
+    "longitude": "-28.47"
+  },
+  {
+    "idRegiao": 3,
+    "idAreaAviso": "ACE",
+    "globalIdLocal": 3480226,
+    "idLocal": 311,
+    "latitude": "39.45",
+    "local": "Santa Cruz das Flores, costa",
+    "longitude": "-31.13"
+  } ]

@@ -1,0 +1,64 @@
+{
+  "owner": "IPMA",
+  "country": "PT",
+  "data": [
+    {
+      "precipitaProb": "88.0",
+      "tMin": "10.6",
+      "tMax": "15.7",
+      "predWindDir": "NW",
+      "idWeatherType": 6,
+      "classWindSpeed": 2,
+      "longitude": "-7.8700",
+      "forecastDate": "2023-12-08",
+      "classPrecInt": 2,
+      "latitude": "38.0200"
+    },
+    {
+      "precipitaProb": "4.0",
+      "tMin": "10.2",
+      "tMax": "18.2",
+      "predWindDir": "W",
+      "idWeatherType": 3,
+      "classWindSpeed": 1,
+      "longitude": "-7.8700",
+      "forecastDate": "2023-12-09",
+      "latitude": "38.0200"
+    },
+    {
+      "precipitaProb": "7.0",
+      "tMin": "10.8",
+      "tMax": "18.3",
+      "predWindDir": "SE",
+      "idWeatherType": 3,
+      "classWindSpeed": 1,
+      "longitude": "-7.8700",
+      "forecastDate": "2023-12-10",
+      "latitude": "38.0200"
+    },
+    {
+      "precipitaProb": "0.0",
+      "tMin": "9.7",
+      "tMax": "19.3",
+      "predWindDir": "S",
+      "idWeatherType": 5,
+      "classWindSpeed": 1,
+      "longitude": "-7.8700",
+      "forecastDate": "2023-12-11",
+      "latitude": "38.0200"
+    },
+    {
+      "precipitaProb": "17.0",
+      "tMin": "12.8",
+      "tMax": "19.8",
+      "predWindDir": "SW",
+      "idWeatherType": 3,
+      "classWindSpeed": 2,
+      "longitude": "-7.8700",
+      "forecastDate": "2023-12-12",
+      "latitude": "38.0200"
+    }
+  ],
+  "globalIdLocal": 1020500,
+  "dataUpdate": "2023-12-08T15:31:04"
+}
