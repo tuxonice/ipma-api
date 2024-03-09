@@ -39,7 +39,7 @@ class MaximumDailyTemperatureTest extends TestCase
                     'std' => '0.565485154943',
                 ],
             ],
-            $maximumDailyTemperature->from('evora', 'evora')
+            $maximumDailyTemperature->from('evora', 'evora', '0705')
                 ->filterByDate('2024-01-05', '2024-01-06')
                 ->get()
         );
@@ -75,7 +75,7 @@ class MaximumDailyTemperatureTest extends TestCase
                     'std' => '0.742342138537',
                 ],
             ],
-            $maximumDailyTemperature->from('evora', 'evora')
+            $maximumDailyTemperature->from('evora', 'evora', '0705')
                 ->filterByMinimum(6.0, 8.0)
                 ->get()
         );
@@ -119,7 +119,7 @@ class MaximumDailyTemperatureTest extends TestCase
                     'std' => '0.449723772497',
                 ],
             ],
-            $maximumDailyTemperature->from('evora', 'evora')
+            $maximumDailyTemperature->from('evora', 'evora', '0705')
                 ->filterByMaximum(22.5, 25.0)
                 ->get()
         );
@@ -171,7 +171,7 @@ class MaximumDailyTemperatureTest extends TestCase
                     'std' => '0.662493788333',
                 ],
             ],
-            $maximumDailyTemperature->from('evora', 'evora')
+            $maximumDailyTemperature->from('evora', 'evora', '0705')
                 ->filterByRange(4.2, 6.0)
                 ->get()
         );
@@ -215,7 +215,7 @@ class MaximumDailyTemperatureTest extends TestCase
                     'std' => '0.482344708049',
                 ],
             ],
-            $maximumDailyTemperature->from('evora', 'evora')
+            $maximumDailyTemperature->from('evora', 'evora', '0705')
                 ->filterByMean(7.0, 10.0)
                 ->get()
         );
@@ -267,7 +267,7 @@ class MaximumDailyTemperatureTest extends TestCase
                     'std' => '0.883116041592',
                 ],
             ],
-            $maximumDailyTemperature->from('evora', 'evora')
+            $maximumDailyTemperature->from('evora', 'evora', '0705')
                 ->filterByStd(0.7, 1.0)
                 ->get()
         );

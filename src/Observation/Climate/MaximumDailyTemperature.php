@@ -18,9 +18,10 @@ class MaximumDailyTemperature
     {
     }
 
-    public function from(string $district, string $municipality): self
+    public function from(string $district, string $municipality, string $dico): self
     {
         $url = str_replace('{district}', $district, self::END_POINT);
+        $url = str_replace('{DICO}', $dico, $url);
         $url = str_replace('{municipality}', $municipality, $url);
 
         $csv = $this->apiConnector->fetchCsv($url);
