@@ -2,6 +2,7 @@
 
 namespace Tlab\IpmaApi;
 
+use Tlab\IpmaApi\Forecast\ForecastApiGroup;
 use Tlab\IpmaApi\Forecast\Warnings;
 use Tlab\IpmaApi\Services\DistrictsIslandsLocations;
 
@@ -19,5 +20,10 @@ class Ipma
         $apiConnector = new ApiConnector();
 
         return new Warnings($apiConnector);
+    }
+
+    public static function createForecastApiGroup(): ForecastApiGroup
+    {
+        return new ForecastApiGroup();
     }
 }
