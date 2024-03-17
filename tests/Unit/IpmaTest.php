@@ -13,6 +13,19 @@ use Tlab\IpmaApi\Forecast\Oceanography\SeaStateForecast;
 use Tlab\IpmaApi\Forecast\Warnings;
 use Tlab\IpmaApi\Ipma;
 use PHPUnit\Framework\TestCase;
+use Tlab\IpmaApi\Observation\Biology\BiologyApiGroup;
+use Tlab\IpmaApi\Observation\Biology\MolluscHarvestingProhibition;
+use Tlab\IpmaApi\Observation\Climate\ClimateApiGroup;
+use Tlab\IpmaApi\Observation\Climate\DailyEvapotranspirationReference;
+use Tlab\IpmaApi\Observation\Climate\MaximumDailyTemperature;
+use Tlab\IpmaApi\Observation\Climate\MinimumDailyTemperature;
+use Tlab\IpmaApi\Observation\Climate\PalmerDroughtSeverityIndex;
+use Tlab\IpmaApi\Observation\Meteorology\MeteorologyApiGroup as ObservationMeteorologyApiGroup;
+use Tlab\IpmaApi\Observation\Meteorology\WeatherStationObservation;
+use Tlab\IpmaApi\Observation\Meteorology\WeatherStationObservationByHour;
+use Tlab\IpmaApi\Observation\ObservationApiGroup;
+use Tlab\IpmaApi\Observation\Seismic\SeismicApiGroup;
+use Tlab\IpmaApi\Observation\Seismic\SeismicInformation;
 use Tlab\IpmaApi\Services\DistrictsIslandsLocations;
 
 class IpmaTest extends TestCase
@@ -55,5 +68,42 @@ class IpmaTest extends TestCase
         $this->assertInstanceOf(ForecastApiGroup::class, $forecastApiGroup);
         $this->assertInstanceOf(OceanographyApiGroup::class, $oceanographyApiGroup);
         $this->assertInstanceOf(SeaStateForecast::class, $seaStateForecast);
+    }
+
+    public function testCreateObservationApiGroup(): void
+    {
+        $observationApiGroup = Ipma::createObservationApiGroup();
+        $biologyApiGroup = $observationApiGroup->createBiologyApiGroup();
+        $molluscHarvestingProhibition = $biologyApiGroup->createMolluscHarvestingProhibition();
+
+        $this->assertInstanceOf(ObservationApiGroup::class, $observationApiGroup);
+        $this->assertInstanceOf(BiologyApiGroup::class, $biologyApiGroup);
+        $this->assertInstanceOf(MolluscHarvestingProhibition::class, $molluscHarvestingProhibition);
+
+        $climateApiGroup = $observationApiGroup->createClimateApiGroup();
+        $dailyEvapotranspirationReference = $climateApiGroup->createDailyEvapotranspirationReference();
+        $maximumDailyTemperature = $climateApiGroup->createMaximumDailyTemperature();
+        $minimumDailyTemperature = $climateApiGroup->createMinimumDailyTemperature();
+        $palmerDroughtSeverityIndex = $climateApiGroup->createPalmerDroughtSeverityIndex();
+
+        $this->assertInstanceOf(ClimateApiGroup::class, $climateApiGroup);
+        $this->assertInstanceOf(DailyEvapotranspirationReference::class, $dailyEvapotranspirationReference);
+        $this->assertInstanceOf(MaximumDailyTemperature::class, $maximumDailyTemperature);
+        $this->assertInstanceOf(MinimumDailyTemperature::class, $minimumDailyTemperature);
+        $this->assertInstanceOf(PalmerDroughtSeverityIndex::class, $palmerDroughtSeverityIndex);
+
+        $meteorologyApiGroup = $observationApiGroup->createMeteorologyApiGroup();
+        $weatherStationObservation = $meteorologyApiGroup->createWeatherStationObservation();
+        $weatherStationObservationByHour = $meteorologyApiGroup->createWeatherStationObservationByHour();
+
+        $this->assertInstanceOf(ObservationMeteorologyApiGroup::class, $meteorologyApiGroup);
+        $this->assertInstanceOf(WeatherStationObservation::class, $weatherStationObservation);
+        $this->assertInstanceOf(WeatherStationObservationByHour::class, $weatherStationObservationByHour);
+
+        $seismicApiGroup = $observationApiGroup->createSeismicApiGroup();
+        $seismicInformation = $seismicApiGroup->createSeismicInformation();
+
+        $this->assertInstanceOf(SeismicApiGroup::class, $seismicApiGroup);
+        $this->assertInstanceOf(SeismicInformation::class, $seismicInformation);
     }
 }

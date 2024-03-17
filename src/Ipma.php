@@ -4,6 +4,7 @@ namespace Tlab\IpmaApi;
 
 use Tlab\IpmaApi\Forecast\ForecastApiGroup;
 use Tlab\IpmaApi\Forecast\Warnings;
+use Tlab\IpmaApi\Observation\ObservationApiGroup;
 use Tlab\IpmaApi\Services\DistrictsIslandsLocations;
 
 class Ipma
@@ -25,5 +26,10 @@ class Ipma
     public static function createForecastApiGroup(): ForecastApiGroup
     {
         return new ForecastApiGroup();
+    }
+
+    public static function createObservationApiGroup(): ObservationApiGroup
+    {
+        return new ObservationApiGroup();
     }
 }
