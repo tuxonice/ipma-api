@@ -15,7 +15,12 @@ class FireRiskForecast
      */
     private array $data;
 
-    private DateTime $updateAt;
+    private DateTime $fileUpdatedAt;
+
+    private DateTime $forecastDate;
+
+    private DateTime $runDate;
+
 
     public function __construct(private readonly ApiConnector $apiConnector)
     {
@@ -25,23 +30,25 @@ class FireRiskForecast
     {
         $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$idDay, self::END_POINT));
         $this->data = array_values(array_map(fn(array $element) => [
-            'rcm' => $element['data']['rcm'],
             'dico' => $element['dico'],
+            'fireRiskLevel' => $element['data']['rcm'],
             'latitude' => $element['latitude'],
             'longitude' => $element['longitude'],
         ], $content['local']));
 
-        $this->updateAt = new DateTime($content['fileDate']);
+        $this->fileUpdatedAt = new DateTime($content['fileDate']);
+        $this->forecastDate = new DateTime($content['dataPrev']);
+        $this->runDate = new DateTime($content['dataRun']);
 
         return $this;
     }
 
-    public function filterByRcm(int $rcm): self
+    public function filterByFireRiskLevel(FireRiskLevel $fireRiskLevel): self
     {
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => $element['rcm'] === $rcm
+                fn (array $element) => $element['fireRiskLevel'] === $fireRiskLevel->code()
             )
         );
 
@@ -99,7 +106,17 @@ class FireRiskForecast
 
     public function getFileUpdatedAt(): DateTime
     {
-        return $this->updateAt;
+        return $this->fileUpdatedAt;
+    }
+
+    public function getForecastDate(): DateTime
+    {
+        return $this->forecastDate;
+    }
+
+    public function getRunDate(): DateTime
+    {
+        return $this->runDate;
     }
 
     public function get(): array

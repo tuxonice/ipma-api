@@ -4,7 +4,7 @@ namespace Tlab\Tests\Forecast;
 
 use PHPUnit\Framework\TestCase;
 use Tlab\IpmaApi\ApiConnector;
-use Tlab\IpmaApi\Forecast\Warnings;
+use Tlab\IpmaApi\Forecast\WeatherWarnings;
 
 class WarningsTest extends TestCase
 {
@@ -15,7 +15,7 @@ class WarningsTest extends TestCase
         $apiConnector->expects(self::once())
             ->method('fetchData')
             ->willReturn(json_decode($contents, true));
-        $warnings = new Warnings($apiConnector);
+        $warnings = new WeatherWarnings($apiConnector);
 
         self::assertEquals([
             [
@@ -85,7 +85,7 @@ class WarningsTest extends TestCase
                 'awarenessLevelID' => 'green',
                 'endTime' => '2023-12-05T12:00:00',
             ],
-        ], $warnings->filterByIdAreaAviso('FAR')->get());
+        ], $warnings->filterByWarningIdArea('FAR')->get());
     }
 
     public function testFilterByAwarenessTypeName(): void
@@ -95,7 +95,7 @@ class WarningsTest extends TestCase
         $apiConnector->expects(self::once())
             ->method('fetchData')
             ->willReturn(json_decode($contents, true));
-        $warnings = new Warnings($apiConnector);
+        $warnings = new WeatherWarnings($apiConnector);
 
         self::assertEquals([
             [
@@ -311,7 +311,7 @@ class WarningsTest extends TestCase
         $apiConnector->expects(self::once())
             ->method('fetchData')
             ->willReturn(json_decode($contents, true));
-        $warnings = new Warnings($apiConnector);
+        $warnings = new WeatherWarnings($apiConnector);
 
         self::assertEquals([
             [

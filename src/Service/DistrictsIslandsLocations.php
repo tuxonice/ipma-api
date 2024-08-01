@@ -1,6 +1,6 @@
 <?php
 
-namespace Tlab\IpmaApi\Services;
+namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnector;
 use Tlab\IpmaApi\Utils;
@@ -18,13 +18,13 @@ class DistrictsIslandsLocations
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
 
-        $this->data = $content['data'];
+        $this->data = $this->map($content['data']);
     }
 
     public function filterByIdRegion(int $idRegion): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idRegiao'] === $idRegion)
+            array_filter($this->data, fn(array $element) => $element['idRegion'] === $idRegion)
         );
 
         return $this;
@@ -33,7 +33,7 @@ class DistrictsIslandsLocations
     public function filterByIdWarningArea(string $idWarningArea): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idAreaAviso'] === $idWarningArea)
+            array_filter($this->data, fn(array $element) => $element['idWarningArea'] === $idWarningArea)
         );
 
         return $this;
@@ -42,7 +42,7 @@ class DistrictsIslandsLocations
     public function filterByIdMunicipality(int $idMunicipality): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idConcelho'] === $idMunicipality)
+            array_filter($this->data, fn(array $element) => $element['idMunicipality'] === $idMunicipality)
         );
 
         return $this;
@@ -60,16 +60,16 @@ class DistrictsIslandsLocations
     public function filterByIdDistrict(int $idDistrict): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idDistrito'] === $idDistrict)
+            array_filter($this->data, fn(array $element) => $element['idDistrict'] === $idDistrict)
         );
 
         return $this;
     }
 
-    public function filterByLocal(string $local): self
+    public function filterByName(string $name): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['local'] === $local)
+            array_filter($this->data, fn(array $element) => $element['name'] === $name)
         );
 
         return $this;
@@ -115,5 +115,24 @@ class DistrictsIslandsLocations
     public function get(): array
     {
         return $this->data;
+    }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'globalIdLocal' => $datum['globalIdLocal'],
+                'name' => $datum['local'],
+                'idMunicipality' => $datum['idConcelho'],
+                'idDistrict' => $datum['idDistrito'],
+                'idRegion' => $datum['idRegiao'],
+                'idWarningArea' => $datum['idAreaAviso'],
+                'latitude' => (float)$datum['latitude'],
+                'longitude' => (float)$datum['longitude'],
+            ];
+        }
+
+        return $cleanData;
     }
 }

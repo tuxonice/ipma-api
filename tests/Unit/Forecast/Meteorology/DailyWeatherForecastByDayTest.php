@@ -18,20 +18,19 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '88.0',
-                    'tMin' => 10,
-                    'tMax' => 15,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 10,
-                    'classWindSpeed' => 2,
-                    'longitude' => '-7.4200',
-                    'classPrecInt' => 1,
                     'globalIdLocal' => 1121400,
-                    'latitude' => '39.2900',
-
+                    'idWeatherType' => 10,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => 1,
+                    'rainfallProb' => 88.0,
+                    'minTemp' => 10.0,
+                    'maxTemp' => 15.0,
+                    'winDir' => 'SW',
+                    'latitude' => 39.29,
+                    'longitude' => -7.4200,
                 ]
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -49,20 +48,19 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '40.0',
-                    'tMin' => 17,
-                    'tMax' => 21,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 6,
-                    'classWindSpeed' => 2,
-                    'longitude' => '-28.6315',
-                    'classPrecInt' => 3,
                     'globalIdLocal' => 3470100,
-                    'latitude' => '38.5363',
-
+                    'idWeatherType' => 6,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => 3,
+                    'rainfallProb' => 40.0,
+                    'minTemp' => 17.0,
+                    'maxTemp' => 21.0,
+                    'winDir' => 'SW',
+                    'latitude' => 38.5363,
+                    'longitude' => -28.6315,
                 ],
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -80,65 +78,67 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '1.0',
-                    'tMin' => 11,
-                    'tMax' => 18,
-                    'predWindDir' => 'W',
-                    'idWeatherType' => 3,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-7.8700',
                     'globalIdLocal' => 1020500,
-                    'latitude' => '38.0200',
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 1.0,
+                    'minTemp' => 11.0,
+                    'maxTemp' => 18.0,
+                    'winDir' => 'W',
+                    'latitude' => 38.0200,
+                    'longitude' => -7.8700,
                 ],
                 [
-                    'precipitaProb' => '65.0',
-                    'tMin' => 10,
-                    'tMax' => 17,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 9,
-                    'classWindSpeed' => 3,
-                    'longitude' => '-7.4957',
-                    'classPrecInt' => 2,
                     'globalIdLocal' => 1050200,
-                    'latitude' => '39.8217',
-                ],
-                [
-                    'precipitaProb' => '7.0',
-                    'tMin' => 11,
-                    'tMax' => 18,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 4,
-                    'classWindSpeed' => 2,
-                    'longitude' => '-7.9104',
-                    'globalIdLocal' => 1070500,
-                    'latitude' => '38.5701',
-                ],
-                [
-                    'precipitaProb' => '88.0',
-                    'tMin' => 10,
-                    'tMax' => 15,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 10,
-                    'classWindSpeed' => 2,
-                    'longitude' => '-7.4200',
-                    'classPrecInt' => 1,
-                    'globalIdLocal' => 1121400,
-                    'latitude' => '39.2900',
-                ],
-                [
-                    'precipitaProb' => '100.0',
-                    'tMin' => 10,
-                    'tMax' => 16,
-                    'predWindDir' => 'S',
                     'idWeatherType' => 9,
-                    'classWindSpeed' => 2,
-                    'longitude' => '-7.9120',
-                    'classPrecInt' => 2,
+                    'windSpeedClass' => 3,
+                    'rainfallIntensity' => 2,
+                    'rainfallProb' => 65.0,
+                    'minTemp' => 10.0,
+                    'maxTemp' => 17.0,
+                    'winDir' => 'SW',
+                    'latitude' => 39.8217,
+                    'longitude' => -7.4957,
+                ],
+                [
+                    'globalIdLocal' => 1070500,
+                    'idWeatherType' => 4,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 7.0,
+                    'minTemp' => 11.0,
+                    'maxTemp' => 18.0,
+                    'winDir' => 'SW',
+                    'latitude' => 38.5701,
+                    'longitude' => -7.9104,
+                ],
+                [
+                    'globalIdLocal' => 1121400,
+                    'idWeatherType' => 10,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => 1,
+                    'rainfallProb' => 88.0,
+                    'minTemp' => 10.0,
+                    'maxTemp' => 15.0,
+                    'winDir' => 'SW',
+                    'latitude' => 39.2900,
+                    'longitude' => -7.4200,
+                ],
+                [
                     'globalIdLocal' => 1182300,
-                    'latitude' => '40.6585',
+                    'idWeatherType' => 9,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => 2,
+                    'rainfallProb' => 100.0,
+                    'minTemp' => 10.0,
+                    'maxTemp' => 16.0,
+                    'winDir' => 'S',
+                    'latitude' => 40.6585,
+                    'longitude' => -7.9120,
                 ],
 
             ],
@@ -157,19 +157,19 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '0.0',
-                    'tMin' => 16,
-                    'tMax' => 22,
-                    'predWindDir' => 'E',
-                    'idWeatherType' => 2,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-16.3400',
                     'globalIdLocal' => 2320100,
-                    'latitude' => '33.0700',
-
+                    'idWeatherType' => 2,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 0.0,
+                    'minTemp' => 16.0,
+                    'maxTemp' => 22.0,
+                    'winDir' => 'E',
+                    'latitude' => 33.0700,
+                    'longitude' => -16.3400,
                 ]
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -187,51 +187,55 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '1.0',
-                    'tMin' => 11,
-                    'tMax' => 18,
-                    'predWindDir' => 'W',
-                    'idWeatherType' => 3,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-7.8700',
                     'globalIdLocal' => 1020500,
-                    'latitude' => '38.0200',
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 1.0,
+                    'minTemp' => 11.0,
+                    'maxTemp' => 18.0,
+                    'winDir' => 'W',
+                    'latitude' => 38.0200,
+                    'longitude' => -7.8700,
                 ],
                 [
-                    'precipitaProb' => '0.0',
-                    'tMin' => 12,
-                    'tMax' => 20,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 3,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-7.9331',
                     'globalIdLocal' => 1080500,
-                    'latitude' => '37.0146',
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 0.0,
+                    'minTemp' => 12.0,
+                    'maxTemp' => 20.0,
+                    'winDir' => 'SW',
+                    'latitude' => 37.0146,
+                    'longitude' => -7.9331,
                 ],
                 [
-                    'precipitaProb' => '0.0',
-                    'tMin' => 12,
-                    'tMax' => 21,
-                    'predWindDir' => 'SE',
-                    'idWeatherType' => 3,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-8.9403',
                     'globalIdLocal' => 1081505,
-                    'latitude' => '37.0168',
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 0.0,
+                    'minTemp' => 12.0,
+                    'maxTemp' => 21.0,
+                    'winDir' => 'SE',
+                    'latitude' => 37.0168,
+                    'longitude' => -8.9403,
                 ],
                 [
-                    'precipitaProb' => '27.0',
-                    'tMin' => 14,
-                    'tMax' => 19,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 3,
-                    'classWindSpeed' => 2,
-                    'longitude' => '-8.8643',
                     'globalIdLocal' => 1151300,
-                    'latitude' => '37.9560',
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 27.0,
+                    'minTemp' => 14.0,
+                    'maxTemp' => 19.0,
+                    'winDir' => 'SW',
+                    'latitude' => 37.9560,
+                    'longitude' => -8.8643,
                 ],
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -249,30 +253,31 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '1.0',
-                    'tMin' => 11,
-                    'tMax' => 18,
-                    'predWindDir' => 'W',
-                    'idWeatherType' => 3,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-7.8700',
                     'globalIdLocal' => 1020500,
-                    'latitude' => '38.0200',
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 1.0,
+                    'minTemp' => 11.0,
+                    'maxTemp' => 18.0,
+                    'winDir' => 'W',
+                    'latitude' => 38.0200,
+                    'longitude' => -7.8700,
                 ],
                 [
-                    'precipitaProb' => '100.0',
-                    'tMin' => 9,
-                    'tMax' => 15,
-                    'predWindDir' => 'W',
-                    'idWeatherType' => 9,
-                    'classWindSpeed' => 1,
-                    'longitude' => '-7.7440',
-                    'classPrecInt' => 2,
                     'globalIdLocal' => 1171400,
-                    'latitude' => '41.3053',
+                    'idWeatherType' => 9,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => 2,
+                    'rainfallProb' => 100.0,
+                    'minTemp' => 9.0,
+                    'maxTemp' => 15.0,
+                    'winDir' => 'W',
+                    'latitude' => 41.3053,
+                    'longitude' => -7.7440,
                 ]
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -290,19 +295,19 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '65.0',
-                    'tMin' => 10,
-                    'tMax' => 17,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 9,
-                    'classWindSpeed' => 3,
-                    'longitude' => '-7.4957',
-                    'classPrecInt' => 2,
                     'globalIdLocal' => 1050200,
-                    'latitude' => '39.8217',
+                    'idWeatherType' => 9,
+                    'windSpeedClass' => 3,
+                    'rainfallIntensity' => 2,
+                    'rainfallProb' => 65.0,
+                    'minTemp' => 10.0,
+                    'maxTemp' => 17.0,
+                    'winDir' => 'SW',
+                    'latitude' => 39.8217,
+                    'longitude' => -7.4957,
                 ],
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -321,17 +326,18 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals([
+        self::assertSame([
             [
-                'precipitaProb' => '0.0',
-                'tMin' => 12,
-                'tMax' => 20,
-                'predWindDir' => 'SW',
-                'idWeatherType' => 3,
-                'classWindSpeed' => 1,
-                'longitude' => '-7.9331',
                 'globalIdLocal' => 1080500,
-                'latitude' => '37.0146',
+                'idWeatherType' => 3,
+                'windSpeedClass' => 1,
+                'rainfallIntensity' => null,
+                'rainfallProb' => 0.0,
+                'minTemp' => 12.0,
+                'maxTemp' => 20.0,
+                'winDir' => 'SW',
+                'latitude' => 37.0146,
+                'longitude' => -7.9331,
             ],
         ], $dailyWeatherForecastByDay->from(0)
             ->findLocationsByDistance(37.101157, -7.831360, 20)->get());
@@ -347,19 +353,19 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'precipitaProb' => '65.0',
-                    'tMin' => 10,
-                    'tMax' => 17,
-                    'predWindDir' => 'SW',
-                    'idWeatherType' => 9,
-                    'classWindSpeed' => 3,
-                    'longitude' => '-7.4957',
-                    'classPrecInt' => 2,
                     'globalIdLocal' => 1050200,
-                    'latitude' => '39.8217',
+                    'idWeatherType' => 9,
+                    'windSpeedClass' => 3,
+                    'rainfallIntensity' => 2,
+                    'rainfallProb' => 65.0,
+                    'minTemp' => 10.0,
+                    'maxTemp' => 17.0,
+                    'winDir' => 'SW',
+                    'latitude' => 39.8217,
+                    'longitude' => -7.4957,
                 ],
             ],
             $dailyWeatherForecastByDay->from(0)
@@ -378,16 +384,18 @@ class DailyWeatherForecastByDayTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $dailyWeatherForecastByDay = new DailyWeatherForecastByDay($apiConnector);
 
-        self::assertEquals([
-            'precipitaProb' => '0.0',
-            'tMin' => 12,
-            'tMax' => 20,
-            'predWindDir' => 'SW',
-            'idWeatherType' => 3,
-            'classWindSpeed' => 1,
-            'longitude' => '-7.9331',
+        self::assertSame([
             'globalIdLocal' => 1080500,
-            'latitude' => '37.0146',
+            'idWeatherType' => 3,
+            'windSpeedClass' => 1,
+            'rainfallIntensity' => null,
+            'rainfallProb' => 0.0,
+            'minTemp' => 12.0,
+            'maxTemp' => 20.0,
+            'winDir' => 'SW',
+            'latitude' => 37.0146,
+            'longitude' => -7.9331,
+
         ], $dailyWeatherForecastByDay->from(0)->findLocationByNearDistance(37.101157, -7.831360));
     }
 

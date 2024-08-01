@@ -5,7 +5,7 @@ namespace Tlab\IpmaApi\Forecast;
 use DateTime;
 use Tlab\IpmaApi\ApiConnector;
 
-class Warnings
+class WeatherWarnings
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json';
 
@@ -19,7 +19,7 @@ class Warnings
         $this->data = $this->apiConnector->fetchData(self::END_POINT);
     }
 
-    public function filterByIdAreaAviso(string $idArea): self
+    public function filterByWarningIdArea(string $idArea): self
     {
         $this->data = array_values(
             array_filter($this->data, function (array $element) use ($idArea) {
@@ -54,7 +54,11 @@ class Warnings
 
     public function filterByTimeRange(DateTime $from, DateTime $to): self
     {
-        //TODO
+        $this->data = array_values(
+            array_filter($this->data, function (array $element) use ($from, $to) {
+                return $element['startTime'] >= $from && $element['endTime'] <= $to;
+            })
+        );
 
         return $this;
     }

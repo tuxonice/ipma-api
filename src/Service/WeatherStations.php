@@ -1,11 +1,11 @@
 <?php
 
-namespace Tlab\IpmaApi\Services;
+namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnector;
 use Tlab\IpmaApi\Utils;
 
-class Stations
+class WeatherStations
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json';
 
@@ -19,26 +19,26 @@ class Stations
         $content = $this->apiConnector->fetchData(self::END_POINT);
 
         $this->data = array_map(fn(array $element) => [
-            'idEstacao' => $element['properties']['idEstacao'],
-            'localEstacao' => $element['properties']['localEstacao'],
+            'id' => $element['properties']['idEstacao'],
+            'name' => $element['properties']['localEstacao'],
             'latitude' => $element['geometry']['coordinates'][1],
             'longitude' => $element['geometry']['coordinates'][0],
         ], $content);
     }
 
-    public function filterByIdStation(int $idStation): self
+    public function filterById(int $idStation): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idEstacao'] === $idStation)
+            array_filter($this->data, fn(array $element) => $element['id'] === $idStation)
         );
 
         return $this;
     }
 
-    public function filterByStationLocation(string $locationName): self
+    public function filterByName(string $name): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => str_contains($element['localEstacao'], $locationName))
+            array_filter($this->data, fn(array $element) => str_contains($element['name'], $name))
         );
 
         return $this;

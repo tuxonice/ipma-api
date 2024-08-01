@@ -25,7 +25,7 @@ class DailyWeatherForecastByDay
     {
         $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$idDay, self::END_POINT));
         $this->updateAt = new DateTime($content['dataUpdate']);
-        $this->data = $content['data'];
+        $this->data = $this->map($content['data']);
 
         return $this;
     }
@@ -36,8 +36,8 @@ class DailyWeatherForecastByDay
             array_filter(
                 $this->data,
                 fn (array $element) =>
-                    (float)$element['precipitaProb'] >= $minProbability &&
-                    (float)$element['precipitaProb'] <= $maxProbability
+                    (float)$element['rainfallProb'] >= $minProbability &&
+                    (float)$element['rainfallProb'] <= $maxProbability
             )
         );
 
@@ -50,8 +50,8 @@ class DailyWeatherForecastByDay
             array_filter(
                 $this->data,
                 fn (array $element) =>
-                    (float)$element['tMin'] >= $minValue &&
-                    (float)$element['tMin'] <= $maxValue
+                    (float)$element['minTemp'] >= $minValue &&
+                    (float)$element['minTemp'] <= $maxValue
             )
         );
 
@@ -64,8 +64,8 @@ class DailyWeatherForecastByDay
             array_filter(
                 $this->data,
                 fn (array $element) =>
-                    (float)$element['tMax'] >= $minValue &&
-                    (float)$element['tMax'] <= $maxValue
+                    (float)$element['maxTemp'] >= $minValue &&
+                    (float)$element['maxTemp'] <= $maxValue
             )
         );
 
@@ -77,7 +77,7 @@ class DailyWeatherForecastByDay
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => strtolower($element['predWindDir']) === strtolower($value)
+                fn (array $element) => strtolower($element['winDir']) === strtolower($value)
             )
         );
 
@@ -101,7 +101,7 @@ class DailyWeatherForecastByDay
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => $element['classWindSpeed'] === $value
+                fn (array $element) => $element['windSpeedClass'] === $value
             )
         );
 
@@ -113,7 +113,7 @@ class DailyWeatherForecastByDay
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => isset($element['classPrecInt']) && $element['classPrecInt'] === $value
+                fn (array $element) => isset($element['rainfallIntensity']) && $element['rainfallIntensity'] === $value
             )
         );
 
@@ -174,5 +174,26 @@ class DailyWeatherForecastByDay
     public function get(): array
     {
         return $this->data;
+    }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'globalIdLocal' => (int)$datum['globalIdLocal'],
+                'idWeatherType' => (int)$datum['idWeatherType'],
+                'windSpeedClass' => (int)$datum['classWindSpeed'],
+                'rainfallIntensity' => $datum['classPrecInt'] ?? null,
+                'rainfallProb' => (float)$datum['precipitaProb'],
+                'minTemp' => (float)$datum['tMin'],
+                'maxTemp' => (float)$datum['tMax'],
+                'winDir' => $datum['predWindDir'],
+                'latitude' => (float)$datum['latitude'],
+                'longitude' => (float)$datum['longitude'],
+            ];
+        }
+
+        return $cleanData;
     }
 }
