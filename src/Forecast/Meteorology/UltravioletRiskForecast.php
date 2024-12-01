@@ -16,14 +16,26 @@ class UltravioletRiskForecast
     public function __construct(private readonly ApiConnector $apiConnector)
     {
         $this->data = $this->apiConnector->fetchData(self::END_POINT);
+        $this->data = array_values(array_map(fn(array $element) => [
+            'globalIdLocal' => $element['globalIdLocal'],
+            'forecastDate' => $element['data'],
+            'uvIndex' => (float)$element['iUv'],
+            'timeInterval' => $element['intervaloHora'],
+            'periodId' => $element['idPeriodo'],
+        ], $this->data));
+
+        //Sometimes globalIdLocal is zero what make me think that's an error
+        $this->data = array_filter($this->data, function (array $element) {
+            return $element['globalIdLocal'] !== 0;
+        });
     }
 
-    public function filterByDate(string $date): self
+    public function filterByForecastDate(string $date): self
     {
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => $element['data'] === $date
+                fn (array $element) => $element['forecastDate'] === $date
             )
         );
 
@@ -48,8 +60,8 @@ class UltravioletRiskForecast
             array_filter(
                 $this->data,
                 fn (array $element) =>
-                    $element['iUv'] >= $min &&
-                    $element['iUv'] <= $max
+                    $element['uvIndex'] >= $min &&
+                    $element['uvIndex'] <= $max
             )
         );
 
@@ -67,7 +79,7 @@ class UltravioletRiskForecast
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => $element['intervaloHora'] == $interval
+                fn (array $element) => $element['timeInterval'] == $interval
             )
         );
 

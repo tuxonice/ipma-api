@@ -18,7 +18,6 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
 
-
 | Field             | Type    | Description           |
 |-------------------|---------|-----------------------|
 | globalIdLocal     | integer | Local ID              |
@@ -87,7 +86,6 @@ $result = $api
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json
 
-
 | Field             | Type    | Description           |
 |-------------------|---------|-----------------------|
 | forecastDate      | string  | Forecast date         |
@@ -139,7 +137,6 @@ $result = $api->from(1020500)
 ],
 ```
 
-
 #### Fire Risk Forecast for up to 2 days, aggregated information per day
 
 > https://api.ipma.pt/open-data/forecast/meteorology/rcm/rcm-d{idDay}.json
@@ -162,10 +159,45 @@ Fire risk code
 4 - Very high risk
 5 - Maximum risk
 
-
 #### Ultraviolet Risk Forecast for up to 3 days (Ultraviolet Index)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/uv/uv.json
+
+| Field         | Type    | Description                                        |
+|---------------|---------|----------------------------------------------------|
+| globalIdLocal | integer | Local ID                                           |
+| forecastDate  | string  | Forecast date                                      |
+| uvIndex       | float   | Ultraviolet index value  (see table below)         |
+| timeInterval  | string  | Interval of hours relative to the maximum UV value |
+| periodId      | integer | Internal period code                               |
+
+| UV index | Description |
+|----------|-------------|
+| `>= 11`  | Extreme     |
+| `>= 8`   | Very high   |
+| `>= 6`   | High        |
+| `>= 3`   | Moderate    |
+| `>= 1`   | Low         |
+
+```php
+use Tlab\IpmaApi\IpmaForecast;
+
+$api = IpmaForecast::createUltravioletRiskForecastApi();
+$result = $api->filterByUvIndex(2.4, 2.4)
+              ->get();
+```
+
+```php
+[
+        [
+            'globalIdLocal' => 2320100,
+            'forecastDate' => '2023-12-14',
+            'uvIndex' => 2.4,
+            'timeInterval' => '',
+            'periodId' => 10,
+        ],
+],
+```
 
 ### Forecast -> Oceanography
 
@@ -212,7 +244,6 @@ Fire risk code
 #### PDSI index (Palmer Drought Severity Index) monthly by municipality (CSV format)
 
 > https://api.ipma.pt/open-data/observation/climate/mpdsi/{distrito}/mpdsi-{DICO}-{concelho}.csv
-
 
 #### Weather warnings for up to 3 days
 
@@ -265,7 +296,6 @@ $result = $warningsApi
 
 > https://api.ipma.pt/open-data/distrits-islands.json
 
-
 | Field          | Type    | Description                                                   |
 |----------------|---------|---------------------------------------------------------------|
 | globalIdLocal  | integer | Local identification                                          |
@@ -313,7 +343,6 @@ $result = $api->filterByIdRegion(1)
 
 > https://api.ipma.pt/open-data/sea-locations.json
 
-
 | Field         | Type    | Description                                                   |
 |---------------|---------|---------------------------------------------------------------|
 | globalIdLocal | integer | Global local ID                                               |
@@ -349,12 +378,12 @@ $result = $api->filterByIdRegiao(1)
 
 > https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json
 
-| Field     | Type    | Description                   |
-|-----------|---------|-------------------------------|
-| id        | integer | Weather station ID            |
-| name      | string  | Name                          |
-| latitude  | float   | latitude (decimal degrees)    |
-| longitude | float   | longitude (decimal degrees)   |
+| Field     | Type    | Description                 |
+|-----------|---------|-----------------------------|
+| id        | integer | Weather station ID          |
+| name      | string  | Name                        |
+| latitude  | float   | latitude (decimal degrees)  |
+| longitude | float   | longitude (decimal degrees) |
 
 ```php
 $api = IpmaService::createWeatherStationsApi();
@@ -372,8 +401,6 @@ $result = $api->filterByName('selvagens')
     ]
 ]
 ```
-
-
 
 #### List of Weather Type Identifiers
 

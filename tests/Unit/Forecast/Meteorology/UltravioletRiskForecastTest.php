@@ -17,44 +17,35 @@ class UltravioletRiskForecastTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $fireRiskForecast = new UltravioletRiskForecast($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-13',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.3',
+                    'forecastDate' => '2023-12-13',
+                    'uvIndex' => 2.3,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-14',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.4',
-
+                    'forecastDate' => '2023-12-14',
+                    'uvIndex' => 2.4,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-14',
                     'globalIdLocal' => 1081525,
-                    'iUv' => '2.3',
-
+                    'forecastDate' => '2023-12-14',
+                    'uvIndex' => 2.3,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-14',
                     'globalIdLocal' => 1080500,
-                    'iUv' => '2.3',
-                ],
-                [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-14',
-                    'globalIdLocal' => 0,
-                    'iUv' => '2.3',
+                    'forecastDate' => '2023-12-14',
+                    'uvIndex' => 2.3,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
             ],
             $fireRiskForecast->filterByUvIndex(2.3, 2.4)->get()
@@ -70,43 +61,42 @@ class UltravioletRiskForecastTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $fireRiskForecast = new UltravioletRiskForecast($apiConnector);
 
-        self::assertEquals(
+        self::assertSame(
             [
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-13',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.3',
+                    'forecastDate' => '2023-12-13',
+                    'uvIndex' => 2.3,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-14',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.4',
-
+                    'forecastDate' => '2023-12-14',
+                    'uvIndex' => 2.4,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-15',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.6',
+                    'forecastDate' => '2023-12-15',
+                    'uvIndex' => 2.6,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-16',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.1',
+                    'forecastDate' => '2023-12-16',
+                    'uvIndex' => 2.1,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
                 [
-                    'idPeriodo' => 10,
-                    'intervaloHora' => '',
-                    'data' => '2023-12-17',
                     'globalIdLocal' => 2320100,
-                    'iUv' => '2.6',
+                    'forecastDate' => '2023-12-17',
+                    'uvIndex' => 2.6,
+                    'timeInterval' => '',
+                    'periodId' => 10,
                 ],
             ],
             $fireRiskForecast->filterByGlobalIdLocal(2320100)->get()
@@ -122,6 +112,6 @@ class UltravioletRiskForecastTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $fireRiskForecast = new UltravioletRiskForecast($apiConnector);
 
-        self::assertCount(40, $fireRiskForecast->filterByDate('2023-12-13')->get());
+        self::assertCount(30, $fireRiskForecast->filterByForecastDate('2023-12-13')->get());
     }
 }
