@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\Tests\Service;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
@@ -8,14 +10,29 @@ use PHPUnit\Framework\TestCase;
 
 class SeaLocationsTest extends TestCase
 {
-    public function testFilterByIdRegion(): void
+    private array $seaLocationsFixture;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
+        $this->seaLocationsFixture = json_decode($contents, true);
+    }
+
+    private function createService(): SeaLocations
     {
         $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+            ->willReturn($this->seaLocationsFixture);
+
+        return new SeaLocations($apiConnector);
+    }
+
+    public function testFilterByIdRegion(): void
+    {
+        $seaLocations = $this->createService();
 
         self::assertSame(
             [
@@ -49,18 +66,13 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -31.13,
                 ]
             ],
-            $seaLocations->filterByIdRegion(3)->get()
+            $seaLocations->query()->filterByIdRegion(3)->get()
         );
     }
 
     public function testFilterByIdWarningArea(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+        $seaLocations = $this->createService();
 
         self::assertSame(
             [
@@ -84,18 +96,13 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -31.13,
                 ]
             ],
-            $seaLocations->filterByIdWarningArea('ace')->get()
+            $seaLocations->query()->filterByIdWarningArea('ace')->get()
         );
     }
 
     public function testFilterByGlobalIdLocal(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+        $seaLocations = $this->createService();
 
         self::assertSame(
             [
@@ -109,18 +116,13 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -28.47,
                 ]
             ],
-            $seaLocations->filterByGlobalIdLocal(3470126)->get()
+            $seaLocations->query()->filterByGlobalIdLocal(3470126)->get()
         );
     }
 
     public function testFilterByIdLocal(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+        $seaLocations = $this->createService();
 
         self::assertSame(
             [
@@ -134,18 +136,13 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -8.76,
                 ]
             ],
-            $seaLocations->filterByIdLocal(301)->get()
+            $seaLocations->query()->filterByIdLocal(301)->get()
         );
     }
 
     public function testFilterByName(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+        $seaLocations = $this->createService();
 
         self::assertSame(
             [
@@ -159,18 +156,13 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -8.9383,
                 ]
             ],
-            $seaLocations->filterByName('Sagres')->get()
+            $seaLocations->query()->filterByName('Sagres')->get()
         );
     }
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+        $seaLocations = $this->createService();
 
         self::assertSame([
             [
@@ -182,17 +174,12 @@ class SeaLocationsTest extends TestCase
                 'latitude' => 37.0017,
                 'longitude' => -8.0,
             ]
-        ], $seaLocations->findLocationsByDistance(37.01, -8.1, 10)->get());
+        ], $seaLocations->query()->findLocationsByDistance(37.01, -8.1, 10)->get());
     }
 
     public function testFindLocationByNearDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/sea-locations.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seaLocations = new SeaLocations($apiConnector);
+        $seaLocations = $this->createService();
 
         self::assertSame([
             'globalIdLocal' => 1151326,
@@ -203,6 +190,6 @@ class SeaLocationsTest extends TestCase
             'latitude' => 37.95,
             'longitude' => -8.8833,
 
-        ], $seaLocations->findLocationByNearDistance(37.721404, -8.290932));
+        ], $seaLocations->query()->findLocationByNearDistance(37.721404, -8.290932));
     }
 }

@@ -11,10 +11,14 @@ on:
 jobs:
   Tests:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+    name: PHP ${{ matrix.php-version }}
     steps:
       - uses: shivammathur/setup-php@a36e1e52ff4a1c9e9c9be31551ee4712a6cb6bd0
         with:
-          php-version: '8.2'
+          php-version: ${{ matrix.php-version }}
       - uses: actions/checkout@v4
       - name: Install Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist

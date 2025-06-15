@@ -1,9 +1,13 @@
 {
     "name": "tuxonice/ipma-api",
+    "type": "library",
+    "homepage": "https://github.com/tuxonice/ipma-api",
     "description": "PHP Package to manage IPMA API (https://api.ipma.pt/)",
-    "keywords" : [
-        "api"
-    ],
+    "support": {
+        "issues": "https://github.com/tuxonice/ipma-api/issues",
+        "source": "https://github.com/tuxonice/ipma-api"
+    },
+    "keywords": ["ipma", "weather", "forecast", "portugal", "api-client"],
     "license" : "MIT",
     "authors": [
         {
@@ -19,20 +23,29 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Tlab\\Tests\\": "tests/Unit"
+            "Tlab\\Tests\\": "tests/Unit/"
         }
     },
     "require": {
         "php": "^8.1",
         "ext-json": "*",
-        "symfony/http-client": "^6.4",
-        "league/csv": "^9.14"
+        "symfony/http-client": "^6.4"
     },
     "require-dev": {
         "symfony/var-dumper": "^6.4",
         "squizlabs/php_codesniffer": "^3.8",
         "phpstan/phpstan": "^1.10",
         "phpunit/phpunit": "^10.5"
+    },
+    "scripts": {
+        "test": "phpunit",
+        "stan": "phpstan analyse",
+        "cs": "phpcs",
+        "check": [
+            "@cs",
+            "@stan",
+            "@test"
+        ]
     },
     "minimum-stability" : "stable"
 }

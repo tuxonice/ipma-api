@@ -1,21 +1,38 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
 use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Service\DistrictsIslandsLocations;
 
-class DistrictLocationsTest extends TestCase
+class DistrictsIslandsLocationsTest extends TestCase
 {
-    public function testFilterByIdRegion(): void
+    private array $districtsIslandsFixture;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
+        $this->districtsIslandsFixture = json_decode($contents, true);
+    }
+
+    private function createService(): DistrictsIslandsLocations
     {
         $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+            ->willReturn($this->districtsIslandsFixture);
+
+        return new DistrictsIslandsLocations($apiConnector);
+    }
+
+    public function testFilterByIdRegion(): void
+    {
+        $districtLocations = $this->createService();
 
         self::assertSame(
             [
@@ -40,18 +57,16 @@ class DistrictLocationsTest extends TestCase
                     'longitude' => -16.3400,
                 ],
             ],
-            $districtLocations->filterByIdRegion(2)->get()
+            $districtLocations
+                ->query()
+                ->filterByIdRegion(2)
+                ->get()
         );
     }
 
     public function testFilterByIdWarningArea(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             [
@@ -94,17 +109,15 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 37.1397,
                 'longitude' => -8.0202,
             ],
-        ], $districtLocations->filterByIdWarningArea('FAR')->get());
+        ], $districtLocations
+            ->query()
+            ->filterByIdWarningArea('FAR')
+            ->get());
     }
 
     public function testFilterByIdMunicipality(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             [
@@ -147,17 +160,15 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 37.0146,
                 'longitude' => -7.9331,
             ],
-        ], $districtLocations->filterByIdMunicipality(5)->get());
+        ], $districtLocations
+            ->query()
+            ->filterByIdMunicipality(5)
+            ->get());
     }
 
     public function testFilterByGlobalIdLocal(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             [
@@ -170,17 +181,15 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 40.2081,
                 'longitude' => -8.4194,
             ],
-        ], $districtLocations->filterByGlobalIdLocal(1060300)->get());
+        ], $districtLocations
+            ->query()
+            ->filterByGlobalIdLocal(1060300)
+            ->get());
     }
 
     public function testFilterByIdDistrict(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             [
@@ -193,40 +202,36 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 38.7660,
                 'longitude' => -9.1286,
             ]
-        ], $districtLocations->filterByIdDistrict(11)->get());
+        ], $districtLocations
+            ->query()
+            ->filterByIdDistrict(11)
+            ->get());
     }
 
-    public function testFilterByLocal(): void
+    public function testFilterByName(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             [
-                'globalIdLocal' => 1151300,
-                'name' => 'Sines',
-                'idMunicipality' => 13,
-                'idDistrict' => 15,
+                'globalIdLocal' => 1131200,
+                'name' => 'Porto',
+                'idMunicipality' => 12,
+                'idDistrict' => 13,
                 'idRegion' => 1,
-                'idWarningArea' => 'STB',
-                'latitude' => 37.9560,
-                'longitude' => -8.8643,
+                'idWarningArea' => 'PTO',
+                'latitude' => 41.158,
+                'longitude' => -8.6294,
             ]
-        ], $districtLocations->filterByName('Sines')->get());
+        ], $districtLocations
+            ->query()
+            ->filterByName('porto', true)
+            ->get());
     }
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             [
@@ -239,17 +244,15 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 41.6952,
                 'longitude' => -8.8365
             ]
-        ], $districtLocations->findLocationsByDistance(41.6952, -8.8365, 2)->get());
+        ], $districtLocations
+            ->query()
+            ->filterLocationsByDistance(41.6952, -8.8365, 2)
+            ->get());
     }
 
     public function testFindLocationByNearDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $districtLocations = new DistrictsIslandsLocations($apiConnector);
+        $districtLocations = $this->createService();
 
         self::assertSame([
             'globalIdLocal' => 1020500,
@@ -260,6 +263,8 @@ class DistrictLocationsTest extends TestCase
             'idWarningArea' => 'BJA',
             'latitude' => 38.0200,
             'longitude' => -7.8700,
-        ], $districtLocations->findLocationByNearDistance(37.721404, -8.290932));
+        ], $districtLocations
+            ->query()
+            ->filterLocationByNearDistance(37.721404, -8.290932));
     }
 }

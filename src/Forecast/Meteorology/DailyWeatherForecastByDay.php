@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Enums\ForecastDayEnum;
 use Tlab\IpmaApi\Utils;
 
 class DailyWeatherForecastByDay
@@ -21,9 +24,9 @@ class DailyWeatherForecastByDay
     {
     }
 
-    public function from(int $idDay): self
+    public function from(ForecastDayEnum $day): self
     {
-        $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$idDay, self::END_POINT));
+        $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$day->value, self::END_POINT));
         $this->updateAt = new DateTime($content['dataUpdate']);
         $this->data = $this->map($content['data']);
 

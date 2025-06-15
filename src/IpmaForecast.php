@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi;
 
 use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByDay;
-use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocal;
+use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocation;
 use Tlab\IpmaApi\Forecast\Meteorology\FireRiskForecast;
 use Tlab\IpmaApi\Forecast\Meteorology\UltravioletRiskForecast;
 use Tlab\IpmaApi\Forecast\Oceanography\SeaStateForecast;
-use Tlab\IpmaApi\Forecast\WeatherWarnings;
+use Tlab\IpmaApi\Forecast\Warnings\WeatherWarnings;
 
 class IpmaForecast
 {
@@ -18,11 +20,11 @@ class IpmaForecast
         return new DailyWeatherForecastByDay($apiConnector);
     }
 
-    public static function createDailyWeatherForecastByLocalApi(): DailyWeatherForecastByLocal
+    public static function createDailyWeatherForecastByLocalApi(): DailyWeatherForecastByLocation
     {
         $apiConnector = new ApiConnector();
 
-        return new DailyWeatherForecastByLocal($apiConnector);
+        return new DailyWeatherForecastByLocation($apiConnector);
     }
 
     public static function createFireRiskForecastApi(): FireRiskForecast

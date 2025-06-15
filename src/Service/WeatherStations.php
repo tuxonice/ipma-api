@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
@@ -9,21 +11,19 @@ class WeatherStations
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json';
 
-    /**
-     * @var array
-     */
     private array $data;
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
+    }
+
+    public function query(): self
+    {
         $content = $this->apiConnector->fetchData(self::END_POINT);
 
-        $this->data = array_map(fn(array $element) => [
-            'id' => $element['properties']['idEstacao'],
-            'name' => $element['properties']['localEstacao'],
-            'latitude' => $element['geometry']['coordinates'][1],
-            'longitude' => $element['geometry']['coordinates'][0],
-        ], $content);
+        $this->data = $this->map($content);
+
+        return $this;
     }
 
     public function filterById(int $idStation): self
@@ -35,10 +35,10 @@ class WeatherStations
         return $this;
     }
 
-    public function filterByName(string $name): self
+    public function filterByName(string $name, bool $strict = false): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => str_contains($element['name'], $name))
+            array_filter($this->data, fn(array $element) => Utils::compareString($element['name'], $name, $strict))
         );
 
         return $this;
@@ -84,5 +84,20 @@ class WeatherStations
     public function get(): array
     {
         return $this->data;
+    }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'id' => (int)$datum['properties']['idEstacao'],
+                'name' => $datum['properties']['localEstacao'],
+                'latitude' => (float)$datum['geometry']['coordinates'][1],
+                'longitude' => (float)$datum['geometry']['coordinates'][0],
+            ];
+        }
+
+        return $cleanData;
     }
 }

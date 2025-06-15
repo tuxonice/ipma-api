@@ -1,18 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Enums\FireRiskLevelEnum;
+use Tlab\IpmaApi\Enums\ForecastFireRiskDayEnum;
 use Tlab\IpmaApi\Utils;
 
 class FireRiskForecast
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/forecast/meteorology/rcm/rcm-d{idDay}.json';
 
-    /**
-     * @var array<mixed>
-     */
     private array $data;
 
     private DateTime $fileUpdatedAt;
@@ -26,15 +27,10 @@ class FireRiskForecast
     {
     }
 
-    public function from(int $idDay): self
+    public function from(ForecastFireRiskDayEnum $day): self
     {
-        $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$idDay, self::END_POINT));
-        $this->data = array_values(array_map(fn(array $element) => [
-            'dico' => $element['dico'],
-            'fireRiskLevel' => $element['data']['rcm'],
-            'latitude' => $element['latitude'],
-            'longitude' => $element['longitude'],
-        ], $content['local']));
+        $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$day->value, self::END_POINT));
+        $this->data = $this->map($content['local']);
 
         $this->fileUpdatedAt = new DateTime($content['fileDate']);
         $this->forecastDate = new DateTime($content['dataPrev']);
@@ -43,7 +39,7 @@ class FireRiskForecast
         return $this;
     }
 
-    public function filterByFireRiskLevel(FireRiskLevel $fireRiskLevel): self
+    public function filterByFireRiskLevel(FireRiskLevelEnum $fireRiskLevel): self
     {
         $this->data = array_values(
             array_filter(
@@ -60,7 +56,7 @@ class FireRiskForecast
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) => $element['dico'] === $dico
+                fn (array $element) => Utils::compareString($element['dico'], $dico)
             )
         );
 
@@ -122,5 +118,20 @@ class FireRiskForecast
     public function get(): array
     {
         return $this->data;
+    }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'dico' => $datum['dico'],
+                'fireRiskLevel' => (int)$datum['data']['rcm'],
+                'latitude' => (float)$datum['latitude'],
+                'longitude' => (float)$datum['longitude'],
+            ];
+        }
+
+        return $cleanData;
     }
 }

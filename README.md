@@ -10,79 +10,16 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 
 - TODO
 
-## End Points
+---
 
-### Forecast -> Meteorology
+# API
 
-#### Daily Weather Forecast for up to 3 days, aggregated information per day
+## 1. Forecast
 
-> https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
+### 🌤️ 1.1 Meteorology
 
-| Field             | Type    | Description           |
-|-------------------|---------|-----------------------|
-| globalIdLocal     | integer | Local ID              |
-| idWeatherType     | integer | Weather type code     |
-| windSpeedClass    | integer | Wind speed class type |
-| rainfallIntensity | integer | Rainfall intensity    |
-| rainfallProb      | float   | Rainfall probability  |
-| minTemp           | float   | Minimum temperature   |
-| maxTemp           | float   | Maximum temperature   |
-| winDir            | string  | Wind direction        |
-| latitude          | float   | Latitude              |
-| longitude         | float   | Longitude             |
-
-```php
-use Tlab\IpmaApi\IpmaForecast;
-
-$api = IpmaForecast::createDailyWeatherForecastByDayApi();
-$result = $api
-            ->from(0)
-            ->filterByIdWeatherType(3)
-            ->get();
-```
-
-```php
-[
-                [
-                    'globalIdLocal' => 1020500,
-                    'idWeatherType' => 3,
-                    'windSpeedClass' => 1,
-                    'rainfallIntensity' => null,
-                    'rainfallProb' => 1.0,
-                    'minTemp' => 11.0,
-                    'maxTemp' => 18.0,
-                    'winDir' => 'W',
-                    'latitude' => 38.0200,
-                    'longitude' => -7.8700,
-                ],
-                [
-                    'globalIdLocal' => 1080500,
-                    'idWeatherType' => 3,
-                    'windSpeedClass' => 1,
-                    'rainfallIntensity' => null,
-                    'rainfallProb' => 0.0,
-                    'minTemp' => 12.0,
-                    'maxTemp' => 20.0,
-                    'winDir' => 'SW',
-                    'latitude' => 37.0146,
-                    'longitude' => -7.9331,
-                ],
-                [
-                    'globalIdLocal' => 1151300,
-                    'idWeatherType' => 3,
-                    'windSpeedClass' => 2,
-                    'rainfallIntensity' => null,
-                    'rainfallProb' => 27.0,
-                    'minTemp' => 14.0,
-                    'maxTemp' => 19.0,
-                    'winDir' => 'SW',
-                    'latitude' => 37.9560,
-                    'longitude' => -8.8643,
-                ],
-            ]
-```
-
-#### Daily Weather Forecast up to 5 days aggregated by Location
+#### 1.1.1 Daily weather forecast up to 5 days aggregated by location
+(_Previsão meteorológica diária até 5 dias agregada por local_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json
 
@@ -137,7 +74,79 @@ $result = $api->from(1020500)
 ],
 ```
 
-#### Fire Risk Forecast for up to 2 days, aggregated information per day
+#### 1.1.2 Daily weather forecast for up to 3 days, aggregated information per day
+(_Previsão meteorológica diária até 3 dias, informação agregada por dia_)
+
+> https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
+
+| Field             | Type    | Description           |
+|-------------------|---------|-----------------------|
+| globalIdLocal     | integer | Local ID              |
+| idWeatherType     | integer | Weather type code     |
+| windSpeedClass    | integer | Wind speed class type |
+| rainfallIntensity | integer | Rainfall intensity    |
+| rainfallProb      | float   | Rainfall probability  |
+| minTemp           | float   | Minimum temperature   |
+| maxTemp           | float   | Maximum temperature   |
+| winDir            | string  | Wind direction        |
+| latitude          | float   | Latitude              |
+| longitude         | float   | Longitude             |
+
+```php
+use Tlab\IpmaApi\Enums\ForecastDayEnum;
+use Tlab\IpmaApi\IpmaForecast;
+
+$api = IpmaForecast::createDailyWeatherForecastByDayApi();
+$result = $api
+            ->from(ForecastDayEnum::TODAY)
+            ->filterByIdWeatherType(3)
+            ->get();
+```
+
+```php
+[
+                [
+                    'globalIdLocal' => 1020500,
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 1.0,
+                    'minTemp' => 11.0,
+                    'maxTemp' => 18.0,
+                    'winDir' => 'W',
+                    'latitude' => 38.0200,
+                    'longitude' => -7.8700,
+                ],
+                [
+                    'globalIdLocal' => 1080500,
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 1,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 0.0,
+                    'minTemp' => 12.0,
+                    'maxTemp' => 20.0,
+                    'winDir' => 'SW',
+                    'latitude' => 37.0146,
+                    'longitude' => -7.9331,
+                ],
+                [
+                    'globalIdLocal' => 1151300,
+                    'idWeatherType' => 3,
+                    'windSpeedClass' => 2,
+                    'rainfallIntensity' => null,
+                    'rainfallProb' => 27.0,
+                    'minTemp' => 14.0,
+                    'maxTemp' => 19.0,
+                    'winDir' => 'SW',
+                    'latitude' => 37.9560,
+                    'longitude' => -8.8643,
+                ],
+            ]
+```
+
+#### 1.1.3 Fire risk forecast for up to 2 days, aggregated information per day
+
+(_Previsão do risco de incêndio até 2 dias, informação agregada por dia_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/rcm/rcm-d{idDay}.json
 
@@ -159,7 +168,31 @@ Fire risk code
 4 - Very high risk
 5 - Maximum risk
 
-#### Ultraviolet Risk Forecast for up to 3 days (Ultraviolet Index)
+```php
+use Tlab\IpmaApi\Enums\ForecastFireRiskDayEnum;
+use Tlab\IpmaApi\Forecast\Meteorology\FireRiskForecast;
+
+$api = IpmaForecast::createFireRiskForecastApi();
+$result = $api
+            ->from(ForecastFireRiskDayEnum::TODAY)
+            ->filterByDico('1002')
+            ->get()
+```
+
+```php
+   [
+        [
+            'dico' => '1002',
+            'fireRiskLevel' => 1,
+            'latitude' => 39.8222,
+            'longitude' => -8.3814,
+        ],
+    ],
+```
+
+#### 1.1.4 Ultraviolet risk forecast for up to 3 days (Ultraviolet Index)
+
+(_Previsão do risco de ultravioletas até 3 dias (Índice Ultravioleta_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/uv/uv.json
 
@@ -199,102 +232,118 @@ $result = $api->filterByUvIndex(2.4, 2.4)
 ],
 ```
 
-### Forecast -> Oceanography
+### 🌊 1.2 Oceanography
 
-#### Sea State forecast for up to 3 days, aggregated information per day
+#### 1.2.1 Sea state forecast for up to 3 days, aggregated information per day
+
+(_Previsão do estado do mar até 3 dias, informação agregada por dia_))
 
 > https://api.ipma.pt/open-data/forecast/oceanography/daily/hp-daily-sea-forecast-day{idDay}.json
 
-### Observation -> Seismic
+| Field          | Type    | Description                                                                           |
+|----------------|---------|---------------------------------------------------------------------------------------|
+| forecastDate:  | string  | Date for which information is valid                                                   |
+| dataUpdate:    | string  | File update date (hourly update rate)                                                 |
+| globalIdLocal: | integer | Location identifier (see auxiliary service "List of identifiers for coastal regions") |
+| wavePeriodMin: | float   | Daily minimum of the peak period, associated with the swell, in seconds               |
+| wavePeriodMax: | float   | Daily maximum of the peak period, associated with the swell, in seconds               |
+| waveHighMin:   | float   | Minimum daily swell height in meters                                                  |
+| waveHighMax:   | float   | Maximum daily swell height in meters                                                  |
+| predWaveDir:   | string  | Predominant wave direction (N, NE, E, SE, S, SW, W, NW)                               |
+| totalSeaMin:   | float   | Minimum daily significant wave height in meters                                       |
+| totalSeaMax:   | float   | Maximum daily significant wave height, in meters                                      |
+| sstMin:        | float   | Daily minimum sea surface temperature in ºC                                           |
+| sstMax:        | float   | Daily maximum sea surface temperature in ºC                                           |
+| latitude:      | float   | Latitude                                                                              |
+| longitude:     | float   | Longitude                                                                             |
 
-#### Seismic information, Arch. Azores, Continente and Arch. Madeira. Includes 30 days of information
+Note: Only daily data is available. {idDay} ranges **from** 0 to 2, where:
 
-> https://api.ipma.pt/open-data/observation/seismic/{idArea}.json
+- 0 - is the day equivalent to today
+- 1 - tomorrow
+- 2 - the day after tomorrow
 
-### Observation -> Meteorology
+```php
+use Tlab\IpmaApi\Enums\SeaStateForecastDayEnum;
+use Tlab\IpmaApi\IpmaForecast;
 
-#### Meteorological Observation of Stations (hourly data, last 24 hours)
+$api = IpmaForecast::createSeaStateForecastApi();
+$result = $api->from(SeaStateForecastDayEnum::TODAY)
+              ->filterByGlobalIdLocal(2320126)
+              ->filterByWavePeriodMax(5.0,6.0)
+              ->get();
+```
 
-> https://api.ipma.pt/open-data/observation/meteorology/stations/observations.json
+```php
+[
+       [
+            'wavePeriodMin' => '5.5',
+            'globalIdLocal' => 2320126,
+            'totalSeaMax' => 2.5,
+            'waveHighMax' => '2.2',
+            'waveHighMin' => '1.6',
+            'longitude' => '-16.3400',
+            'wavePeriodMax' => '5.7',
+            'latitude' => '33.2500',
+            'totalSeaMin' => 2.0,
+            'sstMax' => '21.8',
+            'predWaveDir' => 'NE',
+            'sstMin' => '21.7',
+       ],
+],
+```
 
-#### Weather Observation of Stations, last 3 hours (GeoJSON format)
+### 🌀 1.3 Warnings
 
-> https://api.ipma.pt/open-data/observation/meteorology/stations/obs-surface.geojson
+#### 1.3.1 Weather warnings for up to 3 days
 
-### Observation -> Biology
-
-#### Prohibitions on harvesting in Bivalve Mollusc Production Areas (GeoJSON format)
-
-> https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson
-
-### Observation -> Climate
-
-#### Daily reference evapotranspiration by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/evapotranspiration/{distrito}/et0-{DICO}-{concelho}.csv
-
-#### Minimum daily temperature by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/temperature-min/{distrito}/mtnmn-{DICO}-{concelho}.csv
-
-#### Maximum daily temperature by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/temperature-max/{distrito}/mtxmn-{DICO}-{concelho}.csv
-
-#### PDSI index (Palmer Drought Severity Index) monthly by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/mpdsi/{distrito}/mpdsi-{DICO}-{concelho}.csv
-
-#### Weather warnings for up to 3 days
+(_Avisos meteorológicos até 3 dias_)
 
 > https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json
 
-``` json
-[
-  {
-    "text": "",
-    "awarenessTypeName": "Agitação Marítima",
-    "idAreaAviso": "BGC",
-    "startTime": "2021-03-25T07:25:00",
-    "awarenessLevelID": "green",
-    "endTime": "2021-03-28T07:00:00"
-  },
-  {
-    "text": "",
-    "awarenessTypeName": "Nevoeiro",
-    "idAreaAviso": "BGC",
-    "startTime": "2021-03-25T07:25:00",
-    "awarenessLevelID": "green",
-    "endTime": "2021-03-28T07:00:00"
-  }
-]
-```
-
-| Field             | Type     | Description                                                                                                                                             |
-|-------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| text              | text     | texto descritivo do aviso (preenchido apenas quando o aviso é amarelo, laranja ou vermelho)                                                             |
-| awarenessTypeName | text     | parâmetro do aviso (e.g. "Trovoada", "Agitação Marítima", "Precipitação", "Vento", "Nevoeiro", "Neve", "Tempo Frio", "Tempo Quente")                    |
-| awarenessLevelID  | text     | cor / nível do aviso (e.g. "green", "yellow", "orange", "red", só existem avisos para níveis diferentes de "green", ou seja, "yellow", "orange", "red") |
-| idAreaAviso       | text     | identificador da área dos avisos (consultar serviço auxiliar "Lista de identificadores para as capitais distrito e ilhas")                              |
-| startTime         | datetime | data/hora de início da duração do aviso                                                                                                                 |
-| endTime           | datetime | data/hora de fim da duração do aviso                                                                                                                    |
+| Field             | Type     | Description                                                                                                                                          |
+|-------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| text              | text     | Descriptive text of the warning (filled in only when the warning is yellow, orange or red)                                                           |
+| awarenessTypeName | text     | Warning parameter (e.g. "Thunderstorm", "Rough Sea", "Precipitation", "Wind", "Fog", "Snow", "Cold Weather", "Hot Weather")                          |
+| awarenessLevelID  | text     | Warning color/level (e.g. "green", "yellow", "orange", "red", there are only warnings for levels other than "green", i.e. "yellow", "orange", "red") |
+| warningIdArea     | text     | Area identifier of the notices (see auxiliary service "List of identifiers for district capitals and islands")                                       |
+| startTime         | datetime | Start date/time of the notice duration                                                                                                               |
+| endTime           | datetime | End date/time of the notice duration                                                                                                                 |
 
 ```php
 use Tlab\IpmaApi\IpmaService;
 
 $warningsApi = IpmaService::createWarningsApi();
-$result = $warningsApi
+$result = $warningsApi->query()
     ->filterByWarningIdArea('BGC')
     ->filterByAwarenessTypeName('Nevoeiro')
     ->get();
-
 ```
 
-### Auxiliary services
+```php
+[
+  [
+    "text": "",
+    "awarenessTypeName": "Agitação Marítima",
+    "warningIdArea": "BGC",
+    "startTime": "2021-03-25T07:25:00",
+    "awarenessLevelID": "green",
+    "endTime": "2021-03-28T07:00:00"
+  ],
+  [
+    "text": "",
+    "awarenessTypeName": "Nevoeiro",
+    "warningIdArea": "BGC",
+    "startTime": "2021-03-25T07:25:00",
+    "awarenessLevelID": "green",
+    "endTime": "2021-03-28T07:00:00"
+  ]
+]
+```
 
-#### List of identifiers for district capitals and islands
+## 3. Auxiliary services
 
-> https://api.ipma.pt/open-data/distrits-islands.json
+### 3.1 List of identifiers for district capitals and islands
 
 | Field          | Type    | Description                                                   |
 |----------------|---------|---------------------------------------------------------------|
@@ -309,8 +358,9 @@ $result = $warningsApi
 
 ```php
 $api = IpmaService::createDistrictsIslandsLocationsApi();
-$result = $api->filterByIdRegion(1)
-              ->filterByIdWarningArea('AVR')
+$result = $api->query()
+              ->filterByIdRegion(1)
+              ->filterByIdWarningArea('MCS')
               ->get();
 ```
 
@@ -339,7 +389,9 @@ $result = $api->filterByIdRegion(1)
 ],
 ```
 
-#### List of identifiers for coastal regions
+### 3.2 List of identifiers for coastal regions
+
+(_Lista de identificadores para as regiões costeiras_)
 
 > https://api.ipma.pt/open-data/sea-locations.json
 
@@ -355,7 +407,8 @@ $result = $api->filterByIdRegion(1)
 
 ```php
 $api = IpmaService::createSeaLocationsApi();
-$result = $api->filterByIdRegiao(1)
+$result = $api->query()
+              ->filterByIdRegiao(1)
               ->filterByIdAreaAviso('AVR')
               ->get();
 ```
@@ -374,7 +427,9 @@ $result = $api->filterByIdRegiao(1)
 ]
 ```
 
-#### List of weather station identifiers
+### 3.3 List of weather station identifiers
+
+(_Lista de identificadores das estações meteorológicas_)
 
 > https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json
 
@@ -402,14 +457,20 @@ $result = $api->filterByName('selvagens')
 ]
 ```
 
-#### List of Weather Type Identifiers
+### 3.4 List of Weather Type Identifiers
+
+(_Lista de identificadores do tempo significativo_)
 
 > https://api.ipma.pt/open-data/weather-type-classe.json
 
-#### List of classes relating to wind intensity
+### 3.5 List of classes relating to wind intensity
+
+(_Lista de classes relativa à intensidade vento_)
 
 > https://api.ipma.pt/open-data/wind-speed-daily-classe.json
 
-#### List of classes relating to precipitation intensity
+### 3.6 List of classes relating to precipitation intensity
+
+(_Lista de classes relativa à intensidade precipitação_)
 
 > https://api.ipma.pt/open-data/precipitation-classe.json

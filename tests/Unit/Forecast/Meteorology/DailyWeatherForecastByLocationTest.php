@@ -1,22 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\Tests\Forecast\Meteorology;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
 use Tlab\IpmaApi\ApiConnectorInterface;
-use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocal;
+use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocation;
 
-class DailyWeatherForecastByLocalTest extends TestCase
+class DailyWeatherForecastByLocationTest extends TestCase
 {
-    public function testFilterByRainfallProbabilityRange(): void
+    private array $dailyForecastFixture;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
+        $this->dailyForecastFixture = json_decode($contents, true);
+    }
+
+    private function createService(): DailyWeatherForecastByLocation
     {
         $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+            ->willReturn($this->dailyForecastFixture);
+
+        return new DailyWeatherForecastByLocation($apiConnector);
+    }
+
+    public function testFilterByRainfallProbabilityRange(): void
+    {
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -41,12 +58,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByMinTemperatureRange(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -95,12 +107,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByMaxTemperatureRange(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -137,12 +144,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByWindDirection(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -165,14 +167,9 @@ class DailyWeatherForecastByLocalTest extends TestCase
         );
     }
 
-    public function testFilterByWindSpeedClass()
+    public function testFilterByWindSpeedClass(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -209,12 +206,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByIdWeatherType(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -263,12 +255,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByRainIntensityClass(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -293,12 +280,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByForecastDate(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertSame(
             [
@@ -323,12 +305,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testGetFileUpdatedAt(): void
     {
-        $apiConnector = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
-        $apiConnector->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $dailyWeatherForecastByLocal = new DailyWeatherForecastByLocal($apiConnector);
+        $dailyWeatherForecastByLocal = $this->createService();
 
         self::assertEquals(
             new DateTime('2023-12-08T15:31:04'),

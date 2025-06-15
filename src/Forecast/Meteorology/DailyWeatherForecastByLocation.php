@@ -1,17 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
 
-class DailyWeatherForecastByLocal
+class DailyWeatherForecastByLocation
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json';
 
-    /**
-     * @var array<mixed>
-     */
     private array $data;
 
     private DateTime $updateAt;

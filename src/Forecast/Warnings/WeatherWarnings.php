@@ -1,6 +1,8 @@
 <?php
 
-namespace Tlab\IpmaApi\Forecast;
+declare(strict_types=1);
+
+namespace Tlab\IpmaApi\Forecast\Warnings;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
@@ -9,21 +11,25 @@ class WeatherWarnings
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json';
 
-    /**
-     * @var array<mixed>
-     */
     private array $data;
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
-        $this->data = $this->apiConnector->fetchData(self::END_POINT);
+    }
+
+    public function query(): self
+    {
+        $content = $this->apiConnector->fetchData(self::END_POINT);
+        $this->data = $this->map($content);
+
+        return $this;
     }
 
     public function filterByWarningIdArea(string $idArea): self
     {
         $this->data = array_values(
             array_filter($this->data, function (array $element) use ($idArea) {
-                return $element['idAreaAviso'] === $idArea;
+                return $element['warningIdArea'] === $idArea;
             })
         );
 
@@ -56,7 +62,10 @@ class WeatherWarnings
     {
         $this->data = array_values(
             array_filter($this->data, function (array $element) use ($from, $to) {
-                return $element['startTime'] >= $from && $element['endTime'] <= $to;
+                $startTime = new DateTime($element['startTime']);
+                $endTime = new DateTime($element['endTime']);
+
+                return $startTime >= $from && $endTime <= $to;
             })
         );
 
@@ -66,5 +75,22 @@ class WeatherWarnings
     public function get(): array
     {
         return $this->data;
+    }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'text' => $datum['text'],
+                'awarenessTypeName' => $datum['awarenessTypeName'],
+                'warningIdArea' => $datum['idAreaAviso'],
+                'startTime' => $datum['startTime'],
+                'endTime' => $datum['endTime'],
+                'awarenessLevelID' => $datum['awarenessLevelID'],
+            ];
+        }
+
+        return $cleanData;
     }
 }

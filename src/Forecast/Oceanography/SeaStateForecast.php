@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi\Forecast\Oceanography;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Enums\SeaStateForecastDayEnum;
 use Tlab\IpmaApi\Utils;
 
 class SeaStateForecast
 {
     private const END_POINT = 'https://api.ipma.pt/open-data/forecast/oceanography/daily/hp-daily-sea-forecast-day{idDay}.json';
 
-    /**
-     * @var array<mixed>
-     */
     private array $data;
 
     private DateTime $updateAt;
@@ -25,12 +25,12 @@ class SeaStateForecast
     {
     }
 
-    public function from(int $idDay): self
+    public function from(SeaStateForecastDayEnum $day): self
     {
-        $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$idDay, self::END_POINT));
+        $content = $this->apiConnector->fetchData(str_replace('{idDay}', (string)$day->value, self::END_POINT));
         $this->updateAt = new DateTime($content['dataUpdate']);
         $this->forecastDate = new DateTime($content['forecastDate']);
-        $this->data = $content['data'];
+        $this->data = $this->map($content['data']);
 
         return $this;
     }
@@ -165,7 +165,7 @@ class SeaStateForecast
             array_filter(
                 $this->data,
                 fn (array $element) =>
-                    strtolower($element['predWaveDir']) === strtolower($predWaveDir)
+                    Utils::compareString($element['predWaveDir'], $predWaveDir)
             )
         );
 
@@ -222,5 +222,28 @@ class SeaStateForecast
     public function get(): array
     {
         return $this->data;
+    }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'globalIdLocal' => (int)$datum['globalIdLocal'],
+                'predWaveDir' => $datum['predWaveDir'],
+                'waveHighMin' => (float)$datum['waveHighMin'],
+                'waveHighMax' => (float)$datum['waveHighMax'],
+                'wavePeriodMin' => (float)$datum['wavePeriodMin'],
+                'wavePeriodMax' => (float)$datum['wavePeriodMax'],
+                'totalSeaMin' => (float)$datum['totalSeaMin'],
+                'totalSeaMax' => (float)$datum['totalSeaMax'],
+                'sstMin' => (float)$datum['sstMin'],
+                'sstMax' => (float)$datum['sstMax'],
+                'latitude' => (float)$datum['latitude'],
+                'longitude' => (float)$datum['longitude'],
+            ];
+        }
+
+        return $cleanData;
     }
 }

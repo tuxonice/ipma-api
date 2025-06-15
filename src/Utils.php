@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi;
 
 class Utils
@@ -18,5 +20,14 @@ class Utils
         $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
 
         return round(($R * $c) / 1000, 2); // in Km
+    }
+
+    public static function compareString(string $haystack, string $needle, bool $strict = true): bool
+    {
+        if ($strict) {
+            return strtolower($haystack) === strtolower($needle);
+        }
+
+        return str_contains(strtolower($haystack), strtolower($needle));
     }
 }

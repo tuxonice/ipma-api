@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\Tests\Forecast\Meteorology;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
@@ -52,7 +54,7 @@ class UltravioletRiskForecastTest extends TestCase
         );
     }
 
-    public function testFilterByGlobalIdLocal()
+    public function testFilterByGlobalIdLocal(): void
     {
         $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/uv.json');
@@ -103,7 +105,7 @@ class UltravioletRiskForecastTest extends TestCase
         );
     }
 
-    public function testFilterByDate()
+    public function testFilterByDate(): void
     {
         $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/uv.json');

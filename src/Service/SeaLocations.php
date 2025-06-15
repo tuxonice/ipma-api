@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
@@ -16,14 +18,21 @@ class SeaLocations
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
-        $this->data = $this->map($this->apiConnector->fetchData(self::END_POINT));
     }
 
-    public function filterByIdRegion(int $idRegiao): self
+    public function query(): self
+    {
+        $content = $this->apiConnector->fetchData(self::END_POINT);
+        $this->data = $this->map($content);
+
+        return $this;
+    }
+
+    public function filterByIdRegion(int $idRegion): self
     {
         $this->data = array_values(
-            array_filter($this->data, function (array $element) use ($idRegiao) {
-                return $element['idRegion'] === $idRegiao;
+            array_filter($this->data, function (array $element) use ($idRegion) {
+                return $element['idRegion'] === $idRegion;
             })
         );
 
@@ -34,7 +43,7 @@ class SeaLocations
     {
         $this->data = array_values(
             array_filter($this->data, function (array $element) use ($idWarningArea) {
-                return strtolower($element['idWarningArea']) === strtolower($idWarningArea);
+                return Utils::compareString($element['idWarningArea'], $idWarningArea);
             })
         );
 
@@ -55,20 +64,16 @@ class SeaLocations
     public function filterByIdLocal(int $idLocal): self
     {
         $this->data = array_values(
-            array_filter($this->data, function (array $element) use ($idLocal) {
-                return $element['idLocal'] === $idLocal;
-            })
+            array_filter($this->data, fn (array $element) => $element['idLocal'] === $idLocal)
         );
 
         return $this;
     }
 
-    public function filterByName(string $local): self
+    public function filterByName(string $name, bool $strict = false): self
     {
         $this->data = array_values(
-            array_filter($this->data, function (array $element) use ($local) {
-                return str_contains(strtolower($element['name']), strtolower($local));
-            })
+            array_filter($this->data, fn (array $element) => Utils::compareString($element['name'], $name, $strict))
         );
 
         return $this;
@@ -121,10 +126,10 @@ class SeaLocations
         $cleanData = [];
         foreach ($data as $datum) {
             $cleanData[] = [
-                'globalIdLocal' => $datum['globalIdLocal'],
+                'globalIdLocal' => (int)$datum['globalIdLocal'],
                 'name' => $datum['local'],
-                'idLocal' => $datum['idLocal'],
-                'idRegion' => $datum['idRegiao'],
+                'idLocal' => (int)$datum['idLocal'],
+                'idRegion' => (int)$datum['idRegiao'],
                 'idWarningArea' => $datum['idAreaAviso'],
                 'latitude' => (float)$datum['latitude'],
                 'longitude' => (float)$datum['longitude'],
