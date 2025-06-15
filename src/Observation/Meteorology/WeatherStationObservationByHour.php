@@ -2,7 +2,7 @@
 
 namespace Tlab\IpmaApi\Observation\Meteorology;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 
 class WeatherStationObservationByHour
 {
@@ -28,7 +28,7 @@ class WeatherStationObservationByHour
      */
     private array $data = [];
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
         foreach ($content['features'] as $stationData) {

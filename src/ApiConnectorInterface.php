@@ -2,32 +2,20 @@
 
 namespace Tlab\IpmaApi;
 
-use League\Csv\AbstractCsv;
 use League\Csv\Reader;
-use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\ClientExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\RedirectionExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\ServerExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
 
-class ApiConnector implements ApiConnectorInterface
+interface ApiConnectorInterface
 {
     /**
      * @param string $endPoint
      *
      * @return array<mixed>
      */
-    public function fetchData(string $endPoint): array
-    {
-        $client = HttpClient::create();
-
-        $response = $client->request(
-            'GET',
-            $endPoint
-        );
-
-        return $response->toArray();
-    }
+    public function fetchData(string $endPoint): array;
 
     /**
      * @param string $endPoint
@@ -38,15 +26,5 @@ class ApiConnector implements ApiConnectorInterface
      * @throws ServerExceptionInterface
      * @throws TransportExceptionInterface
      */
-    public function fetchCsv(string $endPoint): Reader
-    {
-        $client = HttpClient::create();
-
-        $response = $client->request(
-            'GET',
-            $endPoint
-        );
-
-        return Reader::createFromString($response->getContent());
-    }
+    public function fetchCsv(string $endPoint): Reader;
 }

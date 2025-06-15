@@ -3,6 +3,7 @@
 namespace Tlab\Tests\Observation\Meteorology;
 
 use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Observation\Meteorology\WeatherStationObservationByHour;
 use PHPUnit\Framework\TestCase;
 
@@ -10,7 +11,7 @@ class WeatherStationObservationByHourTest extends TestCase
 {
     public function testFilterByWindDirection()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -39,7 +40,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByAtmosphericPressure()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -70,7 +71,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByWindSpeed()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -102,7 +103,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByTemperature()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -149,7 +150,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByRain()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -180,7 +181,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByIdStation()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -244,7 +245,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByWindSpeedMetersSecond()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -337,7 +338,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterBySolarRadiation()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -398,7 +399,7 @@ class WeatherStationObservationByHourTest extends TestCase
 
     public function testFilterByHumidity()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Meteorology/obs-surface.geojson');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')

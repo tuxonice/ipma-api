@@ -3,7 +3,7 @@
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Utils;
 
 class FireRiskForecast
@@ -22,7 +22,7 @@ class FireRiskForecast
     private DateTime $runDate;
 
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
     }
 

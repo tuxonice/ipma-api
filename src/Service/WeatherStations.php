@@ -2,7 +2,7 @@
 
 namespace Tlab\IpmaApi\Service;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Utils;
 
 class WeatherStations
@@ -14,7 +14,7 @@ class WeatherStations
      */
     private array $data;
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
 

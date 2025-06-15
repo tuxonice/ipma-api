@@ -4,14 +4,14 @@ namespace Tlab\Tests\Forecast\Meteorology;
 
 use DateTime;
 use PHPUnit\Framework\TestCase;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocal;
 
 class DailyWeatherForecastByLocalTest extends TestCase
 {
     public function testFilterByRainfallProbabilityRange(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -41,7 +41,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByMinTemperatureRange(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -95,7 +95,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByMaxTemperatureRange(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -137,7 +137,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByWindDirection(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -167,7 +167,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByWindSpeedClass()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -209,7 +209,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByIdWeatherType(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -263,7 +263,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByRainIntensityClass(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -293,7 +293,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testFilterByForecastDate(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -323,7 +323,7 @@ class DailyWeatherForecastByLocalTest extends TestCase
 
     public function testGetFileUpdatedAt(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/1020500.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

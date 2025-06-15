@@ -3,7 +3,7 @@
 namespace Tlab\Tests\Forecast\Meteorology;
 
 use DateTime;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByDay;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +11,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 {
     public function testFilterByRainfallProbabilityRange()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -41,7 +41,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByRainIntensityClass()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -71,7 +71,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByMinTemperatureRange()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -150,7 +150,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByMaxTemperatureRange()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -180,7 +180,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByIdWeatherType()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -246,7 +246,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByWindDirection()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -288,7 +288,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByWindSpeedClass()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -319,7 +319,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFindLocationsByDistance()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -346,7 +346,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFilterByGlobalIdLocal()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -377,7 +377,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testFindLocationByNearDistance()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -401,7 +401,7 @@ class DailyWeatherForecastByDayTest extends TestCase
 
     public function testGetFileUpdatedAt()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/hp-daily-forecast-day0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

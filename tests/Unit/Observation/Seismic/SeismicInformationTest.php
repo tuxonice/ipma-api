@@ -4,6 +4,7 @@ namespace Tlab\Tests\Observation\Seismic;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Observation\Seismic\SeismicInformation;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +12,7 @@ class SeismicInformationTest extends TestCase
 {
     public function testGetLastSismicActivityDate(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -27,7 +28,7 @@ class SeismicInformationTest extends TestCase
 
     public function testGetUpdateDate()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -43,7 +44,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFilterByDepth()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -157,7 +158,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFilterByMagnitud(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -250,7 +251,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFindLocationByNearDistance(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -284,7 +285,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -340,7 +341,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFilterByTime(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')

@@ -5,13 +5,14 @@ namespace Tlab\Tests\Observation\Climate;
 use League\Csv\Reader;
 use PHPUnit\Framework\TestCase;
 use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Observation\Climate\DailyEvapotranspirationReference;
 
 class DailyEvapotranspirationReferenceTest extends TestCase
 {
     public function testFilterByDate(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/et0-0206-castro-verde.csv');
         $reader = Reader::createFromString($contents);
 
@@ -47,7 +48,7 @@ class DailyEvapotranspirationReferenceTest extends TestCase
 
     public function testFilterByMinimum(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/et0-0206-castro-verde.csv');
         $reader = Reader::createFromString($contents);
 
@@ -83,7 +84,7 @@ class DailyEvapotranspirationReferenceTest extends TestCase
 
     public function testFilterByMaximum(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/et0-0206-castro-verde.csv');
         $reader = Reader::createFromString($contents);
 
@@ -127,7 +128,7 @@ class DailyEvapotranspirationReferenceTest extends TestCase
 
     public function testFilterByRange(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/et0-0206-castro-verde.csv');
         $reader = Reader::createFromString($contents);
 
@@ -187,7 +188,7 @@ class DailyEvapotranspirationReferenceTest extends TestCase
 
     public function testFilterByMean(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/et0-0206-castro-verde.csv');
         $reader = Reader::createFromString($contents);
 
@@ -248,7 +249,7 @@ class DailyEvapotranspirationReferenceTest extends TestCase
 
     public function testFilterByStd(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/et0-0206-castro-verde.csv');
         $reader = Reader::createFromString($contents);
 

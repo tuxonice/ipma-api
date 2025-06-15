@@ -3,7 +3,7 @@
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Utils;
 
 class DailyWeatherForecastByDay
@@ -17,7 +17,7 @@ class DailyWeatherForecastByDay
 
     private DateTime $updateAt;
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
     }
 

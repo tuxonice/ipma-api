@@ -2,7 +2,7 @@
 
 namespace Unit\Tlab\Tests\Services;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Service\WeatherStations;
 use PHPUnit\Framework\TestCase;
 
@@ -10,7 +10,7 @@ class StationsTest extends TestCase
 {
     public function testFilterByIdStation(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/stations.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -29,7 +29,7 @@ class StationsTest extends TestCase
 
     public function testFilterByName(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/stations.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -48,7 +48,7 @@ class StationsTest extends TestCase
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/stations.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -79,7 +79,7 @@ class StationsTest extends TestCase
 
     public function testFindLocationByNearDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/stations.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

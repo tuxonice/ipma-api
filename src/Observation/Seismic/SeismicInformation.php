@@ -4,7 +4,7 @@ namespace Tlab\IpmaApi\Observation\Seismic;
 
 use DateTime;
 use Exception;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Utils;
 
 class SeismicInformation
@@ -20,7 +20,7 @@ class SeismicInformation
 
     private DateTime $updateDate;
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
     }
 

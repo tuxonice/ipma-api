@@ -2,7 +2,7 @@
 
 namespace Tlab\Tests\Observation\Biology;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Observation\Biology\MolluscHarvestingProhibition;
 use PHPUnit\Framework\TestCase;
 
@@ -10,7 +10,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 {
     public function testFilterByName(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -119,7 +119,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByCode(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -195,7 +195,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByZoneType(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -812,7 +812,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByRegionName(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -1091,7 +1091,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByStatus(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -1229,7 +1229,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByCommonName(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::exactly(2))
             ->method('fetchData')
@@ -1460,7 +1460,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByScientificName(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::exactly(2))
             ->method('fetchData')
@@ -1690,7 +1690,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFilterByClassification(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::exactly(2))
             ->method('fetchData')
@@ -1711,7 +1711,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -1866,7 +1866,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
     public function testFindLocationsByNearDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Biology/CI_SNMB.geojson');
         $apiConnector->expects(self::once())
             ->method('fetchData')

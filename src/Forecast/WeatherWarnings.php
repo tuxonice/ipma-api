@@ -3,7 +3,7 @@
 namespace Tlab\IpmaApi\Forecast;
 
 use DateTime;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 
 class WeatherWarnings
 {
@@ -14,7 +14,7 @@ class WeatherWarnings
      */
     private array $data;
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
         $this->data = $this->apiConnector->fetchData(self::END_POINT);
     }

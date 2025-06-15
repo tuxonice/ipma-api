@@ -3,14 +3,14 @@
 namespace Tlab\Tests\Service;
 
 use PHPUnit\Framework\TestCase;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Service\DistrictsIslandsLocations;
 
 class DistrictLocationsTest extends TestCase
 {
     public function testFilterByIdRegion(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -46,7 +46,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFilterByIdWarningArea(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -99,7 +99,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFilterByIdMunicipality(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -152,7 +152,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFilterByGlobalIdLocal(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -175,7 +175,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFilterByIdDistrict(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -198,7 +198,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFilterByLocal(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -221,7 +221,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -244,7 +244,7 @@ class DistrictLocationsTest extends TestCase
 
     public function testFindLocationByNearDistance(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Services/distrits-islands.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

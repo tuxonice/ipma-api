@@ -2,7 +2,7 @@
 
 namespace Tlab\Tests\Forecast\Meteorology;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Forecast\Meteorology\UltravioletRiskForecast;
 use PHPUnit\Framework\TestCase;
 
@@ -10,7 +10,7 @@ class UltravioletRiskForecastTest extends TestCase
 {
     public function testFilterByUvIndex()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/uv.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -54,7 +54,7 @@ class UltravioletRiskForecastTest extends TestCase
 
     public function testFilterByGlobalIdLocal()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/uv.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -105,7 +105,7 @@ class UltravioletRiskForecastTest extends TestCase
 
     public function testFilterByDate()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/uv.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

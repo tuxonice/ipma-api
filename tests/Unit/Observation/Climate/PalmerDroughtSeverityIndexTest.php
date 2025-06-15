@@ -5,13 +5,14 @@ namespace Tlab\Tests\Observation\Climate;
 use League\Csv\Reader;
 use Tlab\IpmaApi\ApiConnector;
 use PHPUnit\Framework\TestCase;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Observation\Climate\PalmerDroughtSeverityIndex;
 
 class PalmerDroughtSeverityIndexTest extends TestCase
 {
     public function testFilterByDate(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mpdsi-0804-castro-marim.csv');
         $reader = Reader::createFromString($contents);
 
@@ -47,7 +48,7 @@ class PalmerDroughtSeverityIndexTest extends TestCase
 
     public function testFilterByMinimum(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mpdsi-0804-castro-marim.csv');
         $reader = Reader::createFromString($contents);
 
@@ -83,7 +84,7 @@ class PalmerDroughtSeverityIndexTest extends TestCase
 
     public function testFilterByMaximum(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mpdsi-0804-castro-marim.csv');
         $reader = Reader::createFromString($contents);
 
@@ -119,7 +120,7 @@ class PalmerDroughtSeverityIndexTest extends TestCase
 
     public function testFilterByRange(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mpdsi-0804-castro-marim.csv');
         $reader = Reader::createFromString($contents);
 
@@ -164,7 +165,7 @@ class PalmerDroughtSeverityIndexTest extends TestCase
 
     public function testFilterByMean(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mpdsi-0804-castro-marim.csv');
         $reader = Reader::createFromString($contents);
 
@@ -208,7 +209,7 @@ class PalmerDroughtSeverityIndexTest extends TestCase
 
     public function testFilterByStd(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mpdsi-0804-castro-marim.csv');
         $reader = Reader::createFromString($contents);
 

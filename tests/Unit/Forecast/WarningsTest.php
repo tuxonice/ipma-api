@@ -3,14 +3,14 @@
 namespace Tlab\Tests\Forecast;
 
 use PHPUnit\Framework\TestCase;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Forecast\WeatherWarnings;
 
 class WarningsTest extends TestCase
 {
     public function testFilterByIdAreaAviso(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Forecast/warnings_www.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -90,7 +90,7 @@ class WarningsTest extends TestCase
 
     public function testFilterByAwarenessTypeName(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Forecast/warnings_www.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -306,7 +306,7 @@ class WarningsTest extends TestCase
 
     public function testFilterByAwarenessLevelId(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 2) . '/Data/Forecast/warnings_www.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

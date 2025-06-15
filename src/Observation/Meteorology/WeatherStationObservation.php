@@ -2,7 +2,7 @@
 
 namespace Tlab\IpmaApi\Observation\Meteorology;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 
 class WeatherStationObservation
 {
@@ -24,7 +24,7 @@ class WeatherStationObservation
      */
     private array $data = [];
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
     }
 

@@ -2,7 +2,7 @@
 
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 
 class UltravioletRiskForecast
 {
@@ -13,7 +13,7 @@ class UltravioletRiskForecast
      */
     private array $data;
 
-    public function __construct(private readonly ApiConnector $apiConnector)
+    public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
         $this->data = $this->apiConnector->fetchData(self::END_POINT);
         $this->data = array_values(array_map(fn(array $element) => [

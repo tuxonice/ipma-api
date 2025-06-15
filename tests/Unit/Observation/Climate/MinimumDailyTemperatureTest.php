@@ -4,6 +4,7 @@ namespace Tlab\Tests\Observation\Climate;
 
 use League\Csv\Reader;
 use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Observation\Climate\MinimumDailyTemperature;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +12,7 @@ class MinimumDailyTemperatureTest extends TestCase
 {
     public function testFilterByDate(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mtnmn-0908-manteigas.csv');
         $reader = Reader::createFromString($contents);
 
@@ -47,7 +48,7 @@ class MinimumDailyTemperatureTest extends TestCase
 
     public function testFilterByMinimum(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mtnmn-0908-manteigas.csv');
         $reader = Reader::createFromString($contents);
 
@@ -99,7 +100,7 @@ class MinimumDailyTemperatureTest extends TestCase
 
     public function testFilterByMaximum(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mtnmn-0908-manteigas.csv');
         $reader = Reader::createFromString($contents);
 
@@ -143,7 +144,7 @@ class MinimumDailyTemperatureTest extends TestCase
 
     public function testFilterByRange(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mtnmn-0908-manteigas.csv');
         $reader = Reader::createFromString($contents);
 
@@ -195,7 +196,7 @@ class MinimumDailyTemperatureTest extends TestCase
 
     public function testFilterByMean(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mtnmn-0908-manteigas.csv');
         $reader = Reader::createFromString($contents);
 
@@ -247,7 +248,7 @@ class MinimumDailyTemperatureTest extends TestCase
 
     public function testFilterByStd(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Climate/mtnmn-0908-manteigas.csv');
         $reader = Reader::createFromString($contents);
 

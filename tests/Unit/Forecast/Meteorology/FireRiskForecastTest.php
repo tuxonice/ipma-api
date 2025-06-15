@@ -3,7 +3,7 @@
 namespace Tlab\Tests\Forecast\Meteorology;
 
 use DateTime;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Forecast\Meteorology\FireRiskForecast;
 use PHPUnit\Framework\TestCase;
 use Tlab\IpmaApi\Forecast\Meteorology\FireRiskLevel;
@@ -12,7 +12,7 @@ class FireRiskForecastTest extends TestCase
 {
     public function testFilterByDico(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -36,7 +36,7 @@ class FireRiskForecastTest extends TestCase
 
     public function testFilterByFireRiskLevel(): void
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -60,7 +60,7 @@ class FireRiskForecastTest extends TestCase
 
     public function testFindLocationsByDistance()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -86,7 +86,7 @@ class FireRiskForecastTest extends TestCase
 
     public function testFindLocationByNearDistance()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -103,7 +103,7 @@ class FireRiskForecastTest extends TestCase
 
     public function testGetFileUpdatedAt()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -118,7 +118,7 @@ class FireRiskForecastTest extends TestCase
 
     public function testGetForecastDate()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')
@@ -133,7 +133,7 @@ class FireRiskForecastTest extends TestCase
 
     public function testGetRunDate()
     {
-        $apiConnector = $this->createMock(ApiConnector::class);
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Meteorology/rcm-d0.json');
         $apiConnector->expects(self::once())
             ->method('fetchData')

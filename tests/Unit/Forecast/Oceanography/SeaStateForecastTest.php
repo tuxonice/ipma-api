@@ -3,7 +3,7 @@
 namespace Tlab\Tests\Forecast\Oceanography;
 
 use DateTime;
-use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\ApiConnectorInterface;
 use Tlab\IpmaApi\Forecast\Oceanography\SeaStateForecast;
 use PHPUnit\Framework\TestCase;
 
@@ -11,7 +11,7 @@ class SeaStateForecastTest extends TestCase
 {
     public function testFilterByGlobalIdLocal()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -43,7 +43,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByWavePeriodMin()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -75,7 +75,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByWavePeriodMax()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -107,7 +107,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByWaveHighMin()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -168,7 +168,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByWaveHighMax()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -228,7 +228,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByTotalSeaMin()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -305,7 +305,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByTotalSeaMax()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -351,7 +351,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterBySstMin()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -411,7 +411,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterBySstMax()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -457,7 +457,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFilterByPredWaveDir()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -489,7 +489,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFindLocationsByDistance()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -521,7 +521,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testFindLocationByNearDistance()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -550,7 +550,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testGetUpdateAt()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
@@ -566,7 +566,7 @@ class SeaStateForecastTest extends TestCase
 
     public function testGetForecastDate()
     {
-        $apiConnectorMock = $this->createMock(ApiConnector::class);
+        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
         $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Forecast/Oceanography/hp-daily-sea-forecast-day0.json');
         $apiConnectorMock->expects(self::once())
             ->method('fetchData')
