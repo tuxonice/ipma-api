@@ -7,7 +7,7 @@ use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocal;
 use Tlab\IpmaApi\Forecast\Meteorology\FireRiskForecast;
 use Tlab\IpmaApi\Forecast\Meteorology\UltravioletRiskForecast;
 use Tlab\IpmaApi\Forecast\Oceanography\SeaStateForecast;
-use Tlab\IpmaApi\Forecast\WeatherWarnings;
+use Tlab\IpmaApi\Forecast\Warnings\WeatherWarnings;
 
 class IpmaForecast
 {

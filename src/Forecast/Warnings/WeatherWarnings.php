@@ -1,6 +1,6 @@
 <?php
 
-namespace Tlab\IpmaApi\Forecast;
+namespace Tlab\IpmaApi\Forecast\Warnings;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;

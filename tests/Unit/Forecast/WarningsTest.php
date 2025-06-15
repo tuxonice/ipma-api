@@ -4,7 +4,7 @@ namespace Tlab\Tests\Forecast;
 
 use PHPUnit\Framework\TestCase;
 use Tlab\IpmaApi\ApiConnectorInterface;
-use Tlab\IpmaApi\Forecast\WeatherWarnings;
+use Tlab\IpmaApi\Forecast\Warnings\WeatherWarnings;
 
 class WarningsTest extends TestCase
 {

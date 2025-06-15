@@ -10,6 +10,48 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 
 - TODO
 
+---
+# IPMA
+
+
+
+## 1. Forecast
+###  🌤️ 1.1 Meteorology
+#### 1.1.1 Previsão Meteorológica Diária até 5 dias agregada por Local
+#### Previsão Meteorológica Diária até 3 dias, informação agregada por dia
+#### Previsão do Risco de Incêndio até 2 dias, informação agregada por dia
+#### Previsão do Risco de Ultravioletas até 3 dias (Índice Ultravioleta)
+### 🌊 1.2 Oceanography
+#### Previsão do Estado do Mar até 3 dias, informação agregada por dia
+### 🌀 1.3 Warnings
+#### Avisos Meteorológicos até 3 dias
+
+## 2. Observation
+### 🐠 2.1 Biology
+#### Interdições à apanha nas Zonas de Produção de Moluscos Bivalves (formato GeoJSON)
+### ⛈️ 2.2 Climate
+#### Evapotranspiração de referência diária por concelho (formato CSV)
+#### Precipitação total diária por concelho (formato CSV)
+#### Temperatura Mínima diária por concelho (formato CSV)
+#### Temperatura Máxima diária por concelho (formato CSV)
+#### Índice PDSI (Palmer Drought Severity Index) mensal por concelho (formato CSV)
+### 🌤️ 2.3 Meteorology
+#### Observação Meteorológica de Estações (dados horários, últimas 24 horas)
+#### Observação Meteorológica de Estações, últimas 3 horas (formato GeoJSON)
+### 🌐 2.4 Seismic
+#### Informação sismicidade, Arq. Açores, Continente e Arq. Madeira. Integra 30 dias de informação
+
+
+## 3. Auxiliary services
+### 3.1 Lista de identificadores para as capitais distrito e ilhas
+### 3.2 Lista de identificadores para as regiões costeiras
+### 3.3 Lista de identificadores das estações meteorológicas
+### 3.4 Lista de identificadores do tempo significativo
+### 3.5 Lista de classes relativa à intensidade vento
+### 3.6 Lista de classes relativa à intensidade precipitação
+
+---
+
 ## End Points
 
 ### Forecast -> Meteorology
