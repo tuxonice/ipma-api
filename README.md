@@ -17,46 +17,66 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 
 ## 1. Forecast
 ###  🌤️ 1.1 Meteorology
-#### 1.1.1 Previsão Meteorológica Diária até 5 dias agregada por Local
-#### Previsão Meteorológica Diária até 3 dias, informação agregada por dia
-#### Previsão do Risco de Incêndio até 2 dias, informação agregada por dia
-#### Previsão do Risco de Ultravioletas até 3 dias (Índice Ultravioleta)
-### 🌊 1.2 Oceanography
-#### Previsão do Estado do Mar até 3 dias, informação agregada por dia
-### 🌀 1.3 Warnings
-#### Avisos Meteorológicos até 3 dias
 
-## 2. Observation
-### 🐠 2.1 Biology
-#### Interdições à apanha nas Zonas de Produção de Moluscos Bivalves (formato GeoJSON)
-### ⛈️ 2.2 Climate
-#### Evapotranspiração de referência diária por concelho (formato CSV)
-#### Precipitação total diária por concelho (formato CSV)
-#### Temperatura Mínima diária por concelho (formato CSV)
-#### Temperatura Máxima diária por concelho (formato CSV)
-#### Índice PDSI (Palmer Drought Severity Index) mensal por concelho (formato CSV)
-### 🌤️ 2.3 Meteorology
-#### Observação Meteorológica de Estações (dados horários, últimas 24 horas)
-#### Observação Meteorológica de Estações, últimas 3 horas (formato GeoJSON)
-### 🌐 2.4 Seismic
-#### Informação sismicidade, Arq. Açores, Continente e Arq. Madeira. Integra 30 dias de informação
+#### 1.1.1 Daily Weather Forecast up to 5 days aggregated by Location
 
+(_Previsão Meteorológica Diária até 5 dias agregada por Local_)
 
-## 3. Auxiliary services
-### 3.1 Lista de identificadores para as capitais distrito e ilhas
-### 3.2 Lista de identificadores para as regiões costeiras
-### 3.3 Lista de identificadores das estações meteorológicas
-### 3.4 Lista de identificadores do tempo significativo
-### 3.5 Lista de classes relativa à intensidade vento
-### 3.6 Lista de classes relativa à intensidade precipitação
+> https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json
 
----
+| Field             | Type    | Description           |
+|-------------------|---------|-----------------------|
+| forecastDate      | string  | Forecast date         |
+| idWeatherType     | integer | Weather type code     |
+| windSpeedClass    | integer | Wind speed class type |
+| rainfallIntensity | integer | Rainfall intensity    |
+| rainfallProb      | string  | Rainfall probability  |
+| minTemp           | string  | Minimum temperature   |
+| maxTemp           | string  | Maximum temperature   |
+| winDir            | string  | Wind direction        |
+| latitude          | string  | Latitude              |
+| longitude         | string  | Longitude             |
 
-## End Points
+```php
+use Tlab\IpmaApi\IpmaForecast;
 
-### Forecast -> Meteorology
+$api = IpmaForecast::createDailyWeatherForecastByDayApi();
+$result = $api->from(1020500)
+              ->filterByMaxTemperatureRange(18.0, 19.0)
+              ->get();
+```
 
-#### Daily Weather Forecast for up to 3 days, aggregated information per day
+```php
+[
+        [
+            'forecastDate' => '2023-12-09',
+            'idWeatherType' => 3,
+            'windSpeedClass' => 1,
+            'rainfallIntensity' => null,
+            'rainfallProb' => 4.0,
+            'minTemp' => 10.2,
+            'maxTemp' => 18.2,
+            'winDir' => 'W',
+            'latitude' => 38.02,
+            'longitude' => -7.87,
+        ],
+        [
+            'forecastDate' => '2023-12-10',
+            'idWeatherType' => 3,
+            'windSpeedClass' => 1,
+            'rainfallIntensity' => null,
+            'rainfallProb' => 7.0,
+            'minTemp' => 10.8,
+            'maxTemp' => 18.3,
+            'winDir' => 'SE',
+            'latitude' => 38.02,
+            'longitude' => -7.87,
+        ],
+],
+```
+
+#### 1.1.2 Daily Weather Forecast for up to 3 days, aggregated information per day
+(_Previsão Meteorológica Diária até 3 dias, informação agregada por dia_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
 
@@ -124,62 +144,10 @@ $result = $api
             ]
 ```
 
-#### Daily Weather Forecast up to 5 days aggregated by Location
 
-> https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json
+#### 1.1.3 Fire Risk Forecast for up to 2 days, aggregated information per day
 
-| Field             | Type    | Description           |
-|-------------------|---------|-----------------------|
-| forecastDate      | string  | Forecast date         |
-| idWeatherType     | integer | Weather type code     |
-| windSpeedClass    | integer | Wind speed class type |
-| rainfallIntensity | integer | Rainfall intensity    |
-| rainfallProb      | string  | Rainfall probability  |
-| minTemp           | string  | Minimum temperature   |
-| maxTemp           | string  | Maximum temperature   |
-| winDir            | string  | Wind direction        |
-| latitude          | string  | Latitude              |
-| longitude         | string  | Longitude             |
-
-```php
-use Tlab\IpmaApi\IpmaForecast;
-
-$api = IpmaForecast::createDailyWeatherForecastByDayApi();
-$result = $api->from(1020500)
-              ->filterByMaxTemperatureRange(18.0, 19.0)
-              ->get();
-```
-
-```php
-[
-        [
-            'forecastDate' => '2023-12-09',
-            'idWeatherType' => 3,
-            'windSpeedClass' => 1,
-            'rainfallIntensity' => null,
-            'rainfallProb' => 4.0,
-            'minTemp' => 10.2,
-            'maxTemp' => 18.2,
-            'winDir' => 'W',
-            'latitude' => 38.02,
-            'longitude' => -7.87,
-        ],
-        [
-            'forecastDate' => '2023-12-10',
-            'idWeatherType' => 3,
-            'windSpeedClass' => 1,
-            'rainfallIntensity' => null,
-            'rainfallProb' => 7.0,
-            'minTemp' => 10.8,
-            'maxTemp' => 18.3,
-            'winDir' => 'SE',
-            'latitude' => 38.02,
-            'longitude' => -7.87,
-        ],
-],
-```
-
-#### Fire Risk Forecast for up to 2 days, aggregated information per day
+(_Previsão do Risco de Incêndio até 2 dias, informação agregada por dia_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/rcm/rcm-d{idDay}.json
 
@@ -201,7 +169,9 @@ Fire risk code
 4 - Very high risk
 5 - Maximum risk
 
-#### Ultraviolet Risk Forecast for up to 3 days (Ultraviolet Index)
+#### 1.1.4 Ultraviolet Risk Forecast for up to 3 days (Ultraviolet Index)
+
+(_Previsão do Risco de Ultravioletas até 3 dias (Índice Ultravioleta_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/uv/uv.json
 
@@ -241,53 +211,19 @@ $result = $api->filterByUvIndex(2.4, 2.4)
 ],
 ```
 
-### Forecast -> Oceanography
+### 🌊 1.2 Oceanography
 
-#### Sea State forecast for up to 3 days, aggregated information per day
+#### 1.2.1 Sea State forecast for up to 3 days, aggregated information per day
+
+(_Previsão do Estado do Mar até 3 dias, informação agregada por dia_))
 
 > https://api.ipma.pt/open-data/forecast/oceanography/daily/hp-daily-sea-forecast-day{idDay}.json
 
-### Observation -> Seismic
+### 🌀 1.3 Warnings
 
-#### Seismic information, Arch. Azores, Continente and Arch. Madeira. Includes 30 days of information
+#### 1.3.1 Weather warnings for up to 3 days
 
-> https://api.ipma.pt/open-data/observation/seismic/{idArea}.json
-
-### Observation -> Meteorology
-
-#### Meteorological Observation of Stations (hourly data, last 24 hours)
-
-> https://api.ipma.pt/open-data/observation/meteorology/stations/observations.json
-
-#### Weather Observation of Stations, last 3 hours (GeoJSON format)
-
-> https://api.ipma.pt/open-data/observation/meteorology/stations/obs-surface.geojson
-
-### Observation -> Biology
-
-#### Prohibitions on harvesting in Bivalve Mollusc Production Areas (GeoJSON format)
-
-> https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson
-
-### Observation -> Climate
-
-#### Daily reference evapotranspiration by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/evapotranspiration/{distrito}/et0-{DICO}-{concelho}.csv
-
-#### Minimum daily temperature by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/temperature-min/{distrito}/mtnmn-{DICO}-{concelho}.csv
-
-#### Maximum daily temperature by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/temperature-max/{distrito}/mtxmn-{DICO}-{concelho}.csv
-
-#### PDSI index (Palmer Drought Severity Index) monthly by municipality (CSV format)
-
-> https://api.ipma.pt/open-data/observation/climate/mpdsi/{distrito}/mpdsi-{DICO}-{concelho}.csv
-
-#### Weather warnings for up to 3 days
+(_Avisos Meteorológicos até 3 dias_)
 
 > https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json
 
@@ -332,9 +268,75 @@ $result = $warningsApi
 
 ```
 
-### Auxiliary services
+## 2. Observation
+### 🐠 2.1 Biology
 
-#### List of identifiers for district capitals and islands
+#### 2.1.1 Prohibitions on harvesting in Bivalve Mollusc Production Areas (GeoJSON format)
+
+(_Interdições à apanha nas Zonas de Produção de Moluscos Bivalves (formato GeoJSON)_)
+
+> https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson
+
+### ⛈️ 2.2 Climate
+
+#### 2.2.1 Daily reference evapotranspiration by municipality (CSV format)
+
+(_Evapotranspiração de referência diária por concelho (formato CSV)_)
+
+> https://api.ipma.pt/open-data/observation/climate/evapotranspiration/{distrito}/et0-{DICO}-{concelho}.csv
+
+#### Precipitação total diária por concelho (formato CSV)
+#### 
+
+#### 2.2.3 Minimum daily temperature by municipality (CSV format)
+
+(_Temperatura Mínima diária por concelho (formato CSV)_)
+
+> https://api.ipma.pt/open-data/observation/climate/temperature-min/{distrito}/mtnmn-{DICO}-{concelho}.csv
+
+
+#### 2.2.4 Maximum daily temperature by municipality (CSV format)
+
+(_Temperatura Máxima diária por concelho (formato CSV)_)
+
+> https://api.ipma.pt/open-data/observation/climate/temperature-max/{distrito}/mtxmn-{DICO}-{concelho}.csv
+
+#### 2.2.5 PDSI index (Palmer Drought Severity Index) monthly by municipality (CSV format)
+
+(_Índice PDSI (Palmer Drought Severity Index) mensal por concelho (formato CSV)_)
+
+> https://api.ipma.pt/open-data/observation/climate/mpdsi/{distrito}/mpdsi-{DICO}-{concelho}.csv
+
+
+### 🌤️ 2.3 Meteorology
+#### 
+
+#### 2.3.1 Meteorological Observation of Stations (hourly data, last 24 hours)
+
+(_Observação Meteorológica de Estações (dados horários, últimas 24 horas)_)
+
+> https://api.ipma.pt/open-data/observation/meteorology/stations/observations.json
+
+#### 2.3.2 Weather Observation of Stations, last 3 hours (GeoJSON format)
+
+(_Observação Meteorológica de Estações, últimas 3 horas (formato GeoJSON)_)
+
+> https://api.ipma.pt/open-data/observation/meteorology/stations/obs-surface.geojson
+
+### 🌐 2.4 Seismic
+
+#### Seismic information, Arch. Azores, Continente and Arch. Madeira. Includes 30 days of information
+
+(_Informação sismicidade, Arq. Açores, Continente e Arq. Madeira. Integra 30 dias de informação_)
+
+> https://api.ipma.pt/open-data/observation/seismic/{idArea}.json
+
+
+## 3. Auxiliary services
+
+### 3.1 List of identifiers for district capitals and islands
+
+(_Lista de identificadores para as capitais distrito e ilhas_)
 
 > https://api.ipma.pt/open-data/distrits-islands.json
 
@@ -381,7 +383,9 @@ $result = $api->filterByIdRegion(1)
 ],
 ```
 
-#### List of identifiers for coastal regions
+### 3.2 List of identifiers for coastal regions
+
+(_Lista de identificadores para as regiões costeiras_)
 
 > https://api.ipma.pt/open-data/sea-locations.json
 
@@ -416,7 +420,9 @@ $result = $api->filterByIdRegiao(1)
 ]
 ```
 
-#### List of weather station identifiers
+### 3.3 List of weather station identifiers
+
+(_Lista de identificadores das estações meteorológicas_)
 
 > https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json
 
@@ -444,14 +450,20 @@ $result = $api->filterByName('selvagens')
 ]
 ```
 
-#### List of Weather Type Identifiers
+### 3.4 List of Weather Type Identifiers
+
+(_Lista de identificadores do tempo significativo_)
 
 > https://api.ipma.pt/open-data/weather-type-classe.json
 
-#### List of classes relating to wind intensity
+### 3.5 List of classes relating to wind intensity
+
+(_Lista de classes relativa à intensidade vento_)
 
 > https://api.ipma.pt/open-data/wind-speed-daily-classe.json
 
-#### List of classes relating to precipitation intensity
+### 3.6 List of classes relating to precipitation intensity
+
+(_Lista de classes relativa à intensidade precipitação_)
 
 > https://api.ipma.pt/open-data/precipitation-classe.json
