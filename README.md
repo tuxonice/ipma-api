@@ -11,14 +11,15 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 - TODO
 
 ---
+
 # API
 
-
-
 ## 1. Forecast
-###  🌤️ 1.1 Meteorology
+
+### 🌤️ 1.1 Meteorology
 
 #### 1.1.1 Daily weather forecast up to 5 days aggregated by location
+
 (_Previsão meteorológica diária até 5 dias agregada por local_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json
@@ -75,6 +76,7 @@ $result = $api->from(1020500)
 ```
 
 #### 1.1.2 Daily weather forecast for up to 3 days, aggregated information per day
+
 (_Previsão meteorológica diária até 3 dias, informação agregada por dia_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
@@ -144,6 +146,7 @@ $result = $api
 ```
 
 #### 1.1.3 Fire risk forecast for up to 2 days, aggregated information per day
+
 (_Previsão do risco de incêndio até 2 dias, informação agregada por dia_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/rcm/rcm-d{idDay}.json
@@ -167,6 +170,7 @@ Fire risk code
 5 - Maximum risk
 
 #### 1.1.4 Ultraviolet risk forecast for up to 3 days (Ultraviolet Index)
+
 (_Previsão do risco de ultravioletas até 3 dias (Índice Ultravioleta_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/uv/uv.json
@@ -214,6 +218,58 @@ $result = $api->filterByUvIndex(2.4, 2.4)
 
 > https://api.ipma.pt/open-data/forecast/oceanography/daily/hp-daily-sea-forecast-day{idDay}.json
 
+| Field          | Type     | Description                                                                           |
+|----------------|----------|---------------------------------------------------------------------------------------|
+| forecastDate:  | string   | Date for which information is valid                                                   |
+| dataUpdate:    | string   | File update date (hourly update rate)                                                 |
+| globalIdLocal: | integer  | Location identifier (see auxiliary service "List of identifiers for coastal regions") |
+| wavePeriodMin: | float    | Daily minimum of the peak period, associated with the swell, in seconds               |
+| wavePeriodMax: | float    | Daily maximum of the peak period, associated with the swell, in seconds               |
+| waveHighMin:   | float    | Minimum daily swell height in meters                                                  |
+| waveHighMax:   | float    | Maximum daily swell height in meters                                                  |
+| predWaveDir:   | string   | Predominant wave direction (N, NE, E, SE, S, SW, W, NW)                               |
+| totalSeaMin:   | float    | Minimum daily significant wave height in meters                                       |
+| totalSeaMax:   | float    | Maximum daily significant wave height, in meters                                      |
+| sstMin:        | float    | Daily minimum sea surface temperature in ºC                                           |
+| sstMax:        | float    | Daily maximum sea surface temperature in ºC                                           |
+| latitude:      | float    | Latitude                                                                              |
+| longitude:     | float    | Longitude                                                                             |
+
+Note: Only daily data is available. {idDay} ranges **from** 0 to 2, where:
+
+- 0 - is the day equivalent to today
+- 1 - tomorrow
+- 2 - the day after tomorrow
+
+```php
+use Tlab\IpmaApi\IpmaForecast;
+
+$api = IpmaForecast::createSeaStateForecastApi();
+$result = $api->from(0)
+              ->filterByGlobalIdLocal(2320126)
+              ->filterByWavePeriodMax(5.0,6.0)
+              ->get();
+```
+
+```php
+[
+       [
+            'wavePeriodMin' => '5.5',
+            'globalIdLocal' => 2320126,
+            'totalSeaMax' => 2.5,
+            'waveHighMax' => '2.2',
+            'waveHighMin' => '1.6',
+            'longitude' => '-16.3400',
+            'wavePeriodMax' => '5.7',
+            'latitude' => '33.2500',
+            'totalSeaMin' => 2.0,
+            'sstMax' => '21.8',
+            'predWaveDir' => 'NE',
+            'sstMin' => '21.7',
+       ],
+],
+```
+
 ### 🌀 1.3 Warnings
 
 #### 1.3.1 Weather warnings for up to 3 days
@@ -221,35 +277,15 @@ $result = $api->filterByUvIndex(2.4, 2.4)
 
 > https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json
 
-``` json
-[
-  {
-    "text": "",
-    "awarenessTypeName": "Agitação Marítima",
-    "idAreaAviso": "BGC",
-    "startTime": "2021-03-25T07:25:00",
-    "awarenessLevelID": "green",
-    "endTime": "2021-03-28T07:00:00"
-  },
-  {
-    "text": "",
-    "awarenessTypeName": "Nevoeiro",
-    "idAreaAviso": "BGC",
-    "startTime": "2021-03-25T07:25:00",
-    "awarenessLevelID": "green",
-    "endTime": "2021-03-28T07:00:00"
-  }
-]
-```
 
-| Field             | Type     | Description                                                                                                                                             |
-|-------------------|----------|---------------------------------------------------------------------------------------------------------------------------------------------------------|
-| text              | text     | texto descritivo do aviso (preenchido apenas quando o aviso é amarelo, laranja ou vermelho)                                                             |
-| awarenessTypeName | text     | parâmetro do aviso (e.g. "Trovoada", "Agitação Marítima", "Precipitação", "Vento", "Nevoeiro", "Neve", "Tempo Frio", "Tempo Quente")                    |
-| awarenessLevelID  | text     | cor / nível do aviso (e.g. "green", "yellow", "orange", "red", só existem avisos para níveis diferentes de "green", ou seja, "yellow", "orange", "red") |
-| idAreaAviso       | text     | identificador da área dos avisos (consultar serviço auxiliar "Lista de identificadores para as capitais distrito e ilhas")                              |
-| startTime         | datetime | data/hora de início da duração do aviso                                                                                                                 |
-| endTime           | datetime | data/hora de fim da duração do aviso                                                                                                                    |
+| Field             | Type     | Description                                                                                                                                          |
+|-------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| text              | text     | Descriptive text of the warning (filled in only when the warning is yellow, orange or red)                                                           |
+| awarenessTypeName | text     | Warning parameter (e.g. "Thunderstorm", "Rough Sea", "Precipitation", "Wind", "Fog", "Snow", "Cold Weather", "Hot Weather")                          |
+| awarenessLevelID  | text     | Warning color/level (e.g. "green", "yellow", "orange", "red", there are only warnings for levels other than "green", i.e. "yellow", "orange", "red") |
+| warningIdArea     | text     | Area identifier of the notices (see auxiliary service "List of identifiers for district capitals and islands")                                       |
+| startTime         | datetime | Start date/time of the notice duration                                                                                                               |
+| endTime           | datetime | End date/time of the notice duration                                                                                                                 |
 
 ```php
 use Tlab\IpmaApi\IpmaService;
@@ -259,13 +295,35 @@ $result = $warningsApi
     ->filterByWarningIdArea('BGC')
     ->filterByAwarenessTypeName('Nevoeiro')
     ->get();
+```
 
+```php
+[
+  [
+    "text": "",
+    "awarenessTypeName": "Agitação Marítima",
+    "warningIdArea": "BGC",
+    "startTime": "2021-03-25T07:25:00",
+    "awarenessLevelID": "green",
+    "endTime": "2021-03-28T07:00:00"
+  ],
+  [
+    "text": "",
+    "awarenessTypeName": "Nevoeiro",
+    "warningIdArea": "BGC",
+    "startTime": "2021-03-25T07:25:00",
+    "awarenessLevelID": "green",
+    "endTime": "2021-03-28T07:00:00"
+  ]
+]
 ```
 
 ## 2. Observation
+
 ### 🐠 2.1 Biology
 
 #### 2.1.1 Prohibitions on harvesting in bivalve mollusc production areas (GeoJSON format)
+
 (_Interdições à apanha nas zonas de produção de moluscos bivalves (formato GeoJSON)_)
 
 > https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson
@@ -273,40 +331,45 @@ $result = $warningsApi
 ### ⛈️ 2.2 Climate
 
 #### 2.2.1 Daily reference evapotranspiration by municipality (CSV format)
+
 (_Evapotranspiração de referência diária por concelho (formato CSV)_)
 
 > https://api.ipma.pt/open-data/observation/climate/evapotranspiration/{distrito}/et0-{DICO}-{concelho}.csv
 
 #### 2.2.2 Total daily precipitation by municipality (CSV format)
+
 (_Precipitação total diária por concelho (formato CSV)_)
 
 > https://api.ipma.pt/open-data/observation/climate/precipitation-total/{distrito}/mrrto-{DICO}-{concelho}.csv
 
 #### 2.2.3 Minimum daily temperature by municipality (CSV format)
+
 (_Temperatura mínima diária por concelho (formato CSV)_)
 
 > https://api.ipma.pt/open-data/observation/climate/temperature-min/{distrito}/mtnmn-{DICO}-{concelho}.csv
 
-
 #### 2.2.4 Maximum daily temperature by municipality (CSV format)
+
 (_Temperatura máxima diária por concelho (formato CSV)_)
 
 > https://api.ipma.pt/open-data/observation/climate/temperature-max/{distrito}/mtxmn-{DICO}-{concelho}.csv
 
 #### 2.2.5 PDSI index (Palmer Drought Severity Index) monthly by municipality (CSV format)
+
 (_Índice PDSI (Palmer Drought Severity Index) mensal por concelho (formato CSV)_)
 
 > https://api.ipma.pt/open-data/observation/climate/mpdsi/{distrito}/mpdsi-{DICO}-{concelho}.csv
 
-
 ### 🌤️ 2.3 Meteorology
 
 #### 2.3.1 Meteorological Observation of Stations (hourly data, last 24 hours)
+
 (_Observação Meteorológica de Estações (dados horários, últimas 24 horas)_)
 
 > https://api.ipma.pt/open-data/observation/meteorology/stations/observations.json
 
 #### 2.3.2 Weather Observation of Stations, last 3 hours (GeoJSON format)
+
 (_Observação Meteorológica de Estações, últimas 3 horas (formato GeoJSON)_)
 
 > https://api.ipma.pt/open-data/observation/meteorology/stations/obs-surface.geojson
@@ -314,14 +377,15 @@ $result = $warningsApi
 ### 🌐 2.4 Seismic
 
 #### Seismic information, Arch. Azores, Continente and Arch. Madeira. Includes 30 days of information
+
 (_Informação sismicidade, Arq. Açores, Continente e Arq. Madeira. Integra 30 dias de informação_)
 
 > https://api.ipma.pt/open-data/observation/seismic/{idArea}.json
 
-
 ## 3. Auxiliary services
 
 ### 3.1 List of identifiers for district capitals and islands
+
 (_Lista de identificadores para as capitais distrito e ilhas_)
 
 > https://api.ipma.pt/open-data/distrits-islands.json
@@ -370,6 +434,7 @@ $result = $api->filterByIdRegion(1)
 ```
 
 ### 3.2 List of identifiers for coastal regions
+
 (_Lista de identificadores para as regiões costeiras_)
 
 > https://api.ipma.pt/open-data/sea-locations.json
@@ -406,6 +471,7 @@ $result = $api->filterByIdRegiao(1)
 ```
 
 ### 3.3 List of weather station identifiers
+
 (_Lista de identificadores das estações meteorológicas_)
 
 > https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json
@@ -435,16 +501,19 @@ $result = $api->filterByName('selvagens')
 ```
 
 ### 3.4 List of Weather Type Identifiers
+
 (_Lista de identificadores do tempo significativo_)
 
 > https://api.ipma.pt/open-data/weather-type-classe.json
 
 ### 3.5 List of classes relating to wind intensity
+
 (_Lista de classes relativa à intensidade vento_)
 
 > https://api.ipma.pt/open-data/wind-speed-daily-classe.json
 
 ### 3.6 List of classes relating to precipitation intensity
+
 (_Lista de classes relativa à intensidade precipitação_)
 
 > https://api.ipma.pt/open-data/precipitation-classe.json

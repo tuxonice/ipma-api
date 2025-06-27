@@ -67,4 +67,21 @@ class WeatherWarnings
     {
         return $this->data;
     }
+
+    private function map(array $data): array
+    {
+        $cleanData = [];
+        foreach ($data as $datum) {
+            $cleanData[] = [
+                'text' => $datum['text'],
+                'awarenessTypeName' => $datum['awarenessTypeName'],
+                'warningIdArea' => $datum['idAreaAviso'],
+                'startTime' => $datum['classPrecInt'],
+                'endTime' => $datum['precipitaProb'],
+                'awarenessLevelID' => $datum['awarenessLevelID'],
+            ];
+        }
+
+        return $cleanData;
+    }
 }
