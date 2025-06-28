@@ -19,7 +19,6 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 ### 🌤️ 1.1 Meteorology
 
 #### 1.1.1 Daily weather forecast up to 5 days aggregated by location
-
 (_Previsão meteorológica diária até 5 dias agregada por local_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/{globalIdLocal}.json
@@ -76,7 +75,6 @@ $result = $api->from(1020500)
 ```
 
 #### 1.1.2 Daily weather forecast for up to 3 days, aggregated information per day
-
 (_Previsão meteorológica diária até 3 dias, informação agregada por dia_)
 
 > https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
@@ -319,206 +317,9 @@ $result = $warningsApi
 ]
 ```
 
-## 2. Observation
-
-### 🐠 2.1 Biology
-
-#### 2.1.1 Prohibitions on harvesting in bivalve mollusc production areas (GeoJSON format)
-
-(_Interdições à apanha nas zonas de produção de moluscos bivalves (formato GeoJSON)_)
-
-> https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson
-
-| Field                | Type   | Description                                                            |
-|----------------------|--------|------------------------------------------------------------------------|
-| name                 | text   | Zone name                                                              |
-| code                 | text   | Zone code                                                              |
-| zone_type            | text   | Zone type ("LITORAL": Zona Litoral, "EST_LAG": Zona Estuarino-lagunar) |
-| region_name          | text   | Region name                                                            |
-| representative_point | array  | Geographical coordinate where the zone, representative point           |
-| status               | string | State of the Zone (see notes)                                          |
-| interdictions        | array  | List of species regarding the interdiction (see notes)                 |
-
-_Notes:_
-
-**State of the Zone:**
-
-- "Open": Situation of Personal Permission and Capture,
-- "Partial_open": Situation of Partial Permission of caught and capture,
-- "closed": situation of total interdiction of caught and capture,
-- "partial_open",
-- "noinfo": without information
-
-**Interdictions**
-
-- "Specie_S": scientific name (scientific name);
-- "Specie_c": Common Name (Common Name);
-- "Classification": Sanitary Statute ("A", "B", "C")
-
-```php
-use Tlab\IpmaApi\IpmaObservation;
-
-$molluscHarvestingProhibition = IpmaObservation::createMolluscHarvestingProhibitionApi();
-$result = $molluscHarvestingProhibition
-    ->from()
-    ->filterByName('tavira')
-    ->get();
-```
-
-```php
-[
-                    'type' => 'Feature',
-                    'properties' => [
-                        'name' => 'Litoral Tavira – Vila Real Santo António',
-                        'code' => 'L9',
-                        'zone_type' => 'LITORAL',
-                        'region_name' => 'Algarve',
-                        'representative_point' => 'POINT (-7.521726250000002 37.094826)',
-                        'status' => 'OPEN',
-                        'interdictions' => [
-                            'open' => [
-                                [
-                                    'specie_c' => 'Canilha',
-                                    'specie_s' => 'Bolinus brandaris',
-                                    'classification' => 'NA',
-                                ],
-                                [
-                                    'specie_c' => 'Pé-de-burrinho',
-                                    'specie_s' => 'Chamelea gallina',
-                                    'classification' => 'A*',
-                                ],
-                                [
-                                    'specie_c' => 'Buzina',
-                                    'specie_s' => 'Charonia rubicunda',
-                                    'classification' => 'NA',
-                                ],
-                                [
-                                    'specie_c' => 'Conquilha',
-                                    'specie_s' => 'Donax trunculus',
-                                    'classification' => 'B',
-                                ],
-                                [
-                                    'specie_c' => 'Amêijoa-branca',
-                                    'specie_s' => 'Spisula solida',
-                                    'classification' => 'B',
-                                ],
-                            ],
-                            'close' => [],
-                        ],
-                        'coords' => [
-                            'latitude' => '37.094826',
-                            'longitude' => '-7.521726250000002',
-                        ],
-                    ],
-                ],
-                [
-                    'type' => 'Feature',
-                    'properties' => [
-                        'name' => 'Ria Formosa, Tavira',
-                        'code' => 'TAV',
-                        'zone_type' => 'EST_LAG',
-                        'region_name' => 'Algarve',
-                        'representative_point' => 'POINT (-7.673624507077854 37.08832)',
-                        'status' => 'OPEN',
-                        'interdictions' => [
-                            'open' => [
-                                [
-                                    'specie_c' => 'Berbigão',
-                                    'specie_s' => 'Cerastoderma edule',
-                                    'classification' => 'C',
-                                ],
-                                [
-                                    'specie_c' => 'Ostra-japonesa/gigante',
-                                    'specie_s' => 'Magallana gigas',
-                                    'classification' => 'B',
-                                ],
-                                [
-                                    'specie_c' => 'Mexilhão',
-                                    'specie_s' => 'Mytilus spp.',
-                                    'classification' => 'B',
-                                ],
-                                [
-                                    'specie_c' => 'Amêijoa-boa',
-                                    'specie_s' => 'Ruditapes decussatus',
-                                    'classification' => 'C',
-                                ],
-                                [
-                                    'specie_c' => 'Longueirão',
-                                    'specie_s' => 'Solen marginatus',
-                                    'classification' => 'C',
-                                ],
-                            ],
-                            'close' => [],
-                        ],
-                        'coords' => [
-                            'latitude' => '37.08832',
-                            'longitude' => '-7.673624507077854',
-                        ],
-                    ],
-                ],
-```
-
-### ⛈️ 2.2 Climate
-
-#### 2.2.1 Daily reference evapotranspiration by municipality (CSV format)
-
-(_Evapotranspiração de referência diária por concelho (formato CSV)_)
-
-> https://api.ipma.pt/open-data/observation/climate/evapotranspiration/{distrito}/et0-{DICO}-{concelho}.csv
-
-#### 2.2.2 Total daily precipitation by municipality (CSV format)
-
-(_Precipitação total diária por concelho (formato CSV)_)
-
-> https://api.ipma.pt/open-data/observation/climate/precipitation-total/{distrito}/mrrto-{DICO}-{concelho}.csv
-
-#### 2.2.3 Minimum daily temperature by municipality (CSV format)
-
-(_Temperatura mínima diária por concelho (formato CSV)_)
-
-> https://api.ipma.pt/open-data/observation/climate/temperature-min/{distrito}/mtnmn-{DICO}-{concelho}.csv
-
-#### 2.2.4 Maximum daily temperature by municipality (CSV format)
-
-(_Temperatura máxima diária por concelho (formato CSV)_)
-
-> https://api.ipma.pt/open-data/observation/climate/temperature-max/{distrito}/mtxmn-{DICO}-{concelho}.csv
-
-#### 2.2.5 PDSI index (Palmer Drought Severity Index) monthly by municipality (CSV format)
-
-(_Índice PDSI (Palmer Drought Severity Index) mensal por concelho (formato CSV)_)
-
-> https://api.ipma.pt/open-data/observation/climate/mpdsi/{distrito}/mpdsi-{DICO}-{concelho}.csv
-
-### 🌤️ 2.3 Meteorology
-
-#### 2.3.1 Meteorological Observation of Stations (hourly data, last 24 hours)
-
-(_Observação Meteorológica de Estações (dados horários, últimas 24 horas)_)
-
-> https://api.ipma.pt/open-data/observation/meteorology/stations/observations.json
-
-#### 2.3.2 Weather Observation of Stations, last 3 hours (GeoJSON format)
-
-(_Observação Meteorológica de Estações, últimas 3 horas (formato GeoJSON)_)
-
-> https://api.ipma.pt/open-data/observation/meteorology/stations/obs-surface.geojson
-
-### 🌐 2.4 Seismic
-
-#### Seismic information, Arch. Azores, Continente and Arch. Madeira. Includes 30 days of information
-
-(_Informação sismicidade, Arq. Açores, Continente e Arq. Madeira. Integra 30 dias de informação_)
-
-> https://api.ipma.pt/open-data/observation/seismic/{idArea}.json
-
 ## 3. Auxiliary services
 
 ### 3.1 List of identifiers for district capitals and islands
-
-(_Lista de identificadores para as capitais distrito e ilhas_)
-
-> https://api.ipma.pt/open-data/distrits-islands.json
 
 | Field          | Type    | Description                                                   |
 |----------------|---------|---------------------------------------------------------------|
@@ -533,8 +334,9 @@ $result = $molluscHarvestingProhibition
 
 ```php
 $api = IpmaService::createDistrictsIslandsLocationsApi();
-$result = $api->filterByIdRegion(1)
-              ->filterByIdWarningArea('AVR')
+$result = $api->query()
+              ->filterByIdRegion(1)
+              ->filterByIdWarningArea('MCS')
               ->get();
 ```
 

@@ -19,4 +19,13 @@ class Utils
 
         return round(($R * $c) / 1000, 2); // in Km
     }
+
+    public static function compareString(string $haystack, string $needle, bool $strict): bool
+    {
+        if($strict) {
+            return strtolower($haystack) === strtolower($needle);
+        }
+
+        return str_contains(strtolower($haystack), strtolower($needle));
+    }
 }

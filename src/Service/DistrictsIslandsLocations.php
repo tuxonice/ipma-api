@@ -16,9 +16,16 @@ class DistrictsIslandsLocations
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
+
+    }
+
+    public function query(): self
+    {
         $content = $this->apiConnector->fetchData(self::END_POINT);
 
         $this->data = $this->map($content['data']);
+
+        return $this;
     }
 
     public function filterByIdRegion(int $idRegion): self
@@ -33,7 +40,7 @@ class DistrictsIslandsLocations
     public function filterByIdWarningArea(string $idWarningArea): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idWarningArea'] === $idWarningArea)
+            array_filter($this->data, fn(array $element) => Utils::compareString($element['idWarningArea'], $idWarningArea))
         );
 
         return $this;
@@ -66,16 +73,18 @@ class DistrictsIslandsLocations
         return $this;
     }
 
-    public function filterByName(string $name): self
+    public function filterByName(string $name, bool $strict = false): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['name'] === $name)
+            array_filter(
+                $this->data,
+                fn(array $element) => Utils::compareString($element['name'], $name, $strict))
         );
 
         return $this;
     }
 
-    public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
+    public function filterLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
         $this->data = array_values(
             array_filter($this->data, fn(array $element) => Utils::distance(
@@ -89,7 +98,7 @@ class DistrictsIslandsLocations
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function filterLocationByNearDistance(float $latitude, float $longitude): array
     {
         $shortestDistanceData = [];
         $shortestDistance = null;

@@ -40,7 +40,10 @@ class DistrictLocationsTest extends TestCase
                     'longitude' => -16.3400,
                 ],
             ],
-            $districtLocations->filterByIdRegion(2)->get()
+            $districtLocations
+                ->query()
+                ->filterByIdRegion(2)
+                ->get()
         );
     }
 
@@ -94,7 +97,11 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 37.1397,
                 'longitude' => -8.0202,
             ],
-        ], $districtLocations->filterByIdWarningArea('FAR')->get());
+        ], $districtLocations
+            ->query()
+            ->filterByIdWarningArea('FAR')
+            ->get()
+        );
     }
 
     public function testFilterByIdMunicipality(): void
@@ -147,7 +154,11 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 37.0146,
                 'longitude' => -7.9331,
             ],
-        ], $districtLocations->filterByIdMunicipality(5)->get());
+        ], $districtLocations
+            ->query()
+            ->filterByIdMunicipality(5)
+            ->get()
+        );
     }
 
     public function testFilterByGlobalIdLocal(): void
@@ -170,7 +181,11 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 40.2081,
                 'longitude' => -8.4194,
             ],
-        ], $districtLocations->filterByGlobalIdLocal(1060300)->get());
+        ], $districtLocations
+            ->query()
+            ->filterByGlobalIdLocal(1060300)
+            ->get()
+        );
     }
 
     public function testFilterByIdDistrict(): void
@@ -193,7 +208,11 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 38.7660,
                 'longitude' => -9.1286,
             ]
-        ], $districtLocations->filterByIdDistrict(11)->get());
+        ], $districtLocations
+            ->query()
+            ->filterByIdDistrict(11)
+            ->get()
+        );
     }
 
     public function testFilterByLocal(): void
@@ -216,7 +235,11 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 37.9560,
                 'longitude' => -8.8643,
             ]
-        ], $districtLocations->filterByName('Sines')->get());
+        ], $districtLocations
+            ->query()
+            ->filterByName('porto', true)
+            ->get()
+        );
     }
 
     public function testFindLocationsByDistance(): void
@@ -239,7 +262,11 @@ class DistrictLocationsTest extends TestCase
                 'latitude' => 41.6952,
                 'longitude' => -8.8365
             ]
-        ], $districtLocations->findLocationsByDistance(41.6952, -8.8365, 2)->get());
+        ], $districtLocations
+            ->query()
+            ->filterLocationsByDistance(41.6952, -8.8365, 2)
+            ->get()
+        );
     }
 
     public function testFindLocationByNearDistance(): void
@@ -260,6 +287,9 @@ class DistrictLocationsTest extends TestCase
             'idWarningArea' => 'BJA',
             'latitude' => 38.0200,
             'longitude' => -7.8700,
-        ], $districtLocations->findLocationByNearDistance(37.721404, -8.290932));
+        ], $districtLocations
+            ->query()
+            ->filterLocationByNearDistance(37.721404, -8.290932)
+        );
     }
 }
