@@ -214,26 +214,27 @@ $result = $api->filterByUvIndex(2.4, 2.4)
 ### 🌊 1.2 Oceanography
 
 #### 1.2.1 Sea state forecast for up to 3 days, aggregated information per day
+
 (_Previsão do estado do mar até 3 dias, informação agregada por dia_))
 
 > https://api.ipma.pt/open-data/forecast/oceanography/daily/hp-daily-sea-forecast-day{idDay}.json
 
-| Field          | Type     | Description                                                                           |
-|----------------|----------|---------------------------------------------------------------------------------------|
-| forecastDate:  | string   | Date for which information is valid                                                   |
-| dataUpdate:    | string   | File update date (hourly update rate)                                                 |
-| globalIdLocal: | integer  | Location identifier (see auxiliary service "List of identifiers for coastal regions") |
-| wavePeriodMin: | float    | Daily minimum of the peak period, associated with the swell, in seconds               |
-| wavePeriodMax: | float    | Daily maximum of the peak period, associated with the swell, in seconds               |
-| waveHighMin:   | float    | Minimum daily swell height in meters                                                  |
-| waveHighMax:   | float    | Maximum daily swell height in meters                                                  |
-| predWaveDir:   | string   | Predominant wave direction (N, NE, E, SE, S, SW, W, NW)                               |
-| totalSeaMin:   | float    | Minimum daily significant wave height in meters                                       |
-| totalSeaMax:   | float    | Maximum daily significant wave height, in meters                                      |
-| sstMin:        | float    | Daily minimum sea surface temperature in ºC                                           |
-| sstMax:        | float    | Daily maximum sea surface temperature in ºC                                           |
-| latitude:      | float    | Latitude                                                                              |
-| longitude:     | float    | Longitude                                                                             |
+| Field          | Type    | Description                                                                           |
+|----------------|---------|---------------------------------------------------------------------------------------|
+| forecastDate:  | string  | Date for which information is valid                                                   |
+| dataUpdate:    | string  | File update date (hourly update rate)                                                 |
+| globalIdLocal: | integer | Location identifier (see auxiliary service "List of identifiers for coastal regions") |
+| wavePeriodMin: | float   | Daily minimum of the peak period, associated with the swell, in seconds               |
+| wavePeriodMax: | float   | Daily maximum of the peak period, associated with the swell, in seconds               |
+| waveHighMin:   | float   | Minimum daily swell height in meters                                                  |
+| waveHighMax:   | float   | Maximum daily swell height in meters                                                  |
+| predWaveDir:   | string  | Predominant wave direction (N, NE, E, SE, S, SW, W, NW)                               |
+| totalSeaMin:   | float   | Minimum daily significant wave height in meters                                       |
+| totalSeaMax:   | float   | Maximum daily significant wave height, in meters                                      |
+| sstMin:        | float   | Daily minimum sea surface temperature in ºC                                           |
+| sstMax:        | float   | Daily maximum sea surface temperature in ºC                                           |
+| latitude:      | float   | Latitude                                                                              |
+| longitude:     | float   | Longitude                                                                             |
 
 Note: Only daily data is available. {idDay} ranges **from** 0 to 2, where:
 
@@ -273,10 +274,10 @@ $result = $api->from(0)
 ### 🌀 1.3 Warnings
 
 #### 1.3.1 Weather warnings for up to 3 days
+
 (_Avisos meteorológicos até 3 dias_)
 
 > https://api.ipma.pt/open-data/forecast/warnings/warnings_www.json
-
 
 | Field             | Type     | Description                                                                                                                                          |
 |-------------------|----------|------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -327,6 +328,135 @@ $result = $warningsApi
 (_Interdições à apanha nas zonas de produção de moluscos bivalves (formato GeoJSON)_)
 
 > https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson
+
+| Field                | Type   | Description                                                            |
+|----------------------|--------|------------------------------------------------------------------------|
+| name                 | text   | Zone name                                                              |
+| code                 | text   | Zone code                                                              |
+| zone_type            | text   | Zone type ("LITORAL": Zona Litoral, "EST_LAG": Zona Estuarino-lagunar) |
+| region_name          | text   | Region name                                                            |
+| representative_point | array  | Geographical coordinate where the zone, representative point           |
+| status               | string | State of the Zone (see notes)                                          |
+| interdictions        | array  | List of species regarding the interdiction (see notes)                 |
+
+_Notes:_
+
+**State of the Zone:**
+
+- "Open": Situation of Personal Permission and Capture,
+- "Partial_open": Situation of Partial Permission of caught and capture,
+- "closed": situation of total interdiction of caught and capture,
+- "partial_open",
+- "noinfo": without information
+
+**Interdictions**
+
+- "Specie_S": scientific name (scientific name);
+- "Specie_c": Common Name (Common Name);
+- "Classification": Sanitary Statute ("A", "B", "C")
+
+```php
+use Tlab\IpmaApi\IpmaObservation;
+
+$molluscHarvestingProhibition = IpmaObservation::createMolluscHarvestingProhibitionApi();
+$result = $molluscHarvestingProhibition
+    ->from()
+    ->filterByName('tavira')
+    ->get();
+```
+
+```php
+[
+                    'type' => 'Feature',
+                    'properties' => [
+                        'name' => 'Litoral Tavira – Vila Real Santo António',
+                        'code' => 'L9',
+                        'zone_type' => 'LITORAL',
+                        'region_name' => 'Algarve',
+                        'representative_point' => 'POINT (-7.521726250000002 37.094826)',
+                        'status' => 'OPEN',
+                        'interdictions' => [
+                            'open' => [
+                                [
+                                    'specie_c' => 'Canilha',
+                                    'specie_s' => 'Bolinus brandaris',
+                                    'classification' => 'NA',
+                                ],
+                                [
+                                    'specie_c' => 'Pé-de-burrinho',
+                                    'specie_s' => 'Chamelea gallina',
+                                    'classification' => 'A*',
+                                ],
+                                [
+                                    'specie_c' => 'Buzina',
+                                    'specie_s' => 'Charonia rubicunda',
+                                    'classification' => 'NA',
+                                ],
+                                [
+                                    'specie_c' => 'Conquilha',
+                                    'specie_s' => 'Donax trunculus',
+                                    'classification' => 'B',
+                                ],
+                                [
+                                    'specie_c' => 'Amêijoa-branca',
+                                    'specie_s' => 'Spisula solida',
+                                    'classification' => 'B',
+                                ],
+                            ],
+                            'close' => [],
+                        ],
+                        'coords' => [
+                            'latitude' => '37.094826',
+                            'longitude' => '-7.521726250000002',
+                        ],
+                    ],
+                ],
+                [
+                    'type' => 'Feature',
+                    'properties' => [
+                        'name' => 'Ria Formosa, Tavira',
+                        'code' => 'TAV',
+                        'zone_type' => 'EST_LAG',
+                        'region_name' => 'Algarve',
+                        'representative_point' => 'POINT (-7.673624507077854 37.08832)',
+                        'status' => 'OPEN',
+                        'interdictions' => [
+                            'open' => [
+                                [
+                                    'specie_c' => 'Berbigão',
+                                    'specie_s' => 'Cerastoderma edule',
+                                    'classification' => 'C',
+                                ],
+                                [
+                                    'specie_c' => 'Ostra-japonesa/gigante',
+                                    'specie_s' => 'Magallana gigas',
+                                    'classification' => 'B',
+                                ],
+                                [
+                                    'specie_c' => 'Mexilhão',
+                                    'specie_s' => 'Mytilus spp.',
+                                    'classification' => 'B',
+                                ],
+                                [
+                                    'specie_c' => 'Amêijoa-boa',
+                                    'specie_s' => 'Ruditapes decussatus',
+                                    'classification' => 'C',
+                                ],
+                                [
+                                    'specie_c' => 'Longueirão',
+                                    'specie_s' => 'Solen marginatus',
+                                    'classification' => 'C',
+                                ],
+                            ],
+                            'close' => [],
+                        ],
+                        'coords' => [
+                            'latitude' => '37.08832',
+                            'longitude' => '-7.673624507077854',
+                        ],
+                    ],
+                ],
+```
 
 ### ⛈️ 2.2 Climate
 
