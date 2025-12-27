@@ -8,7 +8,7 @@ For more information check https://api.ipma.pt/ (only in Portuguese)
 
 ## Installation
 
-- TODO
+`composer require tuxonice/ipma-api`
 
 ---
 
