@@ -341,6 +341,128 @@ $result = $warningsApi->query()
 ]
 ```
 
+## 2. Observation
+
+### 🌐 2.1 Seismic
+
+#### Seismic information, Arch. Azores, Main land and Arch. Madeira. Includes 30 days of information
+
+(_Informação sismicidade, Arq. Açores, Continente e Arq. Madeira. Integra 30 dias de informação_)
+
+> https://api.ipma.pt/open-data/observation/seismic/{idArea}.json
+
+**Available Areas:**
+- `SeismicInformationAreaEnum::AZORES` (3) - Azores Archipelago
+- `SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA` (7) - Mainland Portugal and Madeira
+
+**Response Fields:**
+
+| Field         | Type   | Description                                      |
+|---------------|--------|--------------------------------------------------|
+| seismId       | string | Seismic event ID                                 |
+| googleMapRef  | string | Google Maps reference URL                        |
+| degree        | mixed  | Degree information                               |
+| magType       | string | Magnitude type (e.g., 'L' for local magnitude)   |
+| magnitude     | float  | Earthquake magnitude                             |
+| depth         | int    | Depth in kilometers                              |
+| tensorRef     | string | Tensor reference                                 |
+| shakeMapId    | string | ShakeMap ID                                      |
+| shakeMapRef   | string | ShakeMap reference URL                           |
+| location      | mixed  | Location description                             |
+| regionName    | string | Region name                                      |
+| latitude      | float  | Latitude (decimal degrees)                       |
+| longitude     | float  | Longitude (decimal degrees)                      |
+| source        | string | Data source (e.g., 'IPMA')                       |
+| sensed        | mixed  | Whether the event was felt                       |
+| time          | string | Event time (ISO 8601 format)                     |
+| updateDate    | string | Data update time (ISO 8601 format)               |
+
+**Available Methods:**
+- `from(SeismicInformationAreaEnum $area)` - Fetch seismic data for a specific area
+- `filterByDepth(int $minValue, int $maxValue)` - Filter by depth range
+- `filterByMagnitude(float $minValue, float $maxValue)` - Filter by magnitude range
+- `filterByTime(string $from, string $to)` - Filter by time range
+- `findLocationsByDistance(float $latitude, float $longitude, float $radio)` - Find events within distance (km)
+- `findLocationByNearDistance(float $latitude, float $longitude)` - Find nearest event to coordinates
+- `getLastSeismicActivityDate()` - Get last seismic activity date
+- `getUpdateDate()` - Get data update date
+- `get()` - Get filtered results
+
+**Example Usage:**
+
+```php
+use Tlab\IpmaApi\IpmaService;
+use Tlab\IpmaApi\Enums\SeismicInformationAreaEnum;
+
+$api = IpmaService::createSeismicInformationApi();
+
+// Get all seismic events for mainland and Madeira
+$events = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+              ->get();
+
+// Filter by magnitude range
+$strongEvents = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+                    ->filterByMagnitude(3.0, 5.0)
+                    ->get();
+
+// Filter by depth range
+$shallowEvents = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+                     ->filterByDepth(0, 30)
+                     ->get();
+
+// Find events near specific coordinates (within 50km radius)
+$nearbyEvents = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+                    ->findLocationsByDistance(38.7223, -9.1393, 50)
+                    ->get();
+
+// Find the nearest event to specific coordinates
+$nearestEvent = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+                    ->findLocationByNearDistance(38.7223, -9.1393);
+
+// Filter by time range
+$recentEvents = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+                    ->filterByTime('2024-01-01T00:00:00', '2024-01-31T23:59:59')
+                    ->get();
+
+// Combine multiple filters
+$filteredEvents = $api->from(SeismicInformationAreaEnum::AZORES)
+                      ->filterByMagnitude(2.0, 4.0)
+                      ->filterByDepth(10, 50)
+                      ->get();
+
+// Get metadata
+$lastActivity = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+                    ->getLastSeismicActivityDate();
+$updateDate = $api->getUpdateDate();
+```
+
+**Example Response:**
+
+```php
+[
+    [
+        'seismId' => '20240117095931C',
+        'googleMapRef' => 'http://maps.google.com/maps?output=classic&q=38.0990+-8.2530...',
+        'degree' => null,
+        'magType' => 'L',
+        'magnitude' => 3.0,
+        'depth' => 7,
+        'tensorRef' => '',
+        'shakeMapId' => '2024011709593101',
+        'shakeMapRef' => 'http://shakemap.ipma.pt/2024011709593101/intensity.html',
+        'location' => null,
+        'regionName' => 'NW Ferreira do Alentejo',
+        'latitude' => 38.0990,
+        'longitude' => -8.2530,
+        'source' => 'IPMA',
+        'sensed' => null,
+        'time' => '2024-01-17T09:59:32',
+        'updateDate' => '2024-01-23T18:00:00',
+    ],
+]
+```
+
+
 ## 3. Auxiliary services
 
 ### 3.1 List of identifiers for district capitals and islands
