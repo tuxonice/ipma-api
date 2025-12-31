@@ -10,14 +10,29 @@ use PHPUnit\Framework\TestCase;
 
 class SeismicInformationTest extends TestCase
 {
+    private array $seismicInformationFixture;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
+        $this->seismicInformationFixture = json_decode($contents, true);
+    }
+
+    private function createService(): SeismicInformation
+    {
+        $apiConnector = $this->createMock(ApiConnectorInterface::class);
+        $apiConnector->expects(self::once())
+            ->method('fetchData')
+            ->willReturn($this->seismicInformationFixture);
+
+        return new SeismicInformation($apiConnector);
+    }
+
     public function testGetLastSeismicActivityDate(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertEquals(
             new DateTime('2024-02-09T08:49:41'),
@@ -28,12 +43,7 @@ class SeismicInformationTest extends TestCase
 
     public function testGetUpdateDate()
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertEquals(
             new DateTime('2024-02-09T10:36:02'),
@@ -44,12 +54,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFilterByDepth()
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertSame(
             [
@@ -157,12 +162,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFilterByMagnitude(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertSame(
             [
@@ -251,12 +251,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFindLocationByNearDistance(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertSame(
             [
@@ -285,12 +280,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFindLocationsByDistance(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertSame(
             [
@@ -341,12 +331,7 @@ class SeismicInformationTest extends TestCase
 
     public function testFilterByTime(): void
     {
-        $apiConnectorMock = $this->createMock(ApiConnectorInterface::class);
-        $contents = file_get_contents(dirname(__DIR__, 3) . '/Data/Observation/Seismic/7.json');
-        $apiConnectorMock->expects(self::once())
-            ->method('fetchData')
-            ->willReturn(json_decode($contents, true));
-        $seismicInformation = new SeismicInformation($apiConnectorMock);
+        $seismicInformation = $this->createService();
 
         self::assertSame(
             [
