@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Tlab\IpmaApi;
 
+use Tlab\IpmaApi\Observation\Biology\MolluscHarvestingProhibition;
 use Tlab\IpmaApi\Observation\Seismic\SeismicInformation;
 
 class IpmaObservation
@@ -13,5 +14,12 @@ class IpmaObservation
         $apiConnector = new ApiConnector();
 
         return new SeismicInformation($apiConnector);
+    }
+
+    public static function createMolluscHarvestingProhibitionApi(): MolluscHarvestingProhibition
+    {
+        $apiConnector = new ApiConnector();
+
+        return new MolluscHarvestingProhibition($apiConnector);
     }
 }
