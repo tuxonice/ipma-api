@@ -44,61 +44,61 @@ GID := $(shell id -g)
 .PHONY: install
 install: check-docker
 	@echo "$(BLUE)[INFO]$(NC) Installing PHP dependencies..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm php-test composer install
+	@UID=$(UID) GID=$(GID) docker compose run --rm php-test composer install
 
 # Run all tests
 .PHONY: test
 test: check-docker install
 	@echo "$(BLUE)[INFO]$(NC) Running all tests..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm test-runner
+	@UID=$(UID) GID=$(GID) docker compose run --rm test-runner
 
 # Run unit tests only
 .PHONY: test-unit
 test-unit: check-docker install
 	@echo "$(BLUE)[INFO]$(NC) Running unit tests..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm test-runner ./vendor/bin/phpunit tests/Unit/
+	@UID=$(UID) GID=$(GID) docker compose run --rm test-runner ./vendor/bin/phpunit tests/Unit/
 
 # Generate test coverage report
 .PHONY: coverage
 coverage: check-docker install
 	@echo "$(BLUE)[INFO]$(NC) Generating test coverage report..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm test-runner ./vendor/bin/phpunit --coverage-html=coverage
+	@UID=$(UID) GID=$(GID) docker compose run --rm test-runner ./vendor/bin/phpunit --coverage-html=coverage
 	@echo "$(GREEN)[SUCCESS]$(NC) Coverage report generated in coverage/ directory"
 
 # Open interactive shell in container
 .PHONY: shell
 shell: check-docker
 	@echo "$(BLUE)[INFO]$(NC) Opening interactive shell in test container..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm php-test bash
+	@UID=$(UID) GID=$(GID) docker compose run --rm php-test bash
 
 # Run PHP CodeSniffer
 .PHONY: phpcs
 phpcs: check-docker install
 	@echo "$(BLUE)[INFO]$(NC) Running PHP CodeSniffer..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm php-test ./vendor/bin/phpcs --standard=phpcs.xml
+	@UID=$(UID) GID=$(GID) docker compose run --rm php-test ./vendor/bin/phpcs --standard=phpcs.xml
 
 # Fix PHP CodeSniffer errors automatically
 .PHONY: phpcs-fix
 phpcs-fix: check-docker install
 	@echo "$(BLUE)[INFO]$(NC) Fixing PHP CodeSniffer errors..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm php-test ./vendor/bin/phpcbf --standard=phpcs.xml
+	@UID=$(UID) GID=$(GID) docker compose run --rm php-test ./vendor/bin/phpcbf --standard=phpcs.xml
 
 # Run PHPStan static analysis
 .PHONY: phpstan
 phpstan: check-docker install
 	@echo "$(BLUE)[INFO]$(NC) Running PHPStan static analysis..."
-	@UID=$(UID) GID=$(GID) docker-compose run --rm php-test ./vendor/bin/phpstan analyse -c phpstan.neon
+	@UID=$(UID) GID=$(GID) docker compose run --rm php-test ./vendor/bin/phpstan analyse -c phpstan.neon
 
 # Rebuild Docker image
 .PHONY: rebuild
 rebuild: check-docker
 	@echo "$(BLUE)[INFO]$(NC) Rebuilding Docker image..."
-	@UID=$(UID) GID=$(GID) docker-compose build --no-cache
+	@UID=$(UID) GID=$(GID) docker compose build --no-cache
 	@echo "$(GREEN)[SUCCESS]$(NC) Image rebuilt successfully"
 
 # Clean up Docker containers and volumes
 .PHONY: clean
 clean: check-docker
 	@echo "$(BLUE)[INFO]$(NC) Cleaning up Docker containers and volumes..."
-	@docker-compose down -v --rmi local
+	@docker compose down -v --rmi local
 	@echo "$(GREEN)[SUCCESS]$(NC) Cleanup completed"
