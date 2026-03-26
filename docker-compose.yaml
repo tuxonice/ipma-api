@@ -1,0 +1,26 @@
+x-base: &base
+  build: .
+  volumes:
+    - .:/app
+    - composer-cache:/tmp/composer-cache
+  working_dir: /app
+  environment:
+    - UID=${UID:-1000}
+    - GID=${GID:-1000}
+    - COMPOSER_CACHE_DIR=/tmp/composer-cache
+    - HOME=/tmp
+    - COMPOSER_HOME=/tmp/composer
+
+services:
+  php-test:
+    <<: *base
+    container_name: ipma-api-test
+    command: tail -f /dev/null
+
+  test-runner:
+    <<: *base
+    container_name: ipma-api-runner
+    command: ./vendor/bin/phpunit --testdox
+
+volumes:
+  composer-cache:
