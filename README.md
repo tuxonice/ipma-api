@@ -1,7 +1,7 @@
 # IPMA-API
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tuxonice/ipma-api.svg?style=flat-square)](https://packagist.org/packages/tuxonice/ipma-api)
-[![GitHub Tests Action Status](https://img.shields.io/github/workflow/status/tuxonice/ipma-api/Pipeline?label=tests)](https://github.com/tuxonice/ipma-api/actions)
+[![GitHub Tests Action Status](https://github.com/tuxonice/ipma-api/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/tuxonice/ipma-api/actions)
 [![Total Downloads](https://img.shields.io/packagist/dt/tuxonice/ipma-api.svg?style=flat-square)](https://packagist.org/packages/tuxonice/ipma-api)
 [![License](https://img.shields.io/packagist/l/tuxonice/ipma-api.svg?style=flat-square)](https://packagist.org/packages/tuxonice/ipma-api)
 
