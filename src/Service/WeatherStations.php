@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Service\WeatherStation;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Utils;
 
 class WeatherStations
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/observation/meteorology/stations/stations.json';
+    private const END_POINT = Endpoints::WEATHER_STATIONS;
 
+    /** @var list<WeatherStation> */
     private array $data;
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
@@ -20,7 +23,6 @@ class WeatherStations
     public function query(): self
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
-
         $this->data = $this->map($content);
 
         return $this;
@@ -29,7 +31,7 @@ class WeatherStations
     public function filterById(int $idStation): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['id'] === $idStation)
+            array_filter($this->data, fn(WeatherStation $s) => $s->id === $idStation)
         );
 
         return $this;
@@ -38,7 +40,7 @@ class WeatherStations
     public function filterByName(string $name, bool $strict = false): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::compareString($element['name'], $name, $strict))
+            array_filter($this->data, fn(WeatherStation $s) => Utils::compareString($s->name, $name, $strict))
         );
 
         return $this;
@@ -47,57 +49,54 @@ class WeatherStations
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['latitude'],
-                $element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
+            array_filter(
+                $this->data,
+                fn(WeatherStation $s) => Utils::distance($s->latitude, $s->longitude, $latitude, $longitude) <= $radio
+            )
         );
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?WeatherStation
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance($datum['latitude'], $datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $station) {
+            $distance = Utils::distance($station->latitude, $station->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $station;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
+    /**
+     * @return list<WeatherStation>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<WeatherStation>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'id' => (int)$datum['properties']['idEstacao'],
-                'name' => $datum['properties']['localEstacao'],
-                'latitude' => (float)$datum['geometry']['coordinates'][1],
-                'longitude' => (float)$datum['geometry']['coordinates'][0],
-            ];
+            $out[] = new WeatherStation(
+                id: (int)$datum['properties']['idEstacao'],
+                name: (string)$datum['properties']['localEstacao'],
+                latitude: (float)$datum['geometry']['coordinates'][1],
+                longitude: (float)$datum['geometry']['coordinates'][0],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

@@ -6,20 +6,21 @@ namespace Tlab\IpmaApi\Forecast\Oceanography;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Forecast\SeaStateRecord;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Enums\SeaStateForecastDayEnum;
 use Tlab\IpmaApi\Utils;
 
 class SeaStateForecast
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/forecast/oceanography/daily/hp-daily-sea-forecast-day{idDay}.json';
+    private const END_POINT = Endpoints::SEA_STATE_FORECAST;
 
+    /** @var list<SeaStateRecord> */
     private array $data;
 
     private DateTime $updateAt;
 
     private DateTime $forecastDate;
-
-
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
@@ -37,176 +38,87 @@ class SeaStateForecast
 
     public function filterByGlobalIdLocal(int $globalIdLocal): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => (int)$element['globalIdLocal'] === $globalIdLocal
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(SeaStateRecord $r) => $r->globalIdLocal === $globalIdLocal
+        ));
 
         return $this;
     }
 
     public function filterByWavePeriodMin(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['wavePeriodMin'] >= $min &&
-                    (float)$element['wavePeriodMin'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('wavePeriodMin', $min, $max);
     }
 
     public function filterByWavePeriodMax(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['wavePeriodMax'] >= $min &&
-                    (float)$element['wavePeriodMax'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('wavePeriodMax', $min, $max);
     }
 
     public function filterByWaveHighMin(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['waveHighMin'] >= $min &&
-                    (float)$element['waveHighMin'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('waveHighMin', $min, $max);
     }
 
     public function filterByWaveHighMax(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['waveHighMax'] >= $min &&
-                    (float)$element['waveHighMax'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('waveHighMax', $min, $max);
     }
 
     public function filterByTotalSeaMin(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['totalSeaMin'] >= $min &&
-                    (float)$element['totalSeaMin'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('totalSeaMin', $min, $max);
     }
 
     public function filterByTotalSeaMax(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['totalSeaMax'] >= $min &&
-                    (float)$element['totalSeaMax'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('totalSeaMax', $min, $max);
     }
 
     public function filterBySstMin(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['sstMin'] >= $min &&
-                    (float)$element['sstMin'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('sstMin', $min, $max);
     }
 
     public function filterBySstMax(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['sstMax'] >= $min &&
-                    (float)$element['sstMax'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('sstMax', $min, $max);
     }
 
     public function filterByPredWaveDir(string $predWaveDir): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    Utils::compareString($element['predWaveDir'], $predWaveDir)
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(SeaStateRecord $r) => Utils::compareString($r->predWaveDir, $predWaveDir)
+        ));
 
         return $this;
     }
 
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
-        $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['latitude'],
-                $element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(SeaStateRecord $r) => Utils::distance($r->latitude, $r->longitude, $latitude, $longitude) <= $radio
+        ));
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?SeaStateRecord
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance($datum['latitude'], $datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $record) {
+            $distance = Utils::distance($record->latitude, $record->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $record;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
     public function getUpdateAt(): DateTime
@@ -219,31 +131,48 @@ class SeaStateForecast
         return $this->forecastDate;
     }
 
+    /**
+     * @return list<SeaStateRecord>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    private function filterFloat(string $property, float $min, float $max): self
+    {
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(SeaStateRecord $r) => $r->$property >= $min && $r->$property <= $max
+        ));
+
+        return $this;
+    }
+
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<SeaStateRecord>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'globalIdLocal' => (int)$datum['globalIdLocal'],
-                'predWaveDir' => $datum['predWaveDir'],
-                'waveHighMin' => (float)$datum['waveHighMin'],
-                'waveHighMax' => (float)$datum['waveHighMax'],
-                'wavePeriodMin' => (float)$datum['wavePeriodMin'],
-                'wavePeriodMax' => (float)$datum['wavePeriodMax'],
-                'totalSeaMin' => (float)$datum['totalSeaMin'],
-                'totalSeaMax' => (float)$datum['totalSeaMax'],
-                'sstMin' => (float)$datum['sstMin'],
-                'sstMax' => (float)$datum['sstMax'],
-                'latitude' => (float)$datum['latitude'],
-                'longitude' => (float)$datum['longitude'],
-            ];
+            $out[] = new SeaStateRecord(
+                globalIdLocal: (int)$datum['globalIdLocal'],
+                predWaveDir: (string)$datum['predWaveDir'],
+                waveHighMin: (float)$datum['waveHighMin'],
+                waveHighMax: (float)$datum['waveHighMax'],
+                wavePeriodMin: (float)$datum['wavePeriodMin'],
+                wavePeriodMax: (float)$datum['wavePeriodMax'],
+                totalSeaMin: (float)$datum['totalSeaMin'],
+                totalSeaMax: (float)$datum['totalSeaMax'],
+                sstMin: (float)$datum['sstMin'],
+                sstMax: (float)$datum['sstMax'],
+                latitude: (float)$datum['latitude'],
+                longitude: (float)$datum['longitude'],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

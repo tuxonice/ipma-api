@@ -39,9 +39,9 @@ class DailyEvapotranspirationReferenceTest extends TestCase
                     'std' => '0.019505',
                 ],
             ],
-            $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
                 ->filterByDate('2024-01-05', '2024-01-06')
-                ->get()
+                ->get())
         );
     }
 
@@ -75,9 +75,9 @@ class DailyEvapotranspirationReferenceTest extends TestCase
                     'std' => '0.029659',
                 ],
             ],
-            $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
                 ->filterByMinimum(2.0, 2.1)
-                ->get()
+                ->get())
         );
     }
 
@@ -119,9 +119,9 @@ class DailyEvapotranspirationReferenceTest extends TestCase
                     'std' => '0.029659',
                 ],
             ],
-            $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
                 ->filterByMaximum(2.0, 2.3)
-                ->get()
+                ->get())
         );
     }
 
@@ -179,9 +179,9 @@ class DailyEvapotranspirationReferenceTest extends TestCase
                     'std' => '0.025242',
                 ],
             ],
-            $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
                 ->filterByRange(0.11, 0.12)
-                ->get()
+                ->get())
         );
     }
 
@@ -240,9 +240,9 @@ class DailyEvapotranspirationReferenceTest extends TestCase
                     'std' => '0.059815',
                 ],
             ],
-            $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
                 ->filterByMean(1.15, 1.19)
-                ->get()
+                ->get())
         );
     }
 
@@ -301,9 +301,9 @@ class DailyEvapotranspirationReferenceTest extends TestCase
                     'std' => '0.017899',
                 ],
             ],
-            $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $dailyEvapotranspirationReference->from('beja', 'castro-verde', '0206')
                 ->filterByStd(0.017, 0.018)
-                ->get()
+                ->get())
         );
     }
 }

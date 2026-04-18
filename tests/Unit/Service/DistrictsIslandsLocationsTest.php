@@ -57,10 +57,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                     'longitude' => -16.3400,
                 ],
             ],
-            $districtLocations
+            array_map(fn ($d) => $d->toArray(), $districtLocations
                 ->query()
                 ->filterByIdRegion(2)
-                ->get()
+                ->get())
         );
     }
 
@@ -109,10 +109,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                 'latitude' => 37.1397,
                 'longitude' => -8.0202,
             ],
-        ], $districtLocations
+        ], array_map(fn ($d) => $d->toArray(), $districtLocations
             ->query()
             ->filterByIdWarningArea('FAR')
-            ->get());
+            ->get()));
     }
 
     public function testFilterByIdMunicipality(): void
@@ -160,10 +160,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                 'latitude' => 37.0146,
                 'longitude' => -7.9331,
             ],
-        ], $districtLocations
+        ], array_map(fn ($d) => $d->toArray(), $districtLocations
             ->query()
             ->filterByIdMunicipality(5)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByGlobalIdLocal(): void
@@ -181,10 +181,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                 'latitude' => 40.2081,
                 'longitude' => -8.4194,
             ],
-        ], $districtLocations
+        ], array_map(fn ($d) => $d->toArray(), $districtLocations
             ->query()
             ->filterByGlobalIdLocal(1060300)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByIdDistrict(): void
@@ -202,10 +202,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                 'latitude' => 38.7660,
                 'longitude' => -9.1286,
             ]
-        ], $districtLocations
+        ], array_map(fn ($d) => $d->toArray(), $districtLocations
             ->query()
             ->filterByIdDistrict(11)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByName(): void
@@ -223,10 +223,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                 'latitude' => 41.158,
                 'longitude' => -8.6294,
             ]
-        ], $districtLocations
+        ], array_map(fn ($d) => $d->toArray(), $districtLocations
             ->query()
             ->filterByName('porto', true)
-            ->get());
+            ->get()));
     }
 
     public function testFindLocationsByDistance(): void
@@ -244,10 +244,10 @@ class DistrictsIslandsLocationsTest extends TestCase
                 'latitude' => 41.6952,
                 'longitude' => -8.8365
             ]
-        ], $districtLocations
+        ], array_map(fn ($d) => $d->toArray(), $districtLocations
             ->query()
             ->filterLocationsByDistance(41.6952, -8.8365, 2)
-            ->get());
+            ->get()));
     }
 
     public function testFindLocationByNearDistance(): void
@@ -265,6 +265,6 @@ class DistrictsIslandsLocationsTest extends TestCase
             'longitude' => -7.8700,
         ], $districtLocations
             ->query()
-            ->filterLocationByNearDistance(37.721404, -8.290932));
+            ->filterLocationByNearDistance(37.721404, -8.290932)?->toArray());
     }
 }

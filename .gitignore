@@ -8,3 +8,4 @@ docker-compose.yml
 .phpunit.cache
 composer.lock
 /coverage/
+/coverage.xml

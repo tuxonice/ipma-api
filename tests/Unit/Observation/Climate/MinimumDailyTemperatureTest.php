@@ -39,9 +39,9 @@ class MinimumDailyTemperatureTest extends TestCase
                     'std' => '0.757533529567',
                 ],
             ],
-            $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
+            array_map(fn ($d) => $d->toArray(), $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
                 ->filterByDate('2023-12-09', '2023-12-10')
-                ->get()
+                ->get())
         );
     }
 
@@ -75,10 +75,10 @@ class MinimumDailyTemperatureTest extends TestCase
                     'std' => '0.757533529567',
                 ],
             ],
-            $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
+            array_map(fn ($d) => $d->toArray(), $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
                 ->filterByDate('2023-12-09', '2023-12-10')
                 ->filterByMinimum(5.0, 7.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -104,9 +104,9 @@ class MinimumDailyTemperatureTest extends TestCase
                     'std' => '1.34733945631',
                 ],
             ],
-            $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
+            array_map(fn ($d) => $d->toArray(), $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
                 ->filterByMaximum(10.4, 10.5)
-                ->get()
+                ->get())
         );
     }
 
@@ -140,10 +140,10 @@ class MinimumDailyTemperatureTest extends TestCase
                     'std' => '1.52442251473',
                 ],
             ],
-            $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
+            array_map(fn ($d) => $d->toArray(), $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
                 ->filterByDate('2023-12-11', '2023-12-12')
                 ->filterByRange(5.0, 6.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -177,10 +177,10 @@ class MinimumDailyTemperatureTest extends TestCase
                     'std' => '1.34733945631',
                 ],
             ],
-            $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
+            array_map(fn ($d) => $d->toArray(), $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
                 ->filterByDate('2023-12-09', '2023-12-11')
                 ->filterByMean(6.5, 7.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -206,9 +206,9 @@ class MinimumDailyTemperatureTest extends TestCase
                     'std' => '0.739884989435',
                 ],
             ],
-            $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
+            array_map(fn ($d) => $d->toArray(), $minimumDailyTemperature->from('guarda', 'manteigas', '0908')
                 ->filterByStd(0.739, 0.740)
-                ->get()
+                ->get())
         );
     }
 }

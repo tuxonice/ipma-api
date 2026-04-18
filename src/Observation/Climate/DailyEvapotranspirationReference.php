@@ -3,12 +3,15 @@
 namespace Tlab\IpmaApi\Observation\Climate;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Climate\ClimateObservation;
+use Tlab\IpmaApi\Endpoints;
 
 class DailyEvapotranspirationReference
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/observation/climate/evapotranspiration/{district}/et0-{DICO}-{municipality}.csv';
+    private const END_POINT = Endpoints::DAILY_EVAPOTRANSPIRATION_REFERENCE;
 
-    private array $data;
+    /** @var list<ClimateObservation> */
+    private array $data = [];
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
@@ -16,17 +19,17 @@ class DailyEvapotranspirationReference
 
     public function from(string $district, string $municipality, string $dico): self
     {
-        $url = str_replace('{district}', $district, self::END_POINT);
-        $url = str_replace('{DICO}', $dico, $url);
-        $url = str_replace('{municipality}', $municipality, $url);
+        $url = str_replace(
+            ['{district}', '{DICO}', '{municipality}'],
+            [$district, $dico, $municipality],
+            self::END_POINT
+        );
 
         $csv = $this->apiConnector->fetchCsv($url);
-
         $csv->setHeaderOffset(0);
-        $records = $csv->getRecords();
 
-        foreach ($records as $record) {
-            $this->data[] = $record;
+        foreach ($csv->getRecords() as $record) {
+            $this->data[] = ClimateObservation::fromCsvRecord($record);
         }
 
         return $this;
@@ -35,12 +38,7 @@ class DailyEvapotranspirationReference
     public function filterByDate(string $from, string $to): self
     {
         $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    $element['date'] >= $from &&
-                    $element['date'] <= $to
-            )
+            array_filter($this->data, fn(ClimateObservation $o) => $o->date >= $from && $o->date <= $to)
         );
 
         return $this;
@@ -51,9 +49,7 @@ class DailyEvapotranspirationReference
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (float)$element['minimum'] >= $from &&
-                    (float)$element['minimum'] <= $to
+                fn(ClimateObservation $o) => (float)$o->minimum >= $from && (float)$o->minimum <= $to
             )
         );
 
@@ -65,9 +61,7 @@ class DailyEvapotranspirationReference
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (float)$element['maximum'] >= $from &&
-                    (float)$element['maximum'] <= $to
+                fn(ClimateObservation $o) => (float)$o->maximum >= $from && (float)$o->maximum <= $to
             )
         );
 
@@ -79,9 +73,7 @@ class DailyEvapotranspirationReference
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (float)$element['range'] >= $from &&
-                    (float)$element['range'] <= $to
+                fn(ClimateObservation $o) => (float)$o->range >= $from && (float)$o->range <= $to
             )
         );
 
@@ -93,9 +85,7 @@ class DailyEvapotranspirationReference
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (float)$element['mean'] >= $from &&
-                    (float)$element['mean'] <= $to
+                fn(ClimateObservation $o) => (float)$o->mean >= $from && (float)$o->mean <= $to
             )
         );
 
@@ -107,15 +97,16 @@ class DailyEvapotranspirationReference
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (float)$element['std'] >= $from &&
-                    (float)$element['std'] <= $to
+                fn(ClimateObservation $o) => (float)$o->std >= $from && (float)$o->std <= $to
             )
         );
 
         return $this;
     }
 
+    /**
+     * @return list<ClimateObservation>
+     */
     public function get(): array
     {
         return $this->data;

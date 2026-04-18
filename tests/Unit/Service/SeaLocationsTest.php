@@ -66,7 +66,7 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -31.13,
                 ]
             ],
-            $seaLocations->query()->filterByIdRegion(3)->get()
+            array_map(fn ($d) => $d->toArray(), $seaLocations->query()->filterByIdRegion(3)->get())
         );
     }
 
@@ -96,7 +96,7 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -31.13,
                 ]
             ],
-            $seaLocations->query()->filterByIdWarningArea('ace')->get()
+            array_map(fn ($d) => $d->toArray(), $seaLocations->query()->filterByIdWarningArea('ace')->get())
         );
     }
 
@@ -116,7 +116,7 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -28.47,
                 ]
             ],
-            $seaLocations->query()->filterByGlobalIdLocal(3470126)->get()
+            array_map(fn ($d) => $d->toArray(), $seaLocations->query()->filterByGlobalIdLocal(3470126)->get())
         );
     }
 
@@ -136,7 +136,7 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -8.76,
                 ]
             ],
-            $seaLocations->query()->filterByIdLocal(301)->get()
+            array_map(fn ($d) => $d->toArray(), $seaLocations->query()->filterByIdLocal(301)->get())
         );
     }
 
@@ -156,7 +156,7 @@ class SeaLocationsTest extends TestCase
                     'longitude' => -8.9383,
                 ]
             ],
-            $seaLocations->query()->filterByName('Sagres')->get()
+            array_map(fn ($d) => $d->toArray(), $seaLocations->query()->filterByName('Sagres')->get())
         );
     }
 
@@ -174,7 +174,7 @@ class SeaLocationsTest extends TestCase
                 'latitude' => 37.0017,
                 'longitude' => -8.0,
             ]
-        ], $seaLocations->query()->findLocationsByDistance(37.01, -8.1, 10)->get());
+        ], array_map(fn ($d) => $d->toArray(), $seaLocations->query()->findLocationsByDistance(37.01, -8.1, 10)->get()));
     }
 
     public function testFindLocationByNearDistance(): void
@@ -190,6 +190,6 @@ class SeaLocationsTest extends TestCase
             'latitude' => 37.95,
             'longitude' => -8.8833,
 
-        ], $seaLocations->query()->findLocationByNearDistance(37.721404, -8.290932));
+        ], $seaLocations->query()->findLocationByNearDistance(37.721404, -8.290932)?->toArray());
     }
 }

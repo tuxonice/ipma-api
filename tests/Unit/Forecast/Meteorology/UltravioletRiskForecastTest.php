@@ -50,7 +50,7 @@ class UltravioletRiskForecastTest extends TestCase
                     'periodId' => 10,
                 ],
             ],
-            $fireRiskForecast->filterByUvIndex(2.3, 2.4)->get()
+            array_map(fn ($d) => $d->toArray(), $fireRiskForecast->filterByUvIndex(2.3, 2.4)->get())
         );
     }
 
@@ -101,7 +101,7 @@ class UltravioletRiskForecastTest extends TestCase
                     'periodId' => 10,
                 ],
             ],
-            $fireRiskForecast->filterByGlobalIdLocal(2320100)->get()
+            array_map(fn ($d) => $d->toArray(), $fireRiskForecast->filterByGlobalIdLocal(2320100)->get())
         );
     }
 
@@ -114,6 +114,6 @@ class UltravioletRiskForecastTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $fireRiskForecast = new UltravioletRiskForecast($apiConnector);
 
-        self::assertCount(30, $fireRiskForecast->filterByForecastDate('2023-12-13')->get());
+        self::assertCount(30, array_map(fn ($d) => $d->toArray(), $fireRiskForecast->filterByForecastDate('2023-12-13')->get()));
     }
 }

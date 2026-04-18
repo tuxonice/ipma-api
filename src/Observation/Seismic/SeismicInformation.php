@@ -5,13 +5,16 @@ namespace Tlab\IpmaApi\Observation\Seismic;
 use DateTime;
 use Exception;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Seismic\SeismicEvent;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Enums\SeismicInformationAreaEnum;
 use Tlab\IpmaApi\Utils;
 
 class SeismicInformation
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/observation/seismic/{idArea}.json';
+    private const END_POINT = Endpoints::SEISMIC_INFORMATION;
 
+    /** @var list<SeismicEvent> */
     private array $data = [];
 
     private DateTime $lastSeismicActivityDate;
@@ -23,8 +26,6 @@ class SeismicInformation
     }
 
     /**
-     * @param SeismicInformationAreaEnum $area
-     * @return $this
      * @throws Exception
      */
     public function from(SeismicInformationAreaEnum $area): self
@@ -44,9 +45,7 @@ class SeismicInformation
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (int)$element['depth'] >= $minValue &&
-                    (int)$element['depth'] <= $maxValue
+                fn (SeismicEvent $e) => $e->depth >= $minValue && $e->depth <= $maxValue
             )
         );
 
@@ -58,9 +57,7 @@ class SeismicInformation
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    $element['time'] >= $from &&
-                    $element['time'] <= $to
+                fn (SeismicEvent $e) => $e->time >= $from && $e->time <= $to
             )
         );
 
@@ -72,9 +69,7 @@ class SeismicInformation
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (float)$element['magnitude'] >= $minValue &&
-                    (float)$element['magnitude'] <= $maxValue
+                fn (SeismicEvent $e) => $e->magnitude >= $minValue && $e->magnitude <= $maxValue
             )
         );
 
@@ -84,38 +79,28 @@ class SeismicInformation
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                (float)$element['latitude'],
-                (float)$element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
+            array_filter(
+                $this->data,
+                fn (SeismicEvent $e) => Utils::distance($e->latitude, $e->longitude, $latitude, $longitude) <= $radio
+            )
         );
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?SeismicEvent
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance((float)$datum['latitude'], (float)$datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $event) {
+            $distance = Utils::distance($event->latitude, $event->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $event;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
     public function getLastSeismicActivityDate(): DateTime
@@ -128,36 +113,43 @@ class SeismicInformation
         return $this->updateDate;
     }
 
+    /**
+     * @return list<SeismicEvent>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<SeismicEvent>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $events = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                "seismId" => $datum['sismoId'],
-                "googleMapRef" => $datum['googlemapref'],
-                "degree" => $datum['degree'],
-                "magType" => $datum['magType'],
-                "magnitude" => (float)$datum['magnitud'],
-                "depth" => (int)$datum['depth'],
-                "tensorRef" => $datum['tensorRef'],
-                "shakeMapId" => $datum['shakemapid'],
-                "shakeMapRef" => $datum['shakemapref'],
-                "location" => $datum['local'],
-                "regionName" => $datum['obsRegion'],
-                "latitude" => (float)$datum['lat'],
-                "longitude" => (float)$datum['lon'],
-                "source" => $datum['source'],
-                "sensed" => $datum['sensed'],
-                "time" => $datum['time'],
-                "updateDate" => $datum['dataUpdate'],
-            ];
+            $events[] = new SeismicEvent(
+                seismId: (string)$datum['sismoId'],
+                googleMapRef: (string)$datum['googlemapref'],
+                degree: $datum['degree'],
+                magType: (string)$datum['magType'],
+                magnitude: (float)$datum['magnitud'],
+                depth: (int)$datum['depth'],
+                tensorRef: (string)$datum['tensorRef'],
+                shakeMapId: (string)$datum['shakemapid'],
+                shakeMapRef: (string)$datum['shakemapref'],
+                location: $datum['local'],
+                regionName: (string)$datum['obsRegion'],
+                latitude: (float)$datum['lat'],
+                longitude: (float)$datum['lon'],
+                source: (string)$datum['source'],
+                sensed: $datum['sensed'],
+                time: (string)$datum['time'],
+                updateDate: (string)$datum['dataUpdate'],
+            );
         }
 
-        return $cleanData;
+        return $events;
     }
 }

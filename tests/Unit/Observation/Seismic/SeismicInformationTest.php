@@ -154,9 +154,9 @@ class SeismicInformationTest extends TestCase
                     'updateDate' => '2024-02-06T06:00:00',
                 ],
             ],
-            $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+            array_map(fn ($d) => $d->toArray(), $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
                 ->filterByDepth(26, 27)
-                ->get()
+                ->get())
         );
     }
 
@@ -243,9 +243,9 @@ class SeismicInformationTest extends TestCase
                     'updateDate' => '2024-02-09T06:00:00',
                 ],
             ],
-            $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+            array_map(fn ($d) => $d->toArray(), $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
                 ->filterByMagnitude(3.0, 4.6)
-                ->get()
+                ->get())
         );
     }
 
@@ -274,7 +274,7 @@ class SeismicInformationTest extends TestCase
                 'updateDate' => '2024-02-08T12:00:00',
             ],
             $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
-                ->findLocationByNearDistance(37.101157, -7.831360)
+                ->findLocationByNearDistance(37.101157, -7.831360)?->toArray()
         );
     }
 
@@ -323,9 +323,9 @@ class SeismicInformationTest extends TestCase
                     'updateDate' => '2024-02-08T12:00:00',
                 ],
             ],
-            $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+            array_map(fn ($d) => $d->toArray(), $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
                 ->findLocationsByDistance(37.101157, -7.831360, 20)
-                ->get()
+                ->get())
         );
     }
 
@@ -393,9 +393,9 @@ class SeismicInformationTest extends TestCase
                     'updateDate' => '2024-01-22T00:00:00',
                 ],
             ],
-            $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+            array_map(fn ($d) => $d->toArray(), $seismicInformation->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
                 ->filterByTime('2024-01-15T00:00:00', '2024-01-15T06:00:00')
-                ->get()
+                ->get())
         );
     }
 }

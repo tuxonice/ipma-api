@@ -5,80 +5,83 @@ declare(strict_types=1);
 namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Forecast\UltravioletRiskRecord;
+use Tlab\IpmaApi\Endpoints;
 
 class UltravioletRiskForecast
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/forecast/meteorology/uv/uv.json';
+    private const END_POINT = Endpoints::ULTRAVIOLET_RISK_FORECAST;
 
+    /** @var list<UltravioletRiskRecord> */
     private array $data;
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
-        $this->data = $this->map($content);
+        $mapped = $this->map($content);
 
-        //Sometimes globalIdLocal is zero what make me think that's an error
-        $this->data = array_filter($this->data, function (array $element) {
-            return $element['globalIdLocal'] !== 0;
-        });
+        // Sometimes globalIdLocal is zero which looks like an upstream data error.
+        $this->data = array_values(array_filter(
+            $mapped,
+            fn(UltravioletRiskRecord $r) => $r->globalIdLocal !== 0
+        ));
     }
 
     public function filterByForecastDate(string $date): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => $element['forecastDate'] === $date
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(UltravioletRiskRecord $r) => $r->forecastDate === $date
+        ));
 
         return $this;
     }
 
     public function filterByGlobalIdLocal(int $globalIdLocal): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => $element['globalIdLocal'] === $globalIdLocal
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(UltravioletRiskRecord $r) => $r->globalIdLocal === $globalIdLocal
+        ));
 
         return $this;
     }
 
     public function filterByUvIndex(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    $element['uvIndex'] >= $min &&
-                    $element['uvIndex'] <= $max
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(UltravioletRiskRecord $r) => $r->uvIndex >= $min && $r->uvIndex <= $max
+        ));
 
         return $this;
     }
 
+    /**
+     * @return list<UltravioletRiskRecord>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<UltravioletRiskRecord>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'globalIdLocal' => $datum['globalIdLocal'],
-                'forecastDate' => $datum['data'],
-                'uvIndex' => (float)$datum['iUv'],
-                'timeInterval' => $datum['intervaloHora'], //the goal of this property is unclear
-                'periodId' => $datum['idPeriodo'], //the goal of this property is unclear
-            ];
+            $out[] = new UltravioletRiskRecord(
+                globalIdLocal: (int)$datum['globalIdLocal'],
+                forecastDate: (string)$datum['data'],
+                uvIndex: (float)$datum['iUv'],
+                timeInterval: (string)$datum['intervaloHora'],
+                periodId: (int)$datum['idPeriodo'],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

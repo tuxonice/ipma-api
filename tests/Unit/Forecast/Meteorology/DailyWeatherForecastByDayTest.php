@@ -51,9 +51,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -7.4200,
                 ]
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByRainfallProbabilityRange(85.0, 90.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -76,9 +76,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -28.6315,
                 ],
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByRainIntensityClass(3)
-                ->get()
+                ->get())
         );
     }
 
@@ -150,9 +150,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                 ],
 
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByMinTemperatureRange(10.0, 11.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -175,9 +175,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -16.3400,
                 ]
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByMaxTemperatureRange(22.0, 23.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -236,9 +236,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -8.8643,
                 ],
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByIdWeatherType(3)
-                ->get()
+                ->get())
         );
     }
 
@@ -273,9 +273,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -7.7440,
                 ]
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByWindDirection('w')
-                ->get()
+                ->get())
         );
     }
 
@@ -298,9 +298,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -7.4957,
                 ],
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByWindSpeedClass(3)
-                ->get()
+                ->get())
         );
     }
 
@@ -322,8 +322,8 @@ class DailyWeatherForecastByDayTest extends TestCase
                 'latitude' => 37.0146,
                 'longitude' => -7.9331,
             ],
-        ], $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
-            ->findLocationsByDistance(37.101157, -7.831360, 20)->get());
+        ], array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            ->findLocationsByDistance(37.101157, -7.831360, 20)->get()));
     }
 
 
@@ -346,9 +346,9 @@ class DailyWeatherForecastByDayTest extends TestCase
                     'longitude' => -7.4957,
                 ],
             ],
-            $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)
                 ->filterByGlobalIdLocal(1050200)
-                ->get()
+                ->get())
         );
     }
 
@@ -369,7 +369,7 @@ class DailyWeatherForecastByDayTest extends TestCase
             'latitude' => 37.0146,
             'longitude' => -7.9331,
 
-        ], $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)->findLocationByNearDistance(37.101157, -7.831360));
+        ], $dailyWeatherForecastByDay->from(ForecastDayEnum::TODAY)->findLocationByNearDistance(37.101157, -7.831360)?->toArray());
     }
 
     public function testGetFileUpdatedAt(): void

@@ -46,9 +46,9 @@ class FireRiskForecastTest extends TestCase
                     'longitude' => -8.3814,
                 ],
             ],
-            $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)
                 ->filterByDico('1002')
-                ->get()
+                ->get())
         );
     }
 
@@ -65,9 +65,9 @@ class FireRiskForecastTest extends TestCase
                     'longitude' => -7.54,
                 ],
             ],
-            $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)
                 ->filterByFireRiskLevel(FireRiskLevelEnum::MODERATE_RISK)
-                ->get()
+                ->get())
         );
     }
 
@@ -88,8 +88,8 @@ class FireRiskForecastTest extends TestCase
                 'latitude' => 37.15,
                 'longitude' => -7.89,
             ],
-        ], $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)
-            ->findLocationsByDistance(37.101157, -7.831360, 10)->get());
+        ], array_map(fn ($d) => $d->toArray(), $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)
+            ->findLocationsByDistance(37.101157, -7.831360, 10)->get()));
     }
 
     public function testFindLocationByNearDistance(): void
@@ -101,7 +101,7 @@ class FireRiskForecastTest extends TestCase
             'fireRiskLevel' => 1,
             'latitude' => 37.15,
             'longitude' => -7.89,
-        ], $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)->findLocationByNearDistance(37.101157, -7.831360));
+        ], $fireRiskForecast->from(ForecastFireRiskDayEnum::TODAY)->findLocationByNearDistance(37.101157, -7.831360)?->toArray());
     }
 
     public function testGetFileUpdatedAt(): void

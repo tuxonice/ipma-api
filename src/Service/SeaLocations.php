@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Service\SeaLocation;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Utils;
 
 class SeaLocations
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/sea-locations.json';
+    private const END_POINT = Endpoints::SEA_LOCATIONS;
 
-    /**
-     * @var array
-     */
+    /** @var list<SeaLocation> */
     private array $data;
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
@@ -31,9 +31,7 @@ class SeaLocations
     public function filterByIdRegion(int $idRegion): self
     {
         $this->data = array_values(
-            array_filter($this->data, function (array $element) use ($idRegion) {
-                return $element['idRegion'] === $idRegion;
-            })
+            array_filter($this->data, fn(SeaLocation $l) => $l->idRegion === $idRegion)
         );
 
         return $this;
@@ -42,9 +40,7 @@ class SeaLocations
     public function filterByIdWarningArea(string $idWarningArea): self
     {
         $this->data = array_values(
-            array_filter($this->data, function (array $element) use ($idWarningArea) {
-                return Utils::compareString($element['idWarningArea'], $idWarningArea);
-            })
+            array_filter($this->data, fn(SeaLocation $l) => Utils::compareString($l->idWarningArea, $idWarningArea))
         );
 
         return $this;
@@ -53,9 +49,7 @@ class SeaLocations
     public function filterByGlobalIdLocal(int $globalIdLocal): self
     {
         $this->data = array_values(
-            array_filter($this->data, function (array $element) use ($globalIdLocal) {
-                return $element['globalIdLocal'] === $globalIdLocal;
-            })
+            array_filter($this->data, fn(SeaLocation $l) => $l->globalIdLocal === $globalIdLocal)
         );
 
         return $this;
@@ -64,7 +58,7 @@ class SeaLocations
     public function filterByIdLocal(int $idLocal): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn (array $element) => $element['idLocal'] === $idLocal)
+            array_filter($this->data, fn(SeaLocation $l) => $l->idLocal === $idLocal)
         );
 
         return $this;
@@ -73,7 +67,7 @@ class SeaLocations
     public function filterByName(string $name, bool $strict = false): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn (array $element) => Utils::compareString($element['name'], $name, $strict))
+            array_filter($this->data, fn(SeaLocation $l) => Utils::compareString($l->name, $name, $strict))
         );
 
         return $this;
@@ -82,60 +76,57 @@ class SeaLocations
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['latitude'],
-                $element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
+            array_filter(
+                $this->data,
+                fn(SeaLocation $l) => Utils::distance($l->latitude, $l->longitude, $latitude, $longitude) <= $radio
+            )
         );
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?SeaLocation
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance($datum['latitude'], $datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $location) {
+            $distance = Utils::distance($location->latitude, $location->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $location;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
+    /**
+     * @return list<SeaLocation>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<SeaLocation>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'globalIdLocal' => (int)$datum['globalIdLocal'],
-                'name' => $datum['local'],
-                'idLocal' => (int)$datum['idLocal'],
-                'idRegion' => (int)$datum['idRegiao'],
-                'idWarningArea' => $datum['idAreaAviso'],
-                'latitude' => (float)$datum['latitude'],
-                'longitude' => (float)$datum['longitude'],
-            ];
+            $out[] = new SeaLocation(
+                globalIdLocal: (int)$datum['globalIdLocal'],
+                name: (string)$datum['local'],
+                idLocal: (int)$datum['idLocal'],
+                idRegion: (int)$datum['idRegiao'],
+                idWarningArea: (string)$datum['idAreaAviso'],
+                latitude: (float)$datum['latitude'],
+                longitude: (float)$datum['longitude'],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

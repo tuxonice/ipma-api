@@ -2,6 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tuxonice/ipma-api.svg?style=flat-square)](https://packagist.org/packages/tuxonice/ipma-api)
 [![GitHub Tests Action Status](https://github.com/tuxonice/ipma-api/actions/workflows/pipeline.yml/badge.svg?branch=main)](https://github.com/tuxonice/ipma-api/actions)
+[![PHPStan Level](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg?style=flat-square)](phpstan.neon)
 [![Total Downloads](https://img.shields.io/packagist/dt/tuxonice/ipma-api.svg?style=flat-square)](https://packagist.org/packages/tuxonice/ipma-api)
 [![License](https://img.shields.io/packagist/l/tuxonice/ipma-api.svg?style=flat-square)](https://packagist.org/packages/tuxonice/ipma-api)
 
@@ -15,7 +16,7 @@ For more information about the official API, please visit https://api.ipma.pt/ (
 
 ### Prerequisites
 
-- PHP 8.2 or higher
+- PHP 8.1 or higher
 - Composer
 
 ### Installation
@@ -50,7 +51,81 @@ $events = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
               ->get();
 ```
 
+### Get Weather Stations (Service)
+
+```php
+use Tlab\IpmaApi\IpmaService;
+
+$api = IpmaService::createWeatherStationsApi();
+$stations = $api->filterByName('Lisboa', strict: false)->get();
+```
+
+All endpoints now return **typed DTOs** under `Tlab\IpmaApi\Dto\*`:
+
+```php
+use Tlab\IpmaApi\Enums\SeismicInformationAreaEnum;
+use Tlab\IpmaApi\IpmaObservation;
+
+$events = IpmaObservation::createSeismicInformationApi()
+    ->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
+    ->filterByMagnitude(2.0, 5.0)
+    ->get();
+
+foreach ($events as $event) {
+    echo $event->regionName, ' -> ', $event->magnitude, "\n"; // typed access
+}
+
+// Call ->toArray() on any DTO to recover the old array shape.
+$legacy = $events[0]->toArray();
+```
+
 For more detailed examples and a full list of available endpoints, please see the documentation folder.
+
+---
+
+## Caching responses (PSR-16)
+
+Most IPMA endpoints change infrequently (locations, stations, forecasts). The
+library ships with a PSR-16 caching decorator you can wrap around any
+`ApiConnectorInterface`:
+
+```php
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Component\Cache\Psr16Cache;
+use Tlab\IpmaApi\ApiConnector;
+use Tlab\IpmaApi\CachedApiConnector;
+use Tlab\IpmaApi\IpmaService;
+
+$cache = new Psr16Cache(new FilesystemAdapter());
+$connector = new CachedApiConnector(new ApiConnector(), $cache, ttlSeconds: 3600);
+
+// Pass the cached connector to any factory:
+$api = IpmaService::createDistrictsIslandsLocationsApi($connector);
+```
+
+Only JSON responses (`fetchData`) are cached; CSV responses are passed through.
+
+---
+
+## Error handling
+
+All errors raised by the library extend `Tlab\IpmaApi\Exception\IpmaApiException`:
+
+- `IpmaTransportException` — network/TLS/timeout failures.
+- `IpmaResponseException` — unexpected 3xx/4xx/5xx HTTP status.
+- `IpmaDecodingException` — malformed JSON in the response body.
+
+```php
+use Tlab\IpmaApi\Exception\IpmaApiException;
+use Tlab\IpmaApi\IpmaForecast;
+
+try {
+    $data = IpmaForecast::createDailyWeatherForecastByDayApi()->from(1020500)->get();
+} catch (IpmaApiException $e) {
+    // $e->getPrevious() returns the underlying Symfony exception, if any.
+    error_log($e->getMessage());
+}
+```
 
 ---
 

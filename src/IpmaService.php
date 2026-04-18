@@ -10,24 +10,32 @@ use Tlab\IpmaApi\Service\WeatherStations;
 
 class IpmaService
 {
-    public static function createDistrictsIslandsLocationsApi(): DistrictsIslandsLocations
-    {
-        $apiConnector = new ApiConnector();
+    private static ?ApiConnectorInterface $defaultApiConnector = null;
 
-        return new DistrictsIslandsLocations($apiConnector);
+    private static function resolveApiConnector(?ApiConnectorInterface $apiConnector): ApiConnectorInterface
+    {
+        if ($apiConnector !== null) {
+            return $apiConnector;
+        }
+
+        return self::$defaultApiConnector ??= new ApiConnector();
     }
 
-    public static function createSeaLocationsApi(): SeaLocations
-    {
-        $apiConnector = new ApiConnector();
-
-        return new SeaLocations($apiConnector);
+    public static function createDistrictsIslandsLocationsApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): DistrictsIslandsLocations {
+        return new DistrictsIslandsLocations(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createWeatherStationsApi(): WeatherStations
-    {
-        $apiConnector = new ApiConnector();
+    public static function createSeaLocationsApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): SeaLocations {
+        return new SeaLocations(self::resolveApiConnector($apiConnector));
+    }
 
-        return new WeatherStations($apiConnector);
+    public static function createWeatherStationsApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): WeatherStations {
+        return new WeatherStations(self::resolveApiConnector($apiConnector));
     }
 }

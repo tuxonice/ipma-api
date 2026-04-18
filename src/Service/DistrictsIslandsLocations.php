@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Tlab\IpmaApi\Service;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Service\DistrictLocation;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Utils;
 
 class DistrictsIslandsLocations
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/distrits-islands.json';
+    private const END_POINT = Endpoints::DISTRICTS_ISLANDS_LOCATIONS;
 
+    /** @var list<DistrictLocation> */
     private array $data;
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
@@ -20,7 +23,6 @@ class DistrictsIslandsLocations
     public function query(): self
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
-
         $this->data = $this->map($content['data']);
 
         return $this;
@@ -29,7 +31,7 @@ class DistrictsIslandsLocations
     public function filterByIdRegion(int $idRegion): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idRegion'] === $idRegion)
+            array_filter($this->data, fn(DistrictLocation $l) => $l->idRegion === $idRegion)
         );
 
         return $this;
@@ -40,7 +42,7 @@ class DistrictsIslandsLocations
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn(array $element) => Utils::compareString($element['idWarningArea'], $idWarningArea)
+                fn(DistrictLocation $l) => Utils::compareString($l->idWarningArea, $idWarningArea)
             )
         );
 
@@ -50,7 +52,7 @@ class DistrictsIslandsLocations
     public function filterByIdMunicipality(int $idMunicipality): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idMunicipality'] === $idMunicipality)
+            array_filter($this->data, fn(DistrictLocation $l) => $l->idMunicipality === $idMunicipality)
         );
 
         return $this;
@@ -59,7 +61,7 @@ class DistrictsIslandsLocations
     public function filterByGlobalIdLocal(int $globalIdLocal): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['globalIdLocal'] === $globalIdLocal)
+            array_filter($this->data, fn(DistrictLocation $l) => $l->globalIdLocal === $globalIdLocal)
         );
 
         return $this;
@@ -68,7 +70,7 @@ class DistrictsIslandsLocations
     public function filterByIdDistrict(int $idDistrict): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['idDistrict'] === $idDistrict)
+            array_filter($this->data, fn(DistrictLocation $l) => $l->idDistrict === $idDistrict)
         );
 
         return $this;
@@ -77,10 +79,7 @@ class DistrictsIslandsLocations
     public function filterByName(string $name, bool $strict = false): self
     {
         $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn(array $element) => Utils::compareString($element['name'], $name, $strict)
-            )
+            array_filter($this->data, fn(DistrictLocation $l) => Utils::compareString($l->name, $name, $strict))
         );
 
         return $this;
@@ -89,61 +88,58 @@ class DistrictsIslandsLocations
     public function filterLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
         $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['latitude'],
-                $element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
+            array_filter(
+                $this->data,
+                fn(DistrictLocation $l) => Utils::distance($l->latitude, $l->longitude, $latitude, $longitude) <= $radio
+            )
         );
 
         return $this;
     }
 
-    public function filterLocationByNearDistance(float $latitude, float $longitude): array
+    public function filterLocationByNearDistance(float $latitude, float $longitude): ?DistrictLocation
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance($datum['latitude'], $datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $location) {
+            $distance = Utils::distance($location->latitude, $location->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $location;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
+    /**
+     * @return list<DistrictLocation>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<DistrictLocation>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'globalIdLocal' => (int)$datum['globalIdLocal'],
-                'name' => $datum['local'],
-                'idMunicipality' => (int)$datum['idConcelho'],
-                'idDistrict' => (int)$datum['idDistrito'],
-                'idRegion' => (int)$datum['idRegiao'],
-                'idWarningArea' => $datum['idAreaAviso'],
-                'latitude' => (float)$datum['latitude'],
-                'longitude' => (float)$datum['longitude'],
-            ];
+            $out[] = new DistrictLocation(
+                globalIdLocal: (int)$datum['globalIdLocal'],
+                name: (string)$datum['local'],
+                idMunicipality: (int)$datum['idConcelho'],
+                idDistrict: (int)$datum['idDistrito'],
+                idRegion: (int)$datum['idRegiao'],
+                idWarningArea: (string)$datum['idAreaAviso'],
+                latitude: (float)$datum['latitude'],
+                longitude: (float)$datum['longitude'],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

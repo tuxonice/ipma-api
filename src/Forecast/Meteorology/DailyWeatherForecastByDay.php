@@ -6,16 +6,16 @@ namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Forecast\DailyForecastByDayRecord;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Enums\ForecastDayEnum;
 use Tlab\IpmaApi\Utils;
 
 class DailyWeatherForecastByDay
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json';
+    private const END_POINT = Endpoints::DAILY_WEATHER_FORECAST_BY_DAY;
 
-    /**
-     * @var array<mixed>
-     */
+    /** @var list<DailyForecastByDayRecord> */
     private array $data;
 
     private DateTime $updateAt;
@@ -35,138 +35,107 @@ class DailyWeatherForecastByDay
 
     public function filterByRainfallProbabilityRange(float $minProbability, float $maxProbability): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['rainfallProb'] >= $minProbability &&
-                    (float)$element['rainfallProb'] <= $maxProbability
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->rainfallProb >= $minProbability && $r->rainfallProb <= $maxProbability
+        ));
 
         return $this;
     }
 
     public function filterByMinTemperatureRange(float $minValue, float $maxValue): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['minTemp'] >= $minValue &&
-                    (float)$element['minTemp'] <= $maxValue
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->minTemp >= $minValue && $r->minTemp <= $maxValue
+        ));
 
         return $this;
     }
 
     public function filterByMaxTemperatureRange(float $minValue, float $maxValue): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['maxTemp'] >= $minValue &&
-                    (float)$element['maxTemp'] <= $maxValue
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->maxTemp >= $minValue && $r->maxTemp <= $maxValue
+        ));
 
         return $this;
     }
 
     public function filterByWindDirection(string $value): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => strtolower($element['winDir']) === strtolower($value)
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => strtolower($r->winDir) === strtolower($value)
+        ));
 
         return $this;
     }
 
     public function filterByIdWeatherType(int $value): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => $element['idWeatherType'] === $value
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->idWeatherType === $value
+        ));
 
         return $this;
     }
 
     public function filterByWindSpeedClass(int $value): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => $element['windSpeedClass'] === $value
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->windSpeedClass === $value
+        ));
 
         return $this;
     }
 
     public function filterByRainIntensityClass(int $value): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => isset($element['rainfallIntensity']) && $element['rainfallIntensity'] === $value
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->rainfallIntensity !== null && $r->rainfallIntensity === $value
+        ));
 
         return $this;
     }
 
     public function filterByGlobalIdLocal(int $globalIdLocal): self
     {
-        $this->data = array_values(
-            array_filter($this->data, fn(array $element) => $element['globalIdLocal'] === $globalIdLocal)
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => $r->globalIdLocal === $globalIdLocal
+        ));
 
         return $this;
     }
 
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
-        $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['latitude'],
-                $element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(DailyForecastByDayRecord $r) => Utils::distance($r->latitude, $r->longitude, $latitude, $longitude) <= $radio
+        ));
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?DailyForecastByDayRecord
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance($datum['latitude'], $datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $record) {
+            $distance = Utils::distance($record->latitude, $record->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $record;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
     public function getFileUpdatedAt(): DateTime
@@ -174,29 +143,37 @@ class DailyWeatherForecastByDay
         return $this->updateAt;
     }
 
+    /**
+     * @return list<DailyForecastByDayRecord>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<DailyForecastByDayRecord>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'globalIdLocal' => (int)$datum['globalIdLocal'],
-                'idWeatherType' => (int)$datum['idWeatherType'],
-                'windSpeedClass' => (int)$datum['classWindSpeed'],
-                'rainfallIntensity' => $datum['classPrecInt'] ?? null,
-                'rainfallProb' => (float)$datum['precipitaProb'],
-                'minTemp' => (float)$datum['tMin'],
-                'maxTemp' => (float)$datum['tMax'],
-                'winDir' => $datum['predWindDir'],
-                'latitude' => (float)$datum['latitude'],
-                'longitude' => (float)$datum['longitude'],
-            ];
+            $rainfallIntensity = $datum['classPrecInt'] ?? null;
+            $out[] = new DailyForecastByDayRecord(
+                globalIdLocal: (int)$datum['globalIdLocal'],
+                idWeatherType: (int)$datum['idWeatherType'],
+                windSpeedClass: (int)$datum['classWindSpeed'],
+                rainfallIntensity: $rainfallIntensity !== null ? (int)$rainfallIntensity : null,
+                rainfallProb: (float)$datum['precipitaProb'],
+                minTemp: (float)$datum['tMin'],
+                maxTemp: (float)$datum['tMax'],
+                winDir: (string)$datum['predWindDir'],
+                latitude: (float)$datum['latitude'],
+                longitude: (float)$datum['longitude'],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

@@ -53,9 +53,9 @@ class SeaStateForecastTest extends TestCase
                     'longitude' => -16.3400,
                 ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByGlobalIdLocal(2320126)
-                ->get()
+                ->get())
         );
     }
 
@@ -80,9 +80,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.0000,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByWavePeriodMin(2.0, 3.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -107,9 +107,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.0000,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByWavePeriodMax(3.0, 4.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -163,9 +163,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -9.3100,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByWaveHighMin(1.0, 1.2)
-                ->get()
+                ->get())
         );
     }
 
@@ -218,9 +218,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.8833,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByWaveHighMax(1.0, 1.5)
-                ->get()
+                ->get())
         );
     }
 
@@ -290,9 +290,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.8833,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByTotalSeaMin(1.0, 1.2)
-                ->get()
+                ->get())
         );
     }
 
@@ -331,9 +331,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.8783,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByTotalSeaMax(3.0, 4.2)
-                ->get()
+                ->get())
         );
     }
 
@@ -386,9 +386,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.8333,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterBySstMin(15, 16)
-                ->get()
+                ->get())
         );
     }
 
@@ -427,9 +427,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.8333,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterBySstMax(15, 16)
-                ->get()
+                ->get())
         );
     }
 
@@ -454,9 +454,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.9383,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->filterByPredWaveDir('N')
-                ->get()
+                ->get())
         );
     }
 
@@ -481,9 +481,9 @@ class SeaStateForecastTest extends TestCase
                 'longitude' => -8.0000,
             ],
             ],
-            $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
+            array_map(fn ($d) => $d->toArray(), $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
                 ->findLocationsByDistance(37.101157, -7.831360, 20)
-                ->get()
+                ->get())
         );
     }
 
@@ -507,7 +507,7 @@ class SeaStateForecastTest extends TestCase
             'longitude' => -8.0000,
             ],
             $seaStateForecast->from(SeaStateForecastDayEnum::TODAY)
-                ->findLocationByNearDistance(37.101157, -7.831360)
+                ->findLocationByNearDistance(37.101157, -7.831360)?->toArray()
         );
     }
 

@@ -24,10 +24,15 @@ class Utils
 
     public static function compareString(string $haystack, string $needle, bool $strict = true): bool
     {
+        // Use mb_strtolower so accented Portuguese characters (ã, ç, õ, á, é…)
+        // in location/region names are compared case-insensitively as expected.
+        $haystack = mb_strtolower($haystack, 'UTF-8');
+        $needle = mb_strtolower($needle, 'UTF-8');
+
         if ($strict) {
-            return strtolower($haystack) === strtolower($needle);
+            return $haystack === $needle;
         }
 
-        return str_contains(strtolower($haystack), strtolower($needle));
+        return str_contains($haystack, $needle);
     }
 }

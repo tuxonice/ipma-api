@@ -28,3 +28,27 @@ jobs:
         run: vendor/bin/phpstan analyse
       - name: Execute Unit tests
         run: vendor/bin/phpunit --testdox
+
+  Coverage:
+    runs-on: ubuntu-latest
+    name: Coverage gate
+    env:
+      MIN_COVERAGE: '80'
+    steps:
+      - uses: shivammathur/setup-php@a36e1e52ff4a1c9e9c9be31551ee4712a6cb6bd0
+        with:
+          php-version: '8.3'
+          coverage: xdebug
+      - uses: actions/checkout@v4
+      - name: Install Dependencies
+        run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Run tests with coverage
+        run: vendor/bin/phpunit --coverage-clover=coverage.xml
+      - name: Enforce minimum coverage
+        run: php bin/check-coverage.php coverage.xml "${MIN_COVERAGE}"
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-clover
+          path: coverage.xml

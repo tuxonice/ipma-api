@@ -41,7 +41,7 @@ class WeatherStationsTest extends TestCase
                 'latitude' => 32.735107,
                 'longitude' => -16.928271,
             ]
-        ], $stations->query()->filterById(1210974)->get());
+        ], array_map(fn ($d) => $d->toArray(), $stations->query()->filterById(1210974)->get()));
     }
 
     public function testFilterByName(): void
@@ -55,7 +55,7 @@ class WeatherStationsTest extends TestCase
                 'latitude' => 30.140595,
                 'longitude' => -15.869153,
             ]
-        ], $stations->query()->filterByName('selvagens')->get());
+        ], array_map(fn ($d) => $d->toArray(), $stations->query()->filterByName('selvagens')->get()));
     }
 
     public function testFindLocationsByDistance(): void
@@ -81,7 +81,7 @@ class WeatherStationsTest extends TestCase
                 'latitude' => 37.016579,
                 'longitude' => -7.971953,
             ],
-        ], $stations->query()->findLocationsByDistance(37.101157, -7.831360, 20)->get());
+        ], array_map(fn ($d) => $d->toArray(), $stations->query()->findLocationsByDistance(37.101157, -7.831360, 20)->get()));
     }
 
     public function testFindLocationByNearDistance(): void
@@ -93,6 +93,6 @@ class WeatherStationsTest extends TestCase
             'name' => 'Olhão, EPPO',
             'latitude' => 37.033,
             'longitude' => -7.821,
-        ], $stations->query()->findLocationByNearDistance(37.101157, -7.831360));
+        ], $stations->query()->findLocationByNearDistance(37.101157, -7.831360)?->toArray());
     }
 }

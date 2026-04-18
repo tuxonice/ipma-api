@@ -66,10 +66,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => 1028.8,
                 'date' => '2023-12-10T12:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(1210881)
             ->filterByDate('2023-12-10T12:00', '2023-12-10T14:00')
-            ->get());
+            ->get()));
     }
 
     public function testFilterByWindSpeed(): void
@@ -110,10 +110,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => 1028.8,
                 'date' => '2023-12-10T12:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(1210881)
             ->filterByWindSpeed(10.0, 15.0)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByTemperature(): void
@@ -143,10 +143,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => 1027.3,
                 'date' => '2023-12-10T18:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(1210883)
             ->filterByTemperature(16.5, 18.0)
-            ->get());
+            ->get()));
     }
 
     public function testFilterBySolarRadiation(): void
@@ -198,10 +198,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => null,
                 'date' => '2023-12-10T16:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(11217372)
             ->filterBySolarRadiation(600, 900)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByWindDirection(): void
@@ -242,10 +242,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => null,
                 'date' => '2023-12-10T00:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(11217372)
             ->filterByWindDirection(6)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByRain(): void
@@ -286,10 +286,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => null,
                 'date' => '2023-12-10T02:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(11217372)
             ->filterByRain(0.1, 0.6)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByWindSpeedMetersSecond(): void
@@ -319,10 +319,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => 1025.0,
                 'date' => '2023-12-10T08:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(1240546)
             ->filterByWindSpeedMetersSecond(1.0, 2.7)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByHumidity(): void
@@ -352,10 +352,10 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => 1025.1,
                 'date' => '2023-12-10T20:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(1200567)
             ->filterByHumidity(90, 95)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByAtmosphericPressure(): void
@@ -396,9 +396,9 @@ class WeatherStationObservationTest extends TestCase
                 'atmosphericPressure' => 1023.8,
                 'date' => '2023-12-10T16:00',
             ],
-        ], $weatherStationObservation
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservation
             ->from(1200567)
             ->filterByAtmosphericPressure(900, 1024)
-            ->get());
+            ->get()));
     }
 }

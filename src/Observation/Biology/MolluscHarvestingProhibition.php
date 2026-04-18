@@ -3,21 +3,21 @@
 namespace Tlab\IpmaApi\Observation\Biology;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Biology\MolluscFeature;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Utils;
 
 class MolluscHarvestingProhibition
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/observation/biology/bivalves/CI_SNMB.geojson';
+    private const END_POINT = Endpoints::MOLLUSC_HARVESTING_PROHIBITION;
 
     private const OPEN = 'open';
-
     private const CLOSE = 'CLOSE';
 
-    /**
-     * @var array<mixed>
-     */
+    /** @var list<MolluscFeature> */
     private array $data = [];
 
+    /** @var array<string, mixed> */
     private array $metaData = [];
 
     private ?string $interdictionType = null;
@@ -41,81 +41,70 @@ class MolluscHarvestingProhibition
             "project" => $content['project'],
         ];
 
-        $this->data = $content['features'];
+        $features = [];
+        foreach ($content['features'] as $feature) {
+            unset($feature['geometry']);
 
-        foreach ($this->data as $key => $datum) {
-            unset($this->data[$key]['geometry']);
-
-            $representativePoint = $this->data[$key]['properties']['representative_point'];
-
+            $representativePoint = $feature['properties']['representative_point'] ?? '';
             [$latitude, $longitude] = $this->extractCoords($representativePoint);
-
-            $this->data[$key]['properties']['coords'] = [
+            $feature['properties']['coords'] = [
                 'latitude' => $latitude,
                 'longitude' => $longitude,
             ];
+
+            $features[] = MolluscFeature::fromFeature($feature);
         }
+        $this->data = $features;
 
         return $this;
     }
 
     public function filterByName(string $name): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => str_contains(strtolower($element['properties']['name']), strtolower($name))
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(MolluscFeature $f) => str_contains(strtolower($f->name), strtolower($name))
+        ));
 
         return $this;
     }
 
     public function filterByCode(string $code): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => str_contains(strtolower($element['properties']['code']), strtolower($code))
-            )
-        );
-
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(MolluscFeature $f) => str_contains(strtolower($f->code), strtolower($code))
+        ));
 
         return $this;
     }
 
     public function filterByZoneType(string $zoneType): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => str_contains(strtolower($element['properties']['zone_type']), strtolower($zoneType))
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(MolluscFeature $f) => str_contains(strtolower($f->zoneType), strtolower($zoneType))
+        ));
 
         return $this;
     }
 
     public function filterByRegionName(string $regionName): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => str_contains(strtolower($element['properties']['region_name']), strtolower($regionName))
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(MolluscFeature $f) => str_contains(strtolower($f->regionName), strtolower($regionName))
+        ));
 
         return $this;
     }
 
     public function filterByStatus(string $status): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => str_contains(strtolower($element['properties']['status']), strtolower($status))
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(MolluscFeature $f) => str_contains(strtolower($f->status), strtolower($status))
+        ));
 
         return $this;
     }
@@ -136,216 +125,96 @@ class MolluscHarvestingProhibition
 
     public function filterByScientificName(string $scientificName): self
     {
-        $filteredData = [];
-        foreach ($this->data as $datum) {
-            if ($this->interdictionType === null) {
-                $interdictionTypes = array_merge(
-                    $datum['properties']['interdictions']['open'],
-                    $datum['properties']['interdictions']['close']
-                );
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['specie_s'] === $scientificName) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-
-            if ($this->interdictionType === self::OPEN) {
-                $interdictionTypes = $datum['properties']['interdictions']['open'];
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['specie_s'] === $scientificName) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-
-            if ($this->interdictionType === self::CLOSE) {
-                $interdictionTypes = $datum['properties']['interdictions']['close'];
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['specie_s'] === $scientificName) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        $this->data = $filteredData;
-
-        return $this;
+        return $this->filterInterdiction('specie_s', $scientificName);
     }
 
     public function filterByCommonName(string $commonName): self
     {
-        $filteredData = [];
-        foreach ($this->data as $datum) {
-            if ($this->interdictionType === null) {
-                $interdictionTypes = array_merge(
-                    $datum['properties']['interdictions']['open'],
-                    $datum['properties']['interdictions']['close']
-                );
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['specie_c'] === $commonName) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-
-            if ($this->interdictionType === self::OPEN) {
-                $interdictionTypes = $datum['properties']['interdictions']['open'];
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['specie_c'] === $commonName) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-
-            if ($this->interdictionType === self::CLOSE) {
-                $interdictionTypes = $datum['properties']['interdictions']['close'];
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['specie_c'] === $commonName) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        $this->data = $filteredData;
-
-        return $this;
+        return $this->filterInterdiction('specie_c', $commonName);
     }
 
     public function filterByClassification(string $classification): self
     {
-        $filteredData = [];
-        foreach ($this->data as $datum) {
-            if ($this->interdictionType === null) {
-                $interdictionTypes = array_merge(
-                    $datum['properties']['interdictions']['open'],
-                    $datum['properties']['interdictions']['close']
-                );
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['classification'] === $classification) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-
-            if ($this->interdictionType === self::OPEN) {
-                $interdictionTypes = $datum['properties']['interdictions']['open'];
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['classification'] === $classification) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-
-            if ($this->interdictionType === self::CLOSE) {
-                $interdictionTypes = $datum['properties']['interdictions']['close'];
-
-                foreach ($interdictionTypes as $interdictionType) {
-                    if ($interdictionType['classification'] === $classification) {
-                        $filteredData[] = $datum;
-
-                        break;
-                    }
-                }
-            }
-        }
-
-        $this->data = $filteredData;
-
-        return $this;
+        return $this->filterInterdiction('classification', $classification);
     }
 
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
-        $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['properties']['coords']['latitude'],
-                $element['properties']['coords']['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(MolluscFeature $f) => Utils::distance($f->latitude, $f->longitude, $latitude, $longitude) <= $radio
+        ));
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?MolluscFeature
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance(
-                $datum['properties']['coords']['latitude'],
-                $datum['properties']['coords']['longitude'],
-                $latitude,
-                $longitude
-            );
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $feature) {
+            $distance = Utils::distance($feature->latitude, $feature->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $feature;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
+    /**
+     * @return list<MolluscFeature>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
+    public function getMetaData(): array
+    {
+        return $this->metaData;
+    }
 
+    private function filterInterdiction(string $key, string $needle): self
+    {
+        $filtered = [];
+        foreach ($this->data as $feature) {
+            $raw = $feature->raw();
+            $interdictions = $raw['properties']['interdictions'] ?? ['open' => [], 'close' => []];
 
+            $candidates = match ($this->interdictionType) {
+                self::OPEN => $interdictions['open'] ?? [],
+                self::CLOSE => $interdictions['close'] ?? [],
+                default => array_merge($interdictions['open'] ?? [], $interdictions['close'] ?? []),
+            };
+
+            foreach ($candidates as $interdiction) {
+                if (($interdiction[$key] ?? null) === $needle) {
+                    $filtered[] = $feature;
+                    break;
+                }
+            }
+        }
+        $this->data = $filtered;
+
+        return $this;
+    }
+
+    /**
+     * @return array{0: float|null, 1: float|null}
+     */
     private function extractCoords(mixed $representativePoint): array
     {
         $pattern = '/POINT \(([-+]?\d{1,3}\.\d+?) ([-+]?\d{1,3}\.\d+?)\)/';
 
-        if (preg_match($pattern, $representativePoint, $matches)) {
-            $latitude = (float)$matches[2];
-            $longitude = (float)$matches[1];
-
-            return [$latitude, $longitude];
+        if (is_string($representativePoint) && preg_match($pattern, $representativePoint, $matches)) {
+            return [(float)$matches[2], (float)$matches[1]];
         }
 
         return [null, null];
-    }
-
-    public function getMetaData(): array
-    {
-        return $this->metaData;
     }
 }

@@ -50,9 +50,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.8700,
                 ]
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByRainfallProbabilityRange(85.0, 90.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -99,9 +99,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByMinTemperatureRange(10.0, 11.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -136,9 +136,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByMaxTemperatureRange(18.0, 19.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -161,9 +161,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByWindDirection('w')
-                ->get()
+                ->get())
         );
     }
 
@@ -198,9 +198,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(0)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(0)
                 ->filterByWindSpeedClass(2)
-                ->get()
+                ->get())
         );
     }
 
@@ -247,9 +247,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByIdWeatherType(3)
-                ->get()
+                ->get())
         );
     }
 
@@ -272,9 +272,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByRainIntensityClass(2)
-                ->get()
+                ->get())
         );
     }
 
@@ -297,9 +297,9 @@ class DailyWeatherForecastByLocationTest extends TestCase
                     'longitude' => -7.87,
                 ],
             ],
-            $dailyWeatherForecastByLocal->from(1020500)
+            array_map(fn ($d) => $d->toArray(), $dailyWeatherForecastByLocal->from(1020500)
                 ->filterByForecastDate('2023-12-12')
-                ->get()
+                ->get())
         );
     }
 

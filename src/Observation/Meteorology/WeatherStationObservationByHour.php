@@ -3,10 +3,12 @@
 namespace Tlab\IpmaApi\Observation\Meteorology;
 
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Meteorology\HourlyStationObservation;
+use Tlab\IpmaApi\Endpoints;
 
 class WeatherStationObservationByHour
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/observation/meteorology/stations/obs-surface.geojson';
+    private const END_POINT = Endpoints::WEATHER_STATION_OBSERVATION_BY_HOUR;
 
     private const VALID_FIELDS = [
         'time' => '',
@@ -23,72 +25,40 @@ class WeatherStationObservationByHour
         'radiacao' => -99.0,
     ];
 
-    /**
-     * @var array<mixed>
-     */
+    /** @var list<HourlyStationObservation> */
     private array $data = [];
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
         $content = $this->apiConnector->fetchData(self::END_POINT);
         foreach ($content['features'] as $stationData) {
-            $this->data[] = array_merge($this->cleanData($stationData['properties']), [
-                'latitude' => $stationData['geometry']['coordinates'][1],
-                'longitude' => $stationData['geometry']['coordinates'][0],
-            ]);
+            $this->data[] = $this->build(
+                $stationData['properties'],
+                (float)$stationData['geometry']['coordinates'][1],
+                (float)$stationData['geometry']['coordinates'][0],
+            );
         }
     }
 
     public function filterByWindSpeed(float $minSpeed, float $maxSpeed): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['intensidadeVentoKM'] >= $minSpeed &&
-                    (float)$element['intensidadeVentoKM'] <= $maxSpeed
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('intensidadeVentoKM', $minSpeed, $maxSpeed);
     }
 
-    public function filterByTemperature(float $minTemperature, float $maxTemperature): self
+    public function filterByTemperature(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['temperatura'] >= $minTemperature &&
-                    (float)$element['temperatura'] <= $maxTemperature
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('temperatura', $min, $max);
     }
 
     public function filterBySolarRadiation(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['radiacao'] >= $min &&
-                    (float)$element['radiacao'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('radiacao', $min, $max);
     }
 
     public function filterByWindDirection(int $windDirection): self
     {
         $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    $element['idDireccVento'] === $windDirection
-            )
+            array_filter($this->data, fn(HourlyStationObservation $o) => $o->idDireccVento === $windDirection)
         );
 
         return $this;
@@ -96,58 +66,22 @@ class WeatherStationObservationByHour
 
     public function filterByRain(float $min, float $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['precAcumulada'] >= $min &&
-                    (float)$element['precAcumulada'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('precAcumulada', $min, $max);
     }
 
     public function filterByWindSpeedMetersSecond(float $minSpeed, float $maxSpeed): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['intensidadeVento'] >= $minSpeed &&
-                    (float)$element['intensidadeVento'] <= $maxSpeed
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('intensidadeVento', $minSpeed, $maxSpeed);
     }
 
     public function filterByHumidity(int $min, int $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (int)$element['humidade'] >= $min &&
-                    (int)$element['humidade'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('humidade', (float)$min, (float)$max);
     }
 
     public function filterByAtmosphericPressure(int $min, int $max): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) =>
-                    (float)$element['pressao'] >= $min &&
-                    (float)$element['pressao'] <= $max
-            )
-        );
-
-        return $this;
+        return $this->filterFloat('pressao', (float)$min, (float)$max);
     }
 
     public function filterByIdStation(int $idStation): self
@@ -155,31 +89,63 @@ class WeatherStationObservationByHour
         $this->data = array_values(
             array_filter(
                 $this->data,
-                fn (array $element) =>
-                    (int)$element['idEstacao'] === $idStation
+                fn(HourlyStationObservation $o) => $o->idEstacao === $idStation
             )
         );
 
         return $this;
     }
 
+    /**
+     * @return list<HourlyStationObservation>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
-    private function cleanData(array $data): array
+    private function filterFloat(string $property, float $min, float $max): self
     {
-        $cleanData = [];
-        foreach (self::VALID_FIELDS as $validField => $invalidValue) {
-            if (!isset($data[$validField]) || $data[$validField] === $invalidValue) {
-                $cleanData[$validField] = null;
+        $this->data = array_values(
+            array_filter(
+                $this->data,
+                fn(HourlyStationObservation $o) => $o->$property !== null
+                    && (float)$o->$property >= $min && (float)$o->$property <= $max
+            )
+        );
 
+        return $this;
+    }
+
+    /**
+     * @param array<string, mixed> $properties
+     */
+    private function build(array $properties, float $latitude, float $longitude): HourlyStationObservation
+    {
+        $clean = [];
+        foreach (self::VALID_FIELDS as $field => $invalid) {
+            if (!isset($properties[$field]) || $properties[$field] === $invalid) {
+                $clean[$field] = null;
                 continue;
             }
-            $cleanData[$validField] = $data[$validField];
+            $clean[$field] = $properties[$field];
         }
 
-        return $cleanData;
+        return new HourlyStationObservation(
+            time: $clean['time'],
+            idEstacao: $clean['idEstacao'],
+            localEstacao: $clean['localEstacao'],
+            intensidadeVentoKM: $clean['intensidadeVentoKM'],
+            temperatura: $clean['temperatura'],
+            idDireccVento: $clean['idDireccVento'],
+            descDirVento: $clean['descDirVento'],
+            precAcumulada: $clean['precAcumulada'],
+            intensidadeVento: $clean['intensidadeVento'],
+            humidade: $clean['humidade'],
+            pressao: $clean['pressao'],
+            radiacao: $clean['radiacao'],
+            latitude: $latitude,
+            longitude: $longitude,
+        );
     }
 }

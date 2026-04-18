@@ -14,52 +14,56 @@ use Tlab\IpmaApi\Observation\Seismic\SeismicInformation;
 
 class IpmaObservation
 {
-    public static function createSeismicInformationApi(): SeismicInformation
-    {
-        $apiConnector = new ApiConnector();
+    private static ?ApiConnectorInterface $defaultApiConnector = null;
 
-        return new SeismicInformation($apiConnector);
+    private static function resolveApiConnector(?ApiConnectorInterface $apiConnector): ApiConnectorInterface
+    {
+        if ($apiConnector !== null) {
+            return $apiConnector;
+        }
+
+        return self::$defaultApiConnector ??= new ApiConnector();
     }
 
-    public static function createMolluscHarvestingProhibitionApi(): MolluscHarvestingProhibition
-    {
-        $apiConnector = new ApiConnector();
-
-        return new MolluscHarvestingProhibition($apiConnector);
+    public static function createSeismicInformationApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): SeismicInformation {
+        return new SeismicInformation(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createMaximumDailyTemperatureApi(): MaximumDailyTemperature
-    {
-        $apiConnector = new ApiConnector();
-
-        return new MaximumDailyTemperature($apiConnector);
+    public static function createMolluscHarvestingProhibitionApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): MolluscHarvestingProhibition {
+        return new MolluscHarvestingProhibition(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createMinimumDailyTemperatureApi(): MinimumDailyTemperature
-    {
-        $apiConnector = new ApiConnector();
-
-        return new MinimumDailyTemperature($apiConnector);
+    public static function createMaximumDailyTemperatureApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): MaximumDailyTemperature {
+        return new MaximumDailyTemperature(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createPalmerDroughtSeverityIndexApi(): PalmerDroughtSeverityIndex
-    {
-        $apiConnector = new ApiConnector();
-
-        return new PalmerDroughtSeverityIndex($apiConnector);
+    public static function createMinimumDailyTemperatureApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): MinimumDailyTemperature {
+        return new MinimumDailyTemperature(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createTotalDailyPrecipitationApi(): TotalDailyPrecipitation
-    {
-        $apiConnector = new ApiConnector();
-
-        return new TotalDailyPrecipitation($apiConnector);
+    public static function createPalmerDroughtSeverityIndexApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): PalmerDroughtSeverityIndex {
+        return new PalmerDroughtSeverityIndex(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createDailyEvapotranspirationReferenceApi(): DailyEvapotranspirationReference
-    {
-        $apiConnector = new ApiConnector();
+    public static function createTotalDailyPrecipitationApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): TotalDailyPrecipitation {
+        return new TotalDailyPrecipitation(self::resolveApiConnector($apiConnector));
+    }
 
-        return new DailyEvapotranspirationReference($apiConnector);
+    public static function createDailyEvapotranspirationReferenceApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): DailyEvapotranspirationReference {
+        return new DailyEvapotranspirationReference(self::resolveApiConnector($apiConnector));
     }
 }

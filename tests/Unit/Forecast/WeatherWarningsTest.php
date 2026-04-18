@@ -102,7 +102,7 @@ class WeatherWarningsTest extends TestCase
                 'endTime' => '2023-12-05T12:00:00',
                 'awarenessLevelID' => 'green',
             ],
-        ], $warnings->query()->filterByWarningIdArea('FAR')->get());
+        ], array_map(fn ($d) => $d->toArray(), $warnings->query()->filterByWarningIdArea('FAR')->get()));
     }
 
     public function testFilterByAwarenessTypeName(): void
@@ -311,9 +311,9 @@ class WeatherWarningsTest extends TestCase
                 'endTime' => '2023-12-05T11:00:00',
                 'awarenessLevelID' => 'green',
             ]
-        ], $warnings->query()
+        ], array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByAwarenessTypeName('Vento')
-            ->get());
+            ->get()));
     }
 
     public function testFilterByAwarenessLevelId(): void
@@ -329,9 +329,9 @@ class WeatherWarningsTest extends TestCase
                 'endTime' => '2023-12-05T11:00:00',
                 'awarenessLevelID' => 'yellow',
             ],
-        ], $warnings->query()
+        ], array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByAwarenessLevelId('yellow')
-            ->get());
+            ->get()));
     }
 
     public function testFilterByTimeRangeExactMatch(): void
@@ -406,20 +406,20 @@ class WeatherWarningsTest extends TestCase
                 'endTime' => '2023-12-05T12:00:00',
                 'awarenessLevelID' => 'green',
             ],
-        ], $warnings->query()
+        ], array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByWarningIdArea('FAR')
             ->filterByTimeRange(new DateTime('2023-12-02T12:23:00'), new DateTime('2023-12-05T12:00:00'))
-            ->get());
+            ->get()));
     }
 
     public function testFilterByTimeRangeWithinRange(): void
     {
         $warnings = $this->createService();
 
-        $result = $warnings->query()
+        $result = array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByWarningIdArea('FAR')
             ->filterByTimeRange(new DateTime('2023-12-03T00:00:00'), new DateTime('2023-12-04T00:00:00'))
-            ->get();
+            ->get());
 
         self::assertEmpty($result);
     }
@@ -428,9 +428,9 @@ class WeatherWarningsTest extends TestCase
     {
         $warnings = $this->createService();
 
-        $result = $warnings->query()
+        $result = array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByTimeRange(new DateTime('2023-12-01T00:00:00'), new DateTime('2023-12-01T23:59:59'))
-            ->get();
+            ->get());
 
         self::assertEmpty($result);
     }
@@ -439,10 +439,10 @@ class WeatherWarningsTest extends TestCase
     {
         $warnings = $this->createService();
 
-        $result = $warnings->query()
+        $result = array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByWarningIdArea('FAR')
             ->filterByTimeRange(new DateTime('2023-12-01T00:00:00'), new DateTime('2023-12-06T23:59:59'))
-            ->get();
+            ->get());
 
         self::assertCount(8, $result);
     }
@@ -451,10 +451,10 @@ class WeatherWarningsTest extends TestCase
     {
         $warnings = $this->createService();
 
-        $result = $warnings->query()
+        $result = array_map(fn ($d) => $d->toArray(), $warnings->query()
             ->filterByWarningIdArea('ACE')
             ->filterByTimeRange(new DateTime('2023-12-02T11:49:00'), new DateTime('2023-12-05T11:00:00'))
-            ->get();
+            ->get());
 
         self::assertCount(8, $result);
         self::assertEquals('2023-12-02T11:49:00', $result[0]['startTime']);

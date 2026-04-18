@@ -6,14 +6,17 @@ namespace Tlab\IpmaApi\Forecast\Meteorology;
 
 use DateTime;
 use Tlab\IpmaApi\ApiConnectorInterface;
+use Tlab\IpmaApi\Dto\Forecast\FireRiskRecord;
+use Tlab\IpmaApi\Endpoints;
 use Tlab\IpmaApi\Enums\FireRiskLevelEnum;
 use Tlab\IpmaApi\Enums\ForecastFireRiskDayEnum;
 use Tlab\IpmaApi\Utils;
 
 class FireRiskForecast
 {
-    private const END_POINT = 'https://api.ipma.pt/open-data/forecast/meteorology/rcm/rcm-d{idDay}.json';
+    private const END_POINT = Endpoints::FIRE_RISK_FORECAST;
 
+    /** @var list<FireRiskRecord> */
     private array $data;
 
     private DateTime $fileUpdatedAt;
@@ -21,7 +24,6 @@ class FireRiskForecast
     private DateTime $forecastDate;
 
     private DateTime $runDate;
-
 
     public function __construct(private readonly ApiConnectorInterface $apiConnector)
     {
@@ -41,63 +43,47 @@ class FireRiskForecast
 
     public function filterByFireRiskLevel(FireRiskLevelEnum $fireRiskLevel): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => $element['fireRiskLevel'] === $fireRiskLevel->code()
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(FireRiskRecord $r) => $r->fireRiskLevel === $fireRiskLevel->code()
+        ));
 
         return $this;
     }
 
     public function filterByDico(string $dico): self
     {
-        $this->data = array_values(
-            array_filter(
-                $this->data,
-                fn (array $element) => Utils::compareString($element['dico'], $dico)
-            )
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(FireRiskRecord $r) => Utils::compareString($r->dico, $dico)
+        ));
 
         return $this;
     }
 
     public function findLocationsByDistance(float $latitude, float $longitude, float $radio): self
     {
-        $this->data = array_values(
-            array_filter($this->data, fn(array $element) => Utils::distance(
-                $element['latitude'],
-                $element['longitude'],
-                $latitude,
-                $longitude
-            ) <= $radio)
-        );
+        $this->data = array_values(array_filter(
+            $this->data,
+            fn(FireRiskRecord $r) => Utils::distance($r->latitude, $r->longitude, $latitude, $longitude) <= $radio
+        ));
 
         return $this;
     }
 
-    public function findLocationByNearDistance(float $latitude, float $longitude): array
+    public function findLocationByNearDistance(float $latitude, float $longitude): ?FireRiskRecord
     {
-        $shortestDistanceData = [];
-        $shortestDistance = null;
-        foreach ($this->data as $datum) {
-            $distance = Utils::distance($datum['latitude'], $datum['longitude'], $latitude, $longitude);
-
-            if ($shortestDistance === null) {
-                $shortestDistanceData = $datum;
-                $shortestDistance = $distance;
-
-                continue;
-            }
-
-            if ($shortestDistance > $distance) {
-                $shortestDistance = $distance;
-                $shortestDistanceData = $datum;
+        $nearest = null;
+        $shortest = null;
+        foreach ($this->data as $record) {
+            $distance = Utils::distance($record->latitude, $record->longitude, $latitude, $longitude);
+            if ($shortest === null || $distance < $shortest) {
+                $shortest = $distance;
+                $nearest = $record;
             }
         }
 
-        return $shortestDistanceData;
+        return $nearest;
     }
 
     public function getFileUpdatedAt(): DateTime
@@ -115,23 +101,30 @@ class FireRiskForecast
         return $this->runDate;
     }
 
+    /**
+     * @return list<FireRiskRecord>
+     */
     public function get(): array
     {
         return $this->data;
     }
 
+    /**
+     * @param array<int, array<string, mixed>> $data
+     * @return list<FireRiskRecord>
+     */
     private function map(array $data): array
     {
-        $cleanData = [];
+        $out = [];
         foreach ($data as $datum) {
-            $cleanData[] = [
-                'dico' => $datum['dico'],
-                'fireRiskLevel' => (int)$datum['data']['rcm'],
-                'latitude' => (float)$datum['latitude'],
-                'longitude' => (float)$datum['longitude'],
-            ];
+            $out[] = new FireRiskRecord(
+                dico: (string)$datum['dico'],
+                fireRiskLevel: (int)$datum['data']['rcm'],
+                latitude: (float)$datum['latitude'],
+                longitude: (float)$datum['longitude'],
+            );
         }
 
-        return $cleanData;
+        return $out;
     }
 }

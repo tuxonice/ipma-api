@@ -125,10 +125,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
                     ],
                 ],
             ],
-            $molluscHarvestingProhibition
+            array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
                 ->from()
                 ->filterByName('tavira')
-                ->get()
+                ->get())
         );
     }
 
@@ -196,10 +196,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
                     ],
                 ],
             ],
-            $molluscHarvestingProhibition
+            array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
                 ->from()
                 ->filterByCode('L2')
-                ->get()
+                ->get())
         );
     }
 
@@ -808,10 +808,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
                     ],
                 ],
             ],
-            $molluscHarvestingProhibition
+            array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
                 ->from()
                 ->filterByZoneType('LITORAL')
-                ->get()
+                ->get())
         );
     }
 
@@ -1082,10 +1082,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
                     ],
                 ],
             ],
-            $molluscHarvestingProhibition
+            array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
                 ->from()
                 ->filterByRegionName('Alentejo')
-                ->get()
+                ->get())
         );
     }
 
@@ -1215,10 +1215,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
                     ],
                 ],
             ],
-            $molluscHarvestingProhibition
+            array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
                 ->from()
                 ->filterByStatus('CLOSE')
-                ->get()
+                ->get())
         );
     }
 
@@ -1331,10 +1331,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
                 ],
             ],
-        ], $molluscHarvestingProhibition
+        ], array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
             ->from()
             ->filterByCommonName('Castanhola')
-            ->get());
+            ->get()));
     }
 
     public function testFilterByScientificName(): void
@@ -1446,10 +1446,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
 
                 ],
             ],
-        ], $molluscHarvestingProhibition
+        ], array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
             ->from()
             ->filterByScientificName('Glycymeris glycymeris')
-            ->get());
+            ->get()));
     }
 
     public function testFilterByClassification(): void
@@ -1460,16 +1460,16 @@ class MolluscHarvestingProhibitionTest extends TestCase
             ->willReturn($this->molluscHarvestingProhibition);
         $molluscHarvestingProhibition = new MolluscHarvestingProhibition($apiConnector);
 
-        self::assertCount(31, $molluscHarvestingProhibition
+        self::assertCount(31, array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
             ->from()
             ->filterByClassification('B')
-            ->get());
+            ->get()));
 
-        self::assertCount(5, $molluscHarvestingProhibition
+        self::assertCount(5, array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
             ->from()
             ->filterByClose()
             ->filterByClassification('B')
-            ->get());
+            ->get()));
     }
 
     public function testFindLocationsByDistance(): void
@@ -1616,10 +1616,10 @@ class MolluscHarvestingProhibitionTest extends TestCase
                     ],
                 ],
             ],
-        ], $molluscHarvestingProhibition
+        ], array_map(fn ($d) => $d->toArray(), $molluscHarvestingProhibition
             ->from()
             ->findLocationsByDistance(37.101157, -7.831360, 10)
-            ->get());
+            ->get()));
     }
 
     public function testFindLocationsByNearDistance(): void
@@ -1695,7 +1695,7 @@ class MolluscHarvestingProhibitionTest extends TestCase
             ],
             $molluscHarvestingProhibition
                 ->from()
-                ->findLocationByNearDistance(37.101157, -7.831360)
+                ->findLocationByNearDistance(37.101157, -7.831360)?->toArray()
         );
     }
 }

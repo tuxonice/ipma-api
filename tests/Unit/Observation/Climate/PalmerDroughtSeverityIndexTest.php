@@ -39,9 +39,9 @@ class PalmerDroughtSeverityIndexTest extends TestCase
                     'std' => '0.188053237399',
                 ],
             ],
-            $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
+            array_map(fn ($d) => $d->toArray(), $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
                 ->filterByDate('2023-04-01', '2023-05-01')
-                ->get()
+                ->get())
         );
     }
 
@@ -67,9 +67,9 @@ class PalmerDroughtSeverityIndexTest extends TestCase
                     'std' => '0.0113067636071',
                 ],
             ],
-            $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
+            array_map(fn ($d) => $d->toArray(), $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
                 ->filterByMinimum(-1.1, -1.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -95,9 +95,9 @@ class PalmerDroughtSeverityIndexTest extends TestCase
                     'std' => '0.0969759287114',
                 ],
             ],
-            $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
+            array_map(fn ($d) => $d->toArray(), $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
                 ->filterByMaximum(-3.7, -3.6)
-                ->get()
+                ->get())
         );
     }
 
@@ -139,9 +139,9 @@ class PalmerDroughtSeverityIndexTest extends TestCase
                     'std' => '0.196044223288',
                 ],
             ],
-            $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
+            array_map(fn ($d) => $d->toArray(), $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
                 ->filterByRange(0.4, 0.8)
-                ->get()
+                ->get())
         );
     }
 
@@ -175,9 +175,9 @@ class PalmerDroughtSeverityIndexTest extends TestCase
                     'std' => '0.0378179140969',
                 ],
             ],
-            $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
+            array_map(fn ($d) => $d->toArray(), $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
                 ->filterByMean(-1.5, -1.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -211,9 +211,9 @@ class PalmerDroughtSeverityIndexTest extends TestCase
                     'std' => '0.196044223288',
                 ],
             ],
-            $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
+            array_map(fn ($d) => $d->toArray(), $palmerDroughtSeverityIndex->from('faro', 'castro-marim', '0804')
                 ->filterByStd(0.18, 0.2)
-                ->get()
+                ->get())
         );
     }
 }

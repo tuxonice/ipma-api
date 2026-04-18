@@ -33,9 +33,9 @@ class WeatherStationObservationByHourTest extends TestCase
             'idEstacao' => 1200501,
             'localEstacao' => 'Flores (Aeroporto)',
             'descDirVento' => 'N',
-        ], $weatherStationObservationByHour
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour
             ->filterByWindDirection(9)
-            ->get()[0]);
+            ->get())[0]);
     }
 
     public function testFilterByAtmosphericPressure()
@@ -64,9 +64,9 @@ class WeatherStationObservationByHourTest extends TestCase
                 'localEstacao' => 'Corvo (Aeródromo)',
                 'descDirVento' => 'SW',
             ],
-        ], $weatherStationObservationByHour
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour
             ->filterByAtmosphericPressure(1000.0, 1021.0)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByWindSpeed()
@@ -96,9 +96,9 @@ class WeatherStationObservationByHourTest extends TestCase
                 'descDirVento' => 'SW',
 
             ],
-        ], $weatherStationObservationByHour
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour
             ->filterByWindSpeed(50.0, 55.0)
-            ->get());
+            ->get()));
     }
 
     public function testFilterByTemperature()
@@ -110,7 +110,7 @@ class WeatherStationObservationByHourTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $weatherStationObservationByHour = new WeatherStationObservationByHour($apiConnectorMock);
 
-        $result = $weatherStationObservationByHour->filterByTemperature(16.5, 16.5)->get();
+        $result = array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour->filterByTemperature(16.5, 16.5)->get());
 
         self::assertEquals([
             [
@@ -157,7 +157,7 @@ class WeatherStationObservationByHourTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $weatherStationObservationByHour = new WeatherStationObservationByHour($apiConnectorMock);
 
-        $result = $weatherStationObservationByHour->filterByRain(1.4, 1.5)->get();
+        $result = array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour->filterByRain(1.4, 1.5)->get());
 
         self::assertEquals([
             [
@@ -188,7 +188,7 @@ class WeatherStationObservationByHourTest extends TestCase
             ->willReturn(json_decode($contents, true));
         $weatherStationObservationByHour = new WeatherStationObservationByHour($apiConnectorMock);
 
-        $result = $weatherStationObservationByHour->filterByIdStation(1210803)->get();
+        $result = array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour->filterByIdStation(1210803)->get());
 
         self::assertEquals([
             [
@@ -333,7 +333,7 @@ class WeatherStationObservationByHourTest extends TestCase
                 'latitude' => 40.611,
                 'longitude' => -7.6084,
             ],
-        ], $weatherStationObservationByHour->filterByWindSpeedMetersSecond(4.0, 4.1)->get());
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour->filterByWindSpeedMetersSecond(4.0, 4.1)->get()));
     }
 
     public function testFilterBySolarRadiation()
@@ -394,7 +394,7 @@ class WeatherStationObservationByHourTest extends TestCase
                 'latitude' => 32.8675,
                 'longitude' => -17.1714,
             ],
-        ], $weatherStationObservationByHour->filterBySolarRadiation(900.0, 1000.0)->get());
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour->filterBySolarRadiation(900.0, 1000.0)->get()));
     }
 
     public function testFilterByHumidity()
@@ -455,6 +455,6 @@ class WeatherStationObservationByHourTest extends TestCase
                 'latitude' => 40.9809,
                 'longitude' => -7.8832,
             ],
-        ], $weatherStationObservationByHour->filterByHumidity(20, 30)->get());
+        ], array_map(fn ($d) => $d->toArray(), $weatherStationObservationByHour->filterByHumidity(20, 30)->get()));
     }
 }

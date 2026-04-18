@@ -1,4 +1,16 @@
 parameters:
-	level: 5
+	level: 8
 	paths:
 		- src
+	treatPhpDocTypesAsCertain: false
+	ignoreErrors:
+		-
+			# League\Csv\Reader exposes a generic we don't use; suppressing at the boundary.
+			identifier: missingType.generics
+			path: src/ApiConnector.php
+		-
+			identifier: missingType.generics
+			path: src/ApiConnectorInterface.php
+		-
+			identifier: missingType.generics
+			path: src/CachedApiConnector.php

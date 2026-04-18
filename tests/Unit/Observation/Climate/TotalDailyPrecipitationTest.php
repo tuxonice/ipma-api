@@ -39,9 +39,9 @@ class TotalDailyPrecipitationTest extends TestCase
                     'std' => '0.0',
                 ],
             ],
-            $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
                 ->filterByDate('2024-01-05', '2024-01-06')
-                ->get()
+                ->get())
         );
     }
 
@@ -75,9 +75,9 @@ class TotalDailyPrecipitationTest extends TestCase
                     'std' => '0.6',
                 ],
             ],
-            $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
                 ->filterByMinimum(5.0, 6.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -111,9 +111,9 @@ class TotalDailyPrecipitationTest extends TestCase
                     'std' => '0.3',
                 ],
             ],
-            $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
                 ->filterByMaximum(1.0, 1.0)
-                ->get()
+                ->get())
         );
     }
 
@@ -147,9 +147,9 @@ class TotalDailyPrecipitationTest extends TestCase
                     'std' => '0.85',
                 ],
             ],
-            $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
                 ->filterByRange(2.5, 2.5)
-                ->get()
+                ->get())
         );
     }
 
@@ -183,9 +183,9 @@ class TotalDailyPrecipitationTest extends TestCase
                     'std' => '1.4',
                 ],
             ],
-            $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
                 ->filterByMean(5.0, 5.5)
-                ->get()
+                ->get())
         );
     }
 
@@ -219,9 +219,9 @@ class TotalDailyPrecipitationTest extends TestCase
                     'std' => '0.5',
                 ],
             ],
-            $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
+            array_map(fn ($d) => $d->toArray(), $totalDailyPrecipitation->from('beja', 'castro-verde', '0206')
                 ->filterByStd(0.5, 0.5)
-                ->get()
+                ->get())
         );
     }
 }

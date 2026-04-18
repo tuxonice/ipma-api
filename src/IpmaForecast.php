@@ -13,45 +13,50 @@ use Tlab\IpmaApi\Forecast\Warnings\WeatherWarnings;
 
 class IpmaForecast
 {
-    public static function createDailyWeatherForecastByDayApi(): DailyWeatherForecastByDay
-    {
-        $apiConnector = new ApiConnector();
+    private static ?ApiConnectorInterface $defaultApiConnector = null;
 
-        return new DailyWeatherForecastByDay($apiConnector);
+    private static function resolveApiConnector(?ApiConnectorInterface $apiConnector): ApiConnectorInterface
+    {
+        if ($apiConnector !== null) {
+            return $apiConnector;
+        }
+
+        return self::$defaultApiConnector ??= new ApiConnector();
     }
 
-    public static function createDailyWeatherForecastByLocalApi(): DailyWeatherForecastByLocation
-    {
-        $apiConnector = new ApiConnector();
-
-        return new DailyWeatherForecastByLocation($apiConnector);
+    public static function createDailyWeatherForecastByDayApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): DailyWeatherForecastByDay {
+        return new DailyWeatherForecastByDay(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createFireRiskForecastApi(): FireRiskForecast
-    {
-        $apiConnector = new ApiConnector();
-
-        return new FireRiskForecast($apiConnector);
+    public static function createDailyWeatherForecastByLocalApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): DailyWeatherForecastByLocation {
+        return new DailyWeatherForecastByLocation(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createUltravioletRiskForecastApi(): UltravioletRiskForecast
-    {
-        $apiConnector = new ApiConnector();
-
-        return new UltravioletRiskForecast($apiConnector);
+    public static function createFireRiskForecastApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): FireRiskForecast {
+        return new FireRiskForecast(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createSeaStateForecastApi(): SeaStateForecast
-    {
-        $apiConnector = new ApiConnector();
-
-        return new SeaStateForecast($apiConnector);
+    public static function createUltravioletRiskForecastApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): UltravioletRiskForecast {
+        return new UltravioletRiskForecast(self::resolveApiConnector($apiConnector));
     }
 
-    public static function createWeatherWarningsApi(): WeatherWarnings
-    {
-        $apiConnector = new ApiConnector();
+    public static function createSeaStateForecastApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): SeaStateForecast {
+        return new SeaStateForecast(self::resolveApiConnector($apiConnector));
+    }
 
-        return new WeatherWarnings($apiConnector);
+    public static function createWeatherWarningsApi(
+        ?ApiConnectorInterface $apiConnector = null
+    ): WeatherWarnings {
+        return new WeatherWarnings(self::resolveApiConnector($apiConnector));
     }
 }
