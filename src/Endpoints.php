@@ -32,9 +32,9 @@ final class Endpoints
 
     // Observation - climate (CSV)
     public const MAXIMUM_DAILY_TEMPERATURE
-        = self::BASE_URL . '/observation/climate/temperature-max/{district}/mtxmn-{DICO}-{municipality}.csv';
+        = self::BASE_URL . '/observation/climate/temperature-max/{district}/mtxmx-{DICO}-{municipality}.csv';
     public const MINIMUM_DAILY_TEMPERATURE
-        = self::BASE_URL . '/observation/climate/temperature-min/{district}/mtxmn-{DICO}-{municipality}.csv';
+        = self::BASE_URL . '/observation/climate/temperature-min/{district}/mtnmn-{DICO}-{municipality}.csv';
     public const TOTAL_DAILY_PRECIPITATION
         = self::BASE_URL . '/observation/climate/precipitation-total/{district}/mrrto-{DICO}-{municipality}.csv';
     public const DAILY_EVAPOTRANSPIRATION_REFERENCE
