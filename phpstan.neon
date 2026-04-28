@@ -11,6 +11,3 @@ parameters:
 		-
 			identifier: missingType.generics
 			path: src/ApiConnectorInterface.php
-		-
-			identifier: missingType.generics
-			path: src/CachedApiConnector.php

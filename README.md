@@ -27,14 +27,22 @@ For more information about the official API, please visit https://api.ipma.pt/ (
 
 ## Usage
 
-Here are a few examples of how to use this package.
+> **Heads up — breaking change:** every factory now **requires** a PSR-16
+> `Psr\SimpleCache\CacheInterface`. This is intentional: IPMA asks consumers
+> not to hammer their endpoints, and most of them change infrequently
+> (locations, stations, forecasts). See [Caching responses (PSR-16)](#caching-responses-psr-16)
+> below for setup.
+
+Here are a few examples of how to use this package. All snippets assume
+`$cache` is a `Psr\SimpleCache\CacheInterface` instance (e.g. a
+`Symfony\Component\Cache\Psr16Cache` backed by any PSR-6 adapter).
 
 ### Get Daily Weather Forecast
 
 ```php
 use Tlab\IpmaApi\IpmaForecast;
 
-$api = IpmaForecast::createDailyWeatherForecastByDayApi();
+$api = IpmaForecast::createDailyWeatherForecastByLocalApi($cache);
 $result = $api->from(1020500) // Location ID for Beja
               ->filterByMaxTemperatureRange(18.0, 19.0)
               ->get();
@@ -43,10 +51,10 @@ $result = $api->from(1020500) // Location ID for Beja
 ### Get Seismic Information
 
 ```php
-use Tlab\IpmaApi\IpmaService;
+use Tlab\IpmaApi\IpmaObservation;
 use Tlab\IpmaApi\Enums\SeismicInformationAreaEnum;
 
-$api = IpmaService::createSeismicInformationApi();
+$api = IpmaObservation::createSeismicInformationApi($cache);
 $events = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
               ->get();
 ```
@@ -56,7 +64,7 @@ $events = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
 ```php
 use Tlab\IpmaApi\IpmaService;
 
-$api = IpmaService::createWeatherStationsApi();
+$api = IpmaService::createWeatherStationsApi($cache);
 $stations = $api->filterByName('Lisboa', strict: false)->get();
 ```
 
@@ -66,7 +74,7 @@ All endpoints now return **typed DTOs** under `Tlab\IpmaApi\Dto\*`:
 use Tlab\IpmaApi\Enums\SeismicInformationAreaEnum;
 use Tlab\IpmaApi\IpmaObservation;
 
-$events = IpmaObservation::createSeismicInformationApi()
+$events = IpmaObservation::createSeismicInformationApi($cache)
     ->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
     ->filterByMagnitude(2.0, 5.0)
     ->get();
@@ -85,25 +93,49 @@ For more detailed examples and a full list of available endpoints, please see th
 
 ## Caching responses (PSR-16)
 
-Most IPMA endpoints change infrequently (locations, stations, forecasts). The
-library ships with a PSR-16 caching decorator you can wrap around any
-`ApiConnectorInterface`:
+IPMA asks consumers to avoid hitting their endpoints too often. To enforce
+this, a PSR-16 `Psr\SimpleCache\CacheInterface` is **required** by every
+factory and by `ApiConnector` itself — there is no unbounded-request mode.
+
+Any PSR-16 implementation works. Using `symfony/cache` as an example:
 
 ```php
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\Cache\Psr16Cache;
-use Tlab\IpmaApi\ApiConnector;
-use Tlab\IpmaApi\CachedApiConnector;
 use Tlab\IpmaApi\IpmaService;
 
 $cache = new Psr16Cache(new FilesystemAdapter());
-$connector = new CachedApiConnector(new ApiConnector(), $cache, ttlSeconds: 3600);
 
-// Pass the cached connector to any factory:
-$api = IpmaService::createDistrictsIslandsLocationsApi($connector);
+// Share the same $cache instance across every factory call:
+$locations = IpmaService::createDistrictsIslandsLocationsApi($cache);
+$stations  = IpmaService::createWeatherStationsApi($cache, ttlSeconds: 86400);
 ```
 
-Only JSON responses (`fetchData`) are cached; CSV responses are passed through.
+Every factory accepts an optional `int $ttlSeconds = 3600` as its second
+argument. You can also construct the connector directly:
+
+```php
+use Tlab\IpmaApi\ApiConnector;
+
+$connector = new ApiConnector($cache, ttlSeconds: 3600);
+```
+
+Only JSON responses (`fetchData`) are cached; CSV responses (`fetchCsv`) are
+passed through because `League\Csv\Reader` cannot be reliably serialised.
+Cache keys are namespaced as `ipma_api.<sha256(url)>`.
+
+### Migrating from previous versions
+
+- `Tlab\IpmaApi\CachedApiConnector` has been **removed**. Its caching
+  behaviour is now built into `ApiConnector`.
+- `new ApiConnector()` (no arguments) no longer works: you must pass a
+  `CacheInterface`.
+- `IpmaForecast::create*Api()`, `IpmaObservation::create*Api()` and
+  `IpmaService::create*Api()` no longer accept an `ApiConnectorInterface`;
+  they take `(CacheInterface $cache, int $ttlSeconds = 3600)` instead.
+- The shared lazy default `ApiConnector` singleton inside the facades has
+  been removed. Instantiate and share your own `$cache` (and therefore your
+  own connectors) at the composition root.
 
 ---
 
@@ -120,7 +152,7 @@ use Tlab\IpmaApi\Exception\IpmaApiException;
 use Tlab\IpmaApi\IpmaForecast;
 
 try {
-    $data = IpmaForecast::createDailyWeatherForecastByDayApi()->from(1020500)->get();
+    $data = IpmaForecast::createDailyWeatherForecastByLocalApi($cache)->from(1020500)->get();
 } catch (IpmaApiException $e) {
     // $e->getPrevious() returns the underlying Symfony exception, if any.
     error_log($e->getMessage());

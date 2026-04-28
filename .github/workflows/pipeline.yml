@@ -16,10 +16,10 @@ jobs:
         php-version: ['8.1', '8.2', '8.3', '8.4']
     name: PHP ${{ matrix.php-version }}
     steps:
-      - uses: shivammathur/setup-php@a36e1e52ff4a1c9e9c9be31551ee4712a6cb6bd0
+      - uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
         with:
           php-version: ${{ matrix.php-version }}
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run Code style
@@ -35,11 +35,11 @@ jobs:
     env:
       MIN_COVERAGE: '80'
     steps:
-      - uses: shivammathur/setup-php@a36e1e52ff4a1c9e9c9be31551ee4712a6cb6bd0
+      - uses: shivammathur/setup-php@accd6127cb78bee3e8082180cb391013d204ef9f # 2.37.0
         with:
           php-version: '8.3'
           coverage: xdebug
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Install Dependencies
         run: composer install --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run tests with coverage
@@ -48,7 +48,7 @@ jobs:
         run: php bin/check-coverage.php coverage.xml "${MIN_COVERAGE}"
       - name: Upload coverage artifact
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: coverage-clover
           path: coverage.xml

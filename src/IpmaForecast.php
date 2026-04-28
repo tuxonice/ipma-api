@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tlab\IpmaApi;
 
-use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByDay;
+use Psr\SimpleCache\CacheInterface;
 use Tlab\IpmaApi\Forecast\Meteorology\DailyWeatherForecastByLocation;
 use Tlab\IpmaApi\Forecast\Meteorology\FireRiskForecast;
 use Tlab\IpmaApi\Forecast\Meteorology\UltravioletRiskForecast;
@@ -13,50 +13,38 @@ use Tlab\IpmaApi\Forecast\Warnings\WeatherWarnings;
 
 class IpmaForecast
 {
-    private static ?ApiConnectorInterface $defaultApiConnector = null;
-
-    private static function resolveApiConnector(?ApiConnectorInterface $apiConnector): ApiConnectorInterface
-    {
-        if ($apiConnector !== null) {
-            return $apiConnector;
-        }
-
-        return self::$defaultApiConnector ??= new ApiConnector();
-    }
-
-    public static function createDailyWeatherForecastByDayApi(
-        ?ApiConnectorInterface $apiConnector = null
-    ): DailyWeatherForecastByDay {
-        return new DailyWeatherForecastByDay(self::resolveApiConnector($apiConnector));
-    }
-
     public static function createDailyWeatherForecastByLocalApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): DailyWeatherForecastByLocation {
-        return new DailyWeatherForecastByLocation(self::resolveApiConnector($apiConnector));
+        return new DailyWeatherForecastByLocation(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createFireRiskForecastApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): FireRiskForecast {
-        return new FireRiskForecast(self::resolveApiConnector($apiConnector));
+        return new FireRiskForecast(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createUltravioletRiskForecastApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): UltravioletRiskForecast {
-        return new UltravioletRiskForecast(self::resolveApiConnector($apiConnector));
+        return new UltravioletRiskForecast(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createSeaStateForecastApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): SeaStateForecast {
-        return new SeaStateForecast(self::resolveApiConnector($apiConnector));
+        return new SeaStateForecast(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createWeatherWarningsApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): WeatherWarnings {
-        return new WeatherWarnings(self::resolveApiConnector($apiConnector));
+        return new WeatherWarnings(new ApiConnector($cache, $ttlSeconds));
     }
 }

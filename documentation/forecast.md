@@ -1,5 +1,11 @@
 # 1. Forecast
 
+> Every `create*Api()` factory below takes a PSR-16
+> `Psr\SimpleCache\CacheInterface` as its first argument (with an optional
+> `int $ttlSeconds = 3600` second argument). See the README's *Caching
+> responses (PSR-16)* section for how to build `$cache`. Snippets below assume
+> `$cache` is already constructed.
+
 ### 🌤️ 1.1 Meteorology
 
 #### 1.1.1 Daily weather forecast up to 5 days aggregated by location
@@ -23,7 +29,7 @@
 ```php
 use Tlab\IpmaApi\IpmaForecast;
 
-$api = IpmaForecast::createDailyWeatherForecastByDayApi();
+$api = IpmaForecast::createDailyWeatherForecastByLocalApi($cache);
 $result = $api->from(1020500)
               ->filterByMaxTemperatureRange(18.0, 19.0)
               ->get();
@@ -58,77 +64,7 @@ $result = $api->from(1020500)
 ],
 ```
 
-#### 1.1.2 Daily weather forecast for up to 3 days, aggregated information per day
-(_Previsão meteorológica diária até 3 dias, informação agregada por dia_)
-
-> https://api.ipma.pt/open-data/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json
-
-| Field             | Type    | Description           |
-|-------------------|---------|-----------------------|
-| globalIdLocal     | integer | Local ID              |
-| idWeatherType     | integer | Weather type code     |
-| windSpeedClass    | integer | Wind speed class type |
-| rainfallIntensity | integer | Rainfall intensity    |
-| rainfallProb      | float   | Rainfall probability  |
-| minTemp           | float   | Minimum temperature   |
-| maxTemp           | float   | Maximum temperature   |
-| winDir            | string  | Wind direction        |
-| latitude          | float   | Latitude              |
-| longitude         | float   | Longitude             |
-
-```php
-use Tlab\IpmaApi\Enums\ForecastDayEnum;
-use Tlab\IpmaApi\IpmaForecast;
-
-$api = IpmaForecast::createDailyWeatherForecastByDayApi();
-$result = $api
-            ->from(ForecastDayEnum::TODAY)
-            ->filterByIdWeatherType(3)
-            ->get();
-```
-
-```php
-[
-                [
-                    'globalIdLocal' => 1020500,
-                    'idWeatherType' => 3,
-                    'windSpeedClass' => 1,
-                    'rainfallIntensity' => null,
-                    'rainfallProb' => 1.0,
-                    'minTemp' => 11.0,
-                    'maxTemp' => 18.0,
-                    'winDir' => 'W',
-                    'latitude' => 38.0200,
-                    'longitude' => -7.8700,
-                ],
-                [
-                    'globalIdLocal' => 1080500,
-                    'idWeatherType' => 3,
-                    'windSpeedClass' => 1,
-                    'rainfallIntensity' => null,
-                    'rainfallProb' => 0.0,
-                    'minTemp' => 12.0,
-                    'maxTemp' => 20.0,
-                    'winDir' => 'SW',
-                    'latitude' => 37.0146,
-                    'longitude' => -7.9331,
-                ],
-                [
-                    'globalIdLocal' => 1151300,
-                    'idWeatherType' => 3,
-                    'windSpeedClass' => 2,
-                    'rainfallIntensity' => null,
-                    'rainfallProb' => 27.0,
-                    'minTemp' => 14.0,
-                    'maxTemp' => 19.0,
-                    'winDir' => 'SW',
-                    'latitude' => 37.9560,
-                    'longitude' => -8.8643,
-                ],
-            ]
-```
-
-#### 1.1.3 Fire risk forecast for up to 2 days, aggregated information per day
+#### 1.1.2 Fire risk forecast for up to 2 days, aggregated information per day
 
 (_Previsão do risco de incêndio até 2 dias, informação agregada por dia_)
 
@@ -156,7 +92,7 @@ Fire risk code
 use Tlab\IpmaApi\Enums\ForecastFireRiskDayEnum;
 use Tlab\IpmaApi\Forecast\Meteorology\FireRiskForecast;
 
-$api = IpmaForecast::createFireRiskForecastApi();
+$api = IpmaForecast::createFireRiskForecastApi($cache);
 $result = $api
             ->from(ForecastFireRiskDayEnum::TODAY)
             ->filterByDico('1002')
@@ -174,7 +110,7 @@ $result = $api
     ],
 ```
 
-#### 1.1.4 Ultraviolet risk forecast for up to 3 days (Ultraviolet Index)
+#### 1.1.3 Ultraviolet risk forecast for up to 3 days (Ultraviolet Index)
 
 (_Previsão do risco de ultravioletas até 3 dias (Índice Ultravioleta_)
 
@@ -199,7 +135,7 @@ $result = $api
 ```php
 use Tlab\IpmaApi\IpmaForecast;
 
-$api = IpmaForecast::createUltravioletRiskForecastApi();
+$api = IpmaForecast::createUltravioletRiskForecastApi($cache);
 $result = $api->filterByUvIndex(2.4, 2.4)
               ->get();
 ```
@@ -251,7 +187,7 @@ Note: Only daily data is available. {idDay} ranges **from** 0 to 2, where:
 use Tlab\IpmaApi\Enums\SeaStateForecastDayEnum;
 use Tlab\IpmaApi\IpmaForecast;
 
-$api = IpmaForecast::createSeaStateForecastApi();
+$api = IpmaForecast::createSeaStateForecastApi($cache);
 $result = $api->from(SeaStateForecastDayEnum::TODAY)
               ->filterByGlobalIdLocal(2320126)
               ->filterByWavePeriodMax(5.0,6.0)
@@ -295,9 +231,9 @@ $result = $api->from(SeaStateForecastDayEnum::TODAY)
 | endTime           | datetime | End date/time of the notice duration                                                                                                                 |
 
 ```php
-use Tlab\IpmaApi\IpmaService;
+use Tlab\IpmaApi\IpmaForecast;
 
-$warningsApi = IpmaService::createWarningsApi();
+$warningsApi = IpmaForecast::createWeatherWarningsApi($cache);
 $result = $warningsApi->query()
     ->filterByWarningIdArea('BGC')
     ->filterByAwarenessTypeName('Nevoeiro')

@@ -14,22 +14,31 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   `Tlab\IpmaApi\Dto\ToArrayTrait`) for round-tripping to arrays. Shared
   `Dto\Climate\ClimateObservation` covers all five climate CSV endpoints.
 - `Tlab\IpmaApi\Endpoints` — central catalog of all IPMA open-data endpoints.
-- `Tlab\IpmaApi\CachedApiConnector` — PSR-16 caching decorator for `ApiConnectorInterface`
-  (caches `fetchData()` responses; `fetchCsv()` is passed through).
 - Domain exception hierarchy under `Tlab\IpmaApi\Exception\`:
   `IpmaApiException` (base), `IpmaTransportException`, `IpmaResponseException`,
   `IpmaDecodingException`. `ApiConnector` now wraps Symfony HTTP client exceptions
   into these.
 - `ApiConnector::__construct()` accepts an optional `HttpClientInterface` for
   injection and reuse across calls.
-- `IpmaForecast`, `IpmaService`, `IpmaObservation` factory methods accept an
-  optional `ApiConnectorInterface`; when omitted a single shared default instance
-  is reused.
 - Coverage gate in CI (`bin/check-coverage.php`) enforcing a minimum line
   coverage threshold against a Clover report.
-- `psr/simple-cache` added as a runtime dependency.
+- `psr/simple-cache` added as a runtime dependency — a PSR-16 cache is now
+  **required** to use the library (see *Changed* / *Removed* below).
 
 ### Changed
+- **BC:** Caching is now mandatory. `ApiConnector::__construct()` takes a
+  required `Psr\SimpleCache\CacheInterface $cache` as its first argument
+  (followed by `int $ttlSeconds = 3600`, `string $keyPrefix = 'ipma_api.'`,
+  and an optional `HttpClientInterface`). Caching is built in and applied to
+  JSON responses only (`fetchCsv()` is passed through). Cache keys are
+  `ipma_api.<sha256(url)>`. This change is deliberate to protect IPMA's
+  open-data endpoints from excessive traffic.
+- **BC:** `IpmaForecast::create*Api()`, `IpmaObservation::create*Api()` and
+  `IpmaService::create*Api()` no longer accept an
+  `?ApiConnectorInterface $apiConnector = null`. Their new signature is
+  `(CacheInterface $cache, int $ttlSeconds = 3600)`. Each call instantiates
+  a fresh `ApiConnector` wired to the provided cache; the previous shared
+  lazy default `ApiConnector` singleton has been removed.
 - **BC:** Every endpoint's `get()` now returns `list<Dto>` instead of
   `array<array-key, mixed>`. Array-based consumers should either switch to DTO
   property access (e.g. `$event->magnitude`) or call `$event->toArray()` to keep
@@ -45,10 +54,21 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - `ApiConnectorInterface` now documents a single `@throws IpmaApiException`
   instead of leaking Symfony contracts.
 
+### Removed
+- **BC:** `Tlab\IpmaApi\CachedApiConnector` has been removed. Its behaviour
+  was folded into `ApiConnector` itself — pass your PSR-16 cache directly
+  to `new ApiConnector($cache, $ttlSeconds)` (or to the facade factories).
+- **BC:** The parameterless `new ApiConnector()` constructor is gone; a
+  `CacheInterface` is now required.
+
 ### Fixed
 - `ApiConnector::fetchData()` missing `@throws` annotations on the PHPDoc.
 
 ### Notes
+- **Major breaking release.** At minimum, every call site must now pass a
+  PSR-16 `CacheInterface` to the facade factories (or to `ApiConnector`
+  directly). See the *Migrating from previous versions* section of the
+  README for the full rewrite pattern.
 - **Breaking for direct exception handlers:** code that previously caught
   `Symfony\Contracts\HttpClient\Exception\*` from `fetchData()`/`fetchCsv()`
   must now catch `Tlab\IpmaApi\Exception\IpmaApiException` (or a subclass).

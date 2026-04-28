@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Tlab\IpmaApi;
 
 use League\Csv\Reader;
+use Psr\SimpleCache\CacheInterface;
 use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Contracts\HttpClient\Exception\DecodingExceptionInterface;
 use Symfony\Contracts\HttpClient\Exception\HttpExceptionInterface;
@@ -19,8 +20,12 @@ class ApiConnector implements ApiConnectorInterface
 {
     private HttpClientInterface $client;
 
-    public function __construct(?HttpClientInterface $client = null)
-    {
+    public function __construct(
+        private readonly CacheInterface $cache,
+        private readonly int $ttlSeconds = 3600,
+        private readonly string $keyPrefix = 'ipma_api.',
+        ?HttpClientInterface $client = null,
+    ) {
         $this->client = $client ?? HttpClient::create();
     }
 
@@ -32,10 +37,17 @@ class ApiConnector implements ApiConnectorInterface
      */
     public function fetchData(string $endPoint): array
     {
+        $key = $this->cacheKey($endPoint);
+
+        /** @var array<mixed>|null $cached */
+        $cached = $this->cache->get($key);
+        if (is_array($cached)) {
+            return $cached;
+        }
+
         try {
             $response = $this->client->request('GET', $endPoint);
-
-            return $response->toArray();
+            $data = $response->toArray();
         } catch (DecodingExceptionInterface $e) {
             throw new IpmaDecodingException(
                 sprintf('Failed to decode response body from "%s".', $endPoint),
@@ -55,6 +67,10 @@ class ApiConnector implements ApiConnectorInterface
                 $e
             );
         }
+
+        $this->cache->set($key, $data, $this->ttlSeconds);
+
+        return $data;
     }
 
     /**
@@ -82,5 +98,10 @@ class ApiConnector implements ApiConnectorInterface
                 $e
             );
         }
+    }
+
+    private function cacheKey(string $endPoint): string
+    {
+        return $this->keyPrefix . hash('sha256', $endPoint);
     }
 }

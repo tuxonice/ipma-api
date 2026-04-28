@@ -1,5 +1,11 @@
 # 2. Observation
 
+> Every `create*Api()` factory below takes a PSR-16
+> `Psr\SimpleCache\CacheInterface` as its first argument (with an optional
+> `int $ttlSeconds = 3600` second argument). See the README's *Caching
+> responses (PSR-16)* section for how to build `$cache`. Snippets below assume
+> `$cache` is already constructed.
+
 ### 🌐 2.1 Seismic
 
 #### Seismic information, Arch. Azores, Main land and Arch. Madeira. Includes 30 days of information
@@ -48,10 +54,10 @@
 **Example Usage:**
 
 ```php
-use Tlab\IpmaApi\IpmaService;
+use Tlab\IpmaApi\IpmaObservation;
 use Tlab\IpmaApi\Enums\SeismicInformationAreaEnum;
 
-$api = IpmaService::createSeismicInformationApi();
+$api = IpmaObservation::createSeismicInformationApi($cache);
 
 // Get all seismic events for mainland and Madeira
 $events = $api->from(SeismicInformationAreaEnum::MAIN_LAND_AND_MADEIRA)
@@ -156,7 +162,7 @@ _Notes:_
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$molluscHarvestingProhibition = IpmaObservation::createMolluscHarvestingProhibitionApi();
+$molluscHarvestingProhibition = IpmaObservation::createMolluscHarvestingProhibitionApi($cache);
 $result = $molluscHarvestingProhibition
     ->from()
     ->filterByName('tavira')
@@ -270,7 +276,7 @@ $result = $molluscHarvestingProhibition
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$api = IpmaObservation::createDailyEvapotranspirationReferenceApi();
+$api = IpmaObservation::createDailyEvapotranspirationReferenceApi($cache);
 $result = $api->from('beja', 'castro-verde', '0206')
               ->filterByDate('2023-12-09', '2023-12-10')
               ->get();
@@ -288,7 +294,7 @@ $result = $api->from('beja', 'castro-verde', '0206')
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$api = IpmaObservation::createMaximumDailyTemperatureApi();
+$api = IpmaObservation::createMaximumDailyTemperatureApi($cache);
 $result = $api->from('guarda', 'manteigas', '0908')
               ->filterByDate('2023-12-09', '2023-12-10')
               ->get();
@@ -306,7 +312,7 @@ $result = $api->from('guarda', 'manteigas', '0908')
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$api = IpmaObservation::createMinimumDailyTemperatureApi();
+$api = IpmaObservation::createMinimumDailyTemperatureApi($cache);
 $result = $api->from('guarda', 'manteigas', '0908')
               ->filterByDate('2023-12-09', '2023-12-10')
               ->get();
@@ -324,7 +330,7 @@ $result = $api->from('guarda', 'manteigas', '0908')
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$api = IpmaObservation::createPalmerDroughtSeverityIndexApi();
+$api = IpmaObservation::createPalmerDroughtSeverityIndexApi($cache);
 $result = $api->from('faro', 'castro-marim', '0804')
               ->filterByDate('2023-12-01', '2023-12-31')
               ->get();
@@ -342,7 +348,7 @@ $result = $api->from('faro', 'castro-marim', '0804')
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$api = IpmaObservation::createTotalDailyPrecipitationApi();
+$api = IpmaObservation::createTotalDailyPrecipitationApi($cache);
 $result = $api->from('beja', 'castro-verde', '0206')
               ->filterByDate('2023-12-09', '2023-12-10')
               ->get();
@@ -370,34 +376,9 @@ $result = $api->from('beja', 'castro-verde', '0206')
 ```php
 use Tlab\IpmaApi\IpmaObservation;
 
-$api = IpmaObservation::createWeatherStationObservationApi();
-$result = $api->from()
+$api = IpmaObservation::createWeatherStationObservationApi($cache);
+$result = $api->from(1210702) // station id; see auxiliary service "Weather stations"
               ->filterByDate('2023-12-09', '2023-12-10')
-              ->get();
-```
-
-#### 2.4.2 Weather Station Observation by Hour
-
-> https://api.ipma.pt/open-data/observation/meteorology/stations/observations-hour.json
-
-| Field | Type | Description |
-|---|---|---|
-| idEstacao | integer | Station ID |
-| temperatura | float | Temperature value |
-| humidade | float | Humidity value |
-| direccaoVento | string | Wind direction |
-| intensidadeVento | float | Wind speed value |
-| intensidadeVentoKmh | float | Wind speed value in km/h |
-| pressao | float | Atmospheric pressure value |
-| precipitacao | float | Precipitation value |
-| radiacao | float | Solar radiation value |
-| data | string | Date of observation |
-
-```php
-use Tlab\IpmaApi\IpmaObservation;
-
-$api = IpmaObservation::createWeatherStationObservationByHourApi();
-$result = $api->from()
-              ->filterByDate('2023-12-09', '2023-12-10')
+              ->filterByTemperature(5.0, 25.0)
               ->get();
 ```

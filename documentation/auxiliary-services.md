@@ -1,5 +1,11 @@
 # 3. Auxiliary services
 
+> Every `create*Api()` factory below takes a PSR-16
+> `Psr\SimpleCache\CacheInterface` as its first argument (with an optional
+> `int $ttlSeconds = 3600` second argument). See the README's *Caching
+> responses (PSR-16)* section for how to build `$cache`. Snippets below assume
+> `$cache` is already constructed.
+
 ### 3.1 List of identifiers for district capitals and islands
 
 | Field          | Type    | Description                                                   |
@@ -14,7 +20,7 @@
 | longitude      | float   | Longitude (decimal degrees)                                   |
 
 ```php
-$api = IpmaService::createDistrictsIslandsLocationsApi();
+$api = IpmaService::createDistrictsIslandsLocationsApi($cache);
 $result = $api->query()
               ->filterByIdRegion(1)
               ->filterByIdWarningArea('MCS')
@@ -63,7 +69,7 @@ $result = $api->query()
 | longitude     | string  | longitude (decimal degrees)                                   |
 
 ```php
-$api = IpmaService::createSeaLocationsApi();
+$api = IpmaService::createSeaLocationsApi($cache);
 $result = $api->query()
               ->filterByIdRegiao(1)
               ->filterByIdAreaAviso('AVR')
@@ -98,7 +104,7 @@ $result = $api->query()
 | longitude | float   | longitude (decimal degrees) |
 
 ```php
-$api = IpmaService::createWeatherStationsApi();
+$api = IpmaService::createWeatherStationsApi($cache);
 $result = $api->filterByName('selvagens')
               ->get();
 ```

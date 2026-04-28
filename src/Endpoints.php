@@ -27,8 +27,6 @@ final class Endpoints
     public const SEISMIC_INFORMATION              = self::BASE_URL . '/observation/seismic/{idArea}.json';
     public const MOLLUSC_HARVESTING_PROHIBITION   = self::BASE_URL . '/observation/biology/bivalves/CI_SNMB.geojson';
     public const WEATHER_STATION_OBSERVATION      = self::BASE_URL . '/observation/meteorology/stations/observations.json';
-    public const WEATHER_STATION_OBSERVATION_BY_HOUR
-        = self::BASE_URL . '/observation/meteorology/stations/obs-surface.geojson';
 
     // Observation - climate (CSV)
     public const MAXIMUM_DAILY_TEMPERATURE
@@ -43,8 +41,6 @@ final class Endpoints
         = self::BASE_URL . '/observation/climate/mpdsi/{district}/mpdsi-{DICO}-{municipality}.csv';
 
     // Forecast
-    public const DAILY_WEATHER_FORECAST_BY_DAY
-        = self::BASE_URL . '/forecast/meteorology/cities/daily/hp-daily-forecast-day{idDay}.json';
     public const DAILY_WEATHER_FORECAST_BY_LOCATION
         = self::BASE_URL . '/forecast/meteorology/cities/daily/{globalIdLocal}.json';
     public const FIRE_RISK_FORECAST        = self::BASE_URL . '/forecast/meteorology/rcm/rcm-d{idDay}.json';

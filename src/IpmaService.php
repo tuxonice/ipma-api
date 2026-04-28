@@ -4,38 +4,31 @@ declare(strict_types=1);
 
 namespace Tlab\IpmaApi;
 
+use Psr\SimpleCache\CacheInterface;
 use Tlab\IpmaApi\Service\DistrictsIslandsLocations;
 use Tlab\IpmaApi\Service\SeaLocations;
 use Tlab\IpmaApi\Service\WeatherStations;
 
 class IpmaService
 {
-    private static ?ApiConnectorInterface $defaultApiConnector = null;
-
-    private static function resolveApiConnector(?ApiConnectorInterface $apiConnector): ApiConnectorInterface
-    {
-        if ($apiConnector !== null) {
-            return $apiConnector;
-        }
-
-        return self::$defaultApiConnector ??= new ApiConnector();
-    }
-
     public static function createDistrictsIslandsLocationsApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): DistrictsIslandsLocations {
-        return new DistrictsIslandsLocations(self::resolveApiConnector($apiConnector));
+        return new DistrictsIslandsLocations(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createSeaLocationsApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): SeaLocations {
-        return new SeaLocations(self::resolveApiConnector($apiConnector));
+        return new SeaLocations(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createWeatherStationsApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): WeatherStations {
-        return new WeatherStations(self::resolveApiConnector($apiConnector));
+        return new WeatherStations(new ApiConnector($cache, $ttlSeconds));
     }
 }

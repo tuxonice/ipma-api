@@ -4,66 +4,71 @@ declare(strict_types=1);
 
 namespace Tlab\IpmaApi;
 
+use Psr\SimpleCache\CacheInterface;
 use Tlab\IpmaApi\Observation\Biology\MolluscHarvestingProhibition;
 use Tlab\IpmaApi\Observation\Climate\DailyEvapotranspirationReference;
 use Tlab\IpmaApi\Observation\Climate\MaximumDailyTemperature;
 use Tlab\IpmaApi\Observation\Climate\MinimumDailyTemperature;
 use Tlab\IpmaApi\Observation\Climate\PalmerDroughtSeverityIndex;
 use Tlab\IpmaApi\Observation\Climate\TotalDailyPrecipitation;
+use Tlab\IpmaApi\Observation\Meteorology\WeatherStationObservation;
 use Tlab\IpmaApi\Observation\Seismic\SeismicInformation;
 
 class IpmaObservation
 {
-    private static ?ApiConnectorInterface $defaultApiConnector = null;
-
-    private static function resolveApiConnector(?ApiConnectorInterface $apiConnector): ApiConnectorInterface
-    {
-        if ($apiConnector !== null) {
-            return $apiConnector;
-        }
-
-        return self::$defaultApiConnector ??= new ApiConnector();
-    }
-
     public static function createSeismicInformationApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): SeismicInformation {
-        return new SeismicInformation(self::resolveApiConnector($apiConnector));
+        return new SeismicInformation(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createMolluscHarvestingProhibitionApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): MolluscHarvestingProhibition {
-        return new MolluscHarvestingProhibition(self::resolveApiConnector($apiConnector));
+        return new MolluscHarvestingProhibition(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createMaximumDailyTemperatureApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): MaximumDailyTemperature {
-        return new MaximumDailyTemperature(self::resolveApiConnector($apiConnector));
+        return new MaximumDailyTemperature(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createMinimumDailyTemperatureApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): MinimumDailyTemperature {
-        return new MinimumDailyTemperature(self::resolveApiConnector($apiConnector));
+        return new MinimumDailyTemperature(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createPalmerDroughtSeverityIndexApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): PalmerDroughtSeverityIndex {
-        return new PalmerDroughtSeverityIndex(self::resolveApiConnector($apiConnector));
+        return new PalmerDroughtSeverityIndex(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createTotalDailyPrecipitationApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): TotalDailyPrecipitation {
-        return new TotalDailyPrecipitation(self::resolveApiConnector($apiConnector));
+        return new TotalDailyPrecipitation(new ApiConnector($cache, $ttlSeconds));
     }
 
     public static function createDailyEvapotranspirationReferenceApi(
-        ?ApiConnectorInterface $apiConnector = null
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
     ): DailyEvapotranspirationReference {
-        return new DailyEvapotranspirationReference(self::resolveApiConnector($apiConnector));
+        return new DailyEvapotranspirationReference(new ApiConnector($cache, $ttlSeconds));
+    }
+
+    public static function createWeatherStationObservationApi(
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
+    ): WeatherStationObservation {
+        return new WeatherStationObservation(new ApiConnector($cache, $ttlSeconds));
     }
 }
