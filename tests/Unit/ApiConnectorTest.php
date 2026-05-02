@@ -92,7 +92,7 @@ class ApiConnectorTest extends TestCase
         $this->assertEquals('11.2', $records[1]['value']);
     }
 
-    public function testFetchCsvIsNotCached(): void
+    public function testFetchCsvIsCachedOnSecondCall(): void
     {
         $calls = 0;
         $httpClient = new MockHttpClient(function () use (&$calls) {
@@ -102,9 +102,11 @@ class ApiConnectorTest extends TestCase
 
         $connector = new ApiConnector($this->cache, ttlSeconds: 60, client: $httpClient);
 
-        $connector->fetchCsv('https://api.ipma.pt/x.csv');
-        $connector->fetchCsv('https://api.ipma.pt/x.csv');
+        $first = $connector->fetchCsv('https://api.ipma.pt/x.csv');
+        $second = $connector->fetchCsv('https://api.ipma.pt/x.csv');
 
-        $this->assertSame(2, $calls, 'CSV responses must not be cached');
+        $this->assertSame(1, $calls, 'HTTP must be called only once; second call served from cache');
+        $this->assertInstanceOf(Reader::class, $first);
+        $this->assertInstanceOf(Reader::class, $second);
     }
 }

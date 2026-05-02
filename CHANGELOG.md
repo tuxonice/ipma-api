@@ -28,9 +28,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - **BC:** Caching is now mandatory. `ApiConnector::__construct()` takes a
   required `Psr\SimpleCache\CacheInterface $cache` as its first argument
-  (followed by `int $ttlSeconds = 3600`, `string $keyPrefix = 'ipma_api.'`,
+  (followed by `int $ttlSeconds = 3600`, `string $keyPrefix = 'ipma_api.',
   and an optional `HttpClientInterface`). Caching is built in and applied to
-  JSON responses only (`fetchCsv()` is passed through). Cache keys are
+  both JSON (`fetchData()`) and CSV (`fetchCsv()`) responses — the raw CSV
+  string is stored and reconstructed as a `Reader` on hit. Cache keys are
   `ipma_api.<sha256(url)>`. This change is deliberate to protect IPMA's
   open-data endpoints from excessive traffic.
 - **BC:** `IpmaForecast::create*Api()`, `IpmaObservation::create*Api()` and

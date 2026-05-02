@@ -81,10 +81,17 @@ class ApiConnector implements ApiConnectorInterface
      */
     public function fetchCsv(string $endPoint): Reader
     {
+        $key = $this->cacheKey($endPoint);
+
+        /** @var string|null $cached */
+        $cached = $this->cache->get($key);
+        if (is_string($cached)) {
+            return Reader::fromString($cached);
+        }
+
         try {
             $response = $this->client->request('GET', $endPoint);
-
-            return Reader::fromString($response->getContent());
+            $content = $response->getContent();
         } catch (HttpExceptionInterface $e) {
             throw new IpmaResponseException(
                 sprintf('Unexpected HTTP response from "%s".', $endPoint),
@@ -98,6 +105,10 @@ class ApiConnector implements ApiConnectorInterface
                 $e
             );
         }
+
+        $this->cache->set($key, $content, $this->ttlSeconds);
+
+        return Reader::fromString($content);
     }
 
     private function cacheKey(string $endPoint): string

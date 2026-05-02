@@ -120,9 +120,9 @@ use Tlab\IpmaApi\ApiConnector;
 $connector = new ApiConnector($cache, ttlSeconds: 3600);
 ```
 
-Only JSON responses (`fetchData`) are cached; CSV responses (`fetchCsv`) are
-passed through because `League\Csv\Reader` cannot be reliably serialised.
-Cache keys are namespaced as `ipma_api.<sha256(url)>`.
+Both JSON (`fetchData`) and CSV (`fetchCsv`) responses are cached. The raw
+CSV string is stored in cache and reconstructed as a `Reader` on hit. Cache
+keys are namespaced as `ipma_api.<sha256(url)>`.
 
 ### Migrating from previous versions
 
