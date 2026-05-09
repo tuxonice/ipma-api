@@ -9,3 +9,4 @@ docker-compose.yml
 composer.lock
 /coverage/
 /coverage.xml
+/CLAUDE.md

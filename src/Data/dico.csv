@@ -1,0 +1,309 @@
+dico,nuts1,nuts2,nuts3,district,municipality,area,perimeter,altitudeMax,altitudeMin
+101,Continente,Centro,Região de Aveiro,Aveiro,Águeda,335.27,105,762,4
+102,Continente,Centro,Região de Aveiro,Aveiro,Albergaria-a-Velha,158.83,82,425,0
+103,Continente,Centro,Região de Aveiro,Aveiro,Anadia,216.63,75,525,13
+104,Continente,Norte,Área Metropolitana do Porto,Aveiro,Arouca,329.11,118,1222,50
+105,Continente,Centro,Região de Aveiro,Aveiro,Aveiro,197.58,77,78,0
+106,Continente,Norte,Tâmega e Sousa,Aveiro,Castelo de Paiva,115.01,61,694,25
+107,Continente,Norte,Área Metropolitana do Porto,Aveiro,Espinho,21.06,24,100,0
+108,Continente,Centro,Região de Aveiro,Aveiro,Estarreja,108.17,68,130,0
+109,Continente,Norte,Área Metropolitana do Porto,Aveiro,Santa Maria da Feira,215.88,88,450,25
+110,Continente,Centro,Região de Aveiro,Aveiro,Ílhavo,73.48,41,61,0
+111,Continente,Centro,Região de Coimbra,Aveiro,Mealhada,110.66,65,568,25
+112,Continente,Centro,Região de Aveiro,Aveiro,Murtosa,73.09,47,17,0
+113,Continente,Norte,Área Metropolitana do Porto,Aveiro,Oliveira de Azeméis,161.1,86,645,25
+114,Continente,Centro,Região de Aveiro,Aveiro,Oliveira do Bairro,87.32,52,78,5
+115,Continente,Centro,Região de Aveiro,Aveiro,Ovar,147.7,71,225,0
+116,Continente,Norte,Área Metropolitana do Porto,Aveiro,São João da Madeira,7.94,13,276,150
+117,Continente,Centro,Região de Aveiro,Aveiro,Sever do Vouga,129.88,68,841,25
+118,Continente,Centro,Região de Aveiro,Aveiro,Vagos,164.92,60,68,0
+119,Continente,Norte,Área Metropolitana do Porto,Aveiro,Vale de Cambra,147.33,69,1046,75
+201,Continente,Alentejo,Baixo Alentejo,Beja,Aljustrel,458.47,112,258,63
+202,Continente,Alentejo,Baixo Alentejo,Beja,Almodôvar,777.88,199,577,150
+203,Continente,Alentejo,Baixo Alentejo,Beja,Alvito,264.85,81,315,100
+204,Continente,Alentejo,Baixo Alentejo,Beja,Barrancos,168.42,106,412,125
+205,Continente,Alentejo,Baixo Alentejo,Beja,Beja,1146.48,208,284,25
+206,Continente,Alentejo,Baixo Alentejo,Beja,Castro Verde,569.44,163,288,125
+207,Continente,Alentejo,Baixo Alentejo,Beja,Cuba,172.09,80,309,150
+208,Continente,Alentejo,Baixo Alentejo,Beja,Ferreira do Alentejo,648.21,137,277,24
+209,Continente,Alentejo,Baixo Alentejo,Beja,Mértola,1292.87,266,371,25
+210,Continente,Alentejo,Baixo Alentejo,Beja,Moura,958.46,220,584,75
+211,Continente,Alentejo,Alentejo Litoral,Beja,Odemira,1720.6,291,515,0
+212,Continente,Alentejo,Baixo Alentejo,Beja,Ourique,663.31,225,377,65
+213,Continente,Alentejo,Baixo Alentejo,Beja,Serpa,1105.63,179,523,25
+214,Continente,Alentejo,Baixo Alentejo,Beja,Vidigueira,316.61,125,412,75
+301,Continente,Norte,Cávado,Braga,Amares,81.95,53,901,24
+302,Continente,Norte,Cávado,Braga,Barcelos,378.9,109,488,9
+303,Continente,Norte,Cávado,Braga,Braga,183.4,67,572,22
+304,Continente,Norte,Ave,Braga,Cabeceiras de Basto,241.82,82,1200,150
+305,Continente,Norte,Tâmega e Sousa,Braga,Celorico de Basto,181.07,71,851,75
+306,Continente,Norte,Cávado,Braga,Esposende,95.41,56,281,0
+307,Continente,Norte,Ave,Braga,Fafe,219.08,77,894,175
+308,Continente,Norte,Ave,Braga,Guimarães,241,115,613,83
+309,Continente,Norte,Ave,Braga,Póvoa de Lanhoso,134.65,75,743,50
+310,Continente,Norte,Cávado,Braga,Terras de Bouro,277.46,92,1525,75
+311,Continente,Norte,Ave,Braga,Vieira do Minho,216.44,83,1262,75
+312,Continente,Norte,Ave,Braga,Vila Nova de Famalicão,201.59,81,462,25
+313,Continente,Norte,Cávado,Braga,Vila Verde,228.67,81,789,21
+314,Continente,Norte,Ave,Braga,Vizela,24.7,34,478,125
+401,Continente,Norte,Terras de Trás-os-Montes,Bragança,Alfândega da Fé,321.95,93,1199,150
+402,Continente,Norte,Terras de Trás-os-Montes,Bragança,Bragança,1173.57,199,1489,325
+403,Continente,Norte,Douro,Bragança,Carrazeda de Ansiães,279.24,88,898,75
+404,Continente,Norte,Douro,Bragança,Freixo de Espada à Cinta,244.14,101,885,124
+405,Continente,Norte,Terras de Trás-os-Montes,Bragança,Macedo de Cavaleiros,699.14,175,1263,225
+406,Continente,Norte,Terras de Trás-os-Montes,Bragança,Miranda do Douro,487.18,146,911,400
+407,Continente,Norte,Terras de Trás-os-Montes,Bragança,Mirandela,658.96,149,941,175
+408,Continente,Norte,Terras de Trás-os-Montes,Bragança,Mogadouro,760.65,174,997,150
+409,Continente,Norte,Douro,Bragança,Torre de Moncorvo,531.56,148,920,100
+410,Continente,Norte,Terras de Trás-os-Montes,Bragança,Vila Flor,265.81,92,837,123
+411,Continente,Norte,Terras de Trás-os-Montes,Bragança,Vimioso,481.59,130,955,250
+412,Continente,Norte,Terras de Trás-os-Montes,Bragança,Vinhais,694.75,158,1273,275
+501,Continente,Centro,Beiras e Serra da Estrela,Castelo Branco,Belmonte,118.76,59,890,446
+502,Continente,Centro,Beira Baixa,Castelo Branco,Castelo Branco,1438.19,256,1227,121
+503,Continente,Centro,Beiras e Serra da Estrela,Castelo Branco,Covilhã,555.6,139,1993,375
+504,Continente,Centro,Beiras e Serra da Estrela,Castelo Branco,Fundão,700.2,193,1227,275
+505,Continente,Centro,Beira Baixa,Castelo Branco,Idanha-a-Nova,1416.34,212,828,125
+506,Continente,Centro,Beira Baixa,Castelo Branco,Oleiros,471.09,148,1085,250
+507,Continente,Centro,Beira Baixa,Castelo Branco,Penamacor,563.71,164,1076,300
+508,Continente,Centro,Beira Baixa,Castelo Branco,Proença-a-Nova,395.4,146,954,114
+509,Continente,Centro,Beira Baixa,Castelo Branco,Sertã,446.73,126,1084,125
+510,Continente,Centro,Beira Baixa,Castelo Branco,Vila de Rei,191.55,74,594,125
+511,Continente,Centro,Beira Baixa,Castelo Branco,Vila Velha de Ródão,329.91,115,570,50
+601,Continente,Centro,Região de Coimbra,Coimbra,Arganil,332.84,148,1418,75
+602,Continente,Centro,Região de Coimbra,Coimbra,Cantanhede,390.88,132,137,0
+603,Continente,Centro,Região de Coimbra,Coimbra,Coimbra,319.4,137,500,9
+604,Continente,Centro,Região de Coimbra,Coimbra,Condeixa-a-Nova,138.67,73,466,12
+605,Continente,Centro,Região de Coimbra,Coimbra,Figueira da Foz,379.05,107,257,0
+606,Continente,Centro,Região de Coimbra,Coimbra,Góis,263.3,111,1204,150
+607,Continente,Centro,Região de Coimbra,Coimbra,Lousã,138.4,56,1205,75
+608,Continente,Centro,Região de Coimbra,Coimbra,Mira,124.03,49,64,0
+609,Continente,Centro,Região de Coimbra,Coimbra,Miranda do Corvo,126.38,73,940,50
+610,Continente,Centro,Região de Coimbra,Coimbra,Montemor-o-Velho,228.96,99,127,2
+611,Continente,Centro,Região de Coimbra,Coimbra,Oliveira do Hospital,234.52,102,1244,150
+612,Continente,Centro,Região de Coimbra,Coimbra,Pampilhosa da Serra,396.46,169,1418,300
+613,Continente,Centro,Região de Coimbra,Coimbra,Penacova,216.73,87,550,36
+614,Continente,Centro,Região de Coimbra,Coimbra,Penela,134.8,92,873,150
+615,Continente,Centro,Região de Coimbra,Coimbra,Soure,265.06,116,532,6
+616,Continente,Centro,Região de Coimbra,Coimbra,Tábua,199.79,83,518,143
+617,Continente,Centro,Região de Coimbra,Coimbra,Vila Nova de Poiares,84.45,52,458,42
+701,Continente,Alentejo,Alentejo Central,Évora,Alandroal,542.68,167,416,111
+702,Continente,Alentejo,Alentejo Central,Évora,Arraiolos,683.75,177,412,150
+703,Continente,Alentejo,Alentejo Central,Évora,Borba,145.19,86,550,250
+704,Continente,Alentejo,Alentejo Central,Évora,Estremoz,513.8,187,653,205
+705,Continente,Alentejo,Alentejo Central,Évora,Évora,1307.08,300,441,150
+706,Continente,Alentejo,Alentejo Central,Évora,Montemor-o-Novo,1232.97,278,424,25
+707,Continente,Alentejo,Alentejo Central,Évora,Mora,443.95,143,206,38
+708,Continente,Alentejo,Alentejo Central,Évora,Mourão,278.63,123,286,100
+709,Continente,Alentejo,Alentejo Central,Évora,Portel,601.01,141,424,100
+710,Continente,Alentejo,Alentejo Central,Évora,Redondo,369.51,127,653,187
+711,Continente,Alentejo,Alentejo Central,Évora,Reguengos de Monsaraz,464,114,363,100
+712,Continente,Alentejo,Alentejo Central,Évora,Vendas Novas,222.39,89,190,25
+713,Continente,Alentejo,Alentejo Central,Évora,Viana do Alentejo,393.67,130,374,72
+714,Continente,Alentejo,Alentejo Central,Évora,Vila Viçosa,194.86,114,475,165
+801,Continente,Algarve,Algarve,Faro,Albufeira,140.66,82,227,0
+802,Continente,Algarve,Algarve,Faro,Alcoutim,575.36,170,379,25
+803,Continente,Algarve,Algarve,Faro,Aljezur,323.5,147,370,0
+804,Continente,Algarve,Algarve,Faro,Castro Marim,300.84,102,276,0
+805,Continente,Algarve,Algarve,Faro,Faro,202.57,98,410,0
+806,Continente,Algarve,Algarve,Faro,Lagoa,88.25,58,103,0
+807,Continente,Algarve,Algarve,Faro,Lagos,212.99,88,255,0
+808,Continente,Algarve,Algarve,Faro,Loulé,763.67,209,589,0
+809,Continente,Algarve,Algarve,Faro,Monchique,395.3,142,902,25
+810,Continente,Algarve,Algarve,Faro,Olhão,130.86,60,410,0
+811,Continente,Algarve,Algarve,Faro,Portimão,182.06,83,325,0
+812,Continente,Algarve,Algarve,Faro,São Brás de Alportel,153.37,87,530,125
+813,Continente,Algarve,Algarve,Faro,Silves,680.06,167,426,0
+814,Continente,Algarve,Algarve,Faro,Tavira,606.97,161,541,0
+815,Continente,Algarve,Algarve,Faro,Vila do Bispo,179.06,97,156,0
+816,Continente,Algarve,Algarve,Faro,Vila Real de Santo António,61.25,61,225,0
+901,Continente,Centro,Viseu Dão Lafões,Guarda,Aguiar da Beira,206.77,67,989,450
+902,Continente,Centro,Beiras e Serra da Estrela,Guarda,Almeida,517.98,119,845,500
+903,Continente,Centro,Beiras e Serra da Estrela,Guarda,Celorico da Beira,247.22,81,1256,375
+904,Continente,Centro,Beiras e Serra da Estrela,Guarda,Figueira de Castelo Rodrigo,508.57,112,976,124
+905,Continente,Centro,Beiras e Serra da Estrela,Guarda,Fornos de Algodres,131.45,79,915,325
+906,Continente,Centro,Beiras e Serra da Estrela,Guarda,Gouveia,300.61,98,1626,250
+907,Continente,Centro,Beiras e Serra da Estrela,Guarda,Guarda,712.1,162,1287,441
+908,Continente,Centro,Beiras e Serra da Estrela,Guarda,Manteigas,121.98,65,1993,518
+909,Continente,Centro,Beiras e Serra da Estrela,Guarda,Mêda,286.05,100,945,225
+910,Continente,Centro,Beiras e Serra da Estrela,Guarda,Pinhel,484.52,156,926,150
+911,Continente,Centro,Beiras e Serra da Estrela,Guarda,Sabugal,822.7,182,1223,450
+912,Continente,Centro,Beiras e Serra da Estrela,Guarda,Seia,435.69,118,1993,175
+913,Continente,Centro,Beiras e Serra da Estrela,Guarda,Trancoso,361.52,120,986,425
+914,Continente,Norte,Douro,Guarda,Vila Nova de Foz Côa,398.15,125,814,82
+1001,Continente,Oeste e Vale do Tejo,Oeste,Leiria,Alcobaça,408.14,168,504,0
+1002,Continente,Centro,Região de Leiria,Leiria,Alvaiázere,160.48,74,618,96
+1003,Continente,Centro,Região de Leiria,Leiria,Ansião,176.09,83,533,175
+1004,Continente,Centro,Região de Leiria,Leiria,Batalha,103.42,64,523,50
+1005,Continente,Oeste e Vale do Tejo,Oeste,Leiria,Bombarral,91.29,61,205,11
+1006,Continente,Oeste e Vale do Tejo,Oeste,Leiria,Caldas da Rainha,255.69,106,255,0
+1007,Continente,Centro,Região de Leiria,Leiria,Castanheira de Pêra,66.77,45,1205,350
+1008,Continente,Centro,Região de Leiria,Leiria,Figueiró dos Vinhos,173.44,106,1009,125
+1009,Continente,Centro,Região de Leiria,Leiria,Leiria,565.09,158,410,0
+1010,Continente,Centro,Região de Leiria,Leiria,Marinha Grande,187.25,74,165,0
+1011,Continente,Oeste e Vale do Tejo,Oeste,Leiria,Nazaré,82.43,59,177,0
+1012,Continente,Oeste e Vale do Tejo,Oeste,Leiria,Óbidos,141.55,73,222,0
+1013,Continente,Centro,Região de Leiria,Leiria,Pedrógão Grande,128.75,69,779,150
+1014,Continente,Oeste e Vale do Tejo,Oeste,Leiria,Peniche,77.55,61,165,0
+1015,Continente,Centro,Região de Leiria,Leiria,Pombal,626,135,560,0
+1016,Continente,Centro,Região de Leiria,Leiria,Porto de Mós,261.83,97,615,50
+1101,Continente,Oeste e Vale do Tejo,Oeste,Lisboa,Alenquer,304.22,101,666,2
+1102,Continente,Oeste e Vale do Tejo,Oeste,Lisboa,Arruda dos Vinhos,77.96,73,395,44
+1103,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Lisboa,Azambuja,262.66,121,194,2
+1104,Continente,Oeste e Vale do Tejo,Oeste,Lisboa,Cadaval,174.89,64,665,46
+1105,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Cascais,97.4,72,475,0
+1106,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Lisboa,100.05,50,228,0
+1107,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Loures,167.24,90,409,0
+1108,Continente,Oeste e Vale do Tejo,Oeste,Lisboa,Lourinhã,147.17,69,201,0
+1109,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Mafra,291.66,126,431,0
+1110,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Oeiras,45.88,43,199,0
+1111,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Sintra,319.23,115,528,0
+1112,Continente,Oeste e Vale do Tejo,Oeste,Lisboa,Sobral de Monte Agraço,52.1,68,442,125
+1113,Continente,Oeste e Vale do Tejo,Oeste,Lisboa,Torres Vedras,407.15,117,394,0
+1114,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Vila Franca de Xira,318.19,137,378,0
+1115,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Amadora,23.78,30,258,50
+1116,Continente,Grande Lisboa,Grande Lisboa,Lisboa,Odivelas,26.54,32,339,24
+1201,Continente,Alentejo,Alto Alentejo,Portalegre,Alter do Chão,362.07,108,413,147
+1202,Continente,Alentejo,Alto Alentejo,Portalegre,Arronches,314.65,97,584,236
+1203,Continente,Alentejo,Alto Alentejo,Portalegre,Avis,605.97,178,245,75
+1204,Continente,Alentejo,Alto Alentejo,Portalegre,Campo Maior,247.2,76,341,173
+1205,Continente,Alentejo,Alto Alentejo,Portalegre,Castelo de Vide,264.91,102,825,125
+1206,Continente,Alentejo,Alto Alentejo,Portalegre,Crato,398.07,128,445,150
+1207,Continente,Alentejo,Alto Alentejo,Portalegre,Elvas,631.29,148,496,150
+1208,Continente,Alentejo,Alto Alentejo,Portalegre,Fronteira,248.6,103,371,150
+1209,Continente,Alentejo,Alto Alentejo,Portalegre,Gavião,294.59,100,312,50
+1210,Continente,Alentejo,Alto Alentejo,Portalegre,Marvão,154.9,68,1027,200
+1211,Continente,Alentejo,Alto Alentejo,Portalegre,Monforte,420.25,120,402,225
+1212,Continente,Alentejo,Alto Alentejo,Portalegre,Nisa,575.68,154,463,50
+1213,Continente,Alentejo,Alto Alentejo,Portalegre,Ponte de Sor,839.82,178,285,46
+1214,Continente,Alentejo,Alto Alentejo,Portalegre,Portalegre,447.14,122,1027,250
+1215,Continente,Alentejo,Alto Alentejo,Portalegre,Sousel,279.32,119,454,150
+1301,Continente,Norte,Tâmega e Sousa,Porto,Amarante,301.33,118,1348,50
+1302,Continente,Norte,Tâmega e Sousa,Porto,Baião,174.53,74,1416,50
+1303,Continente,Norte,Tâmega e Sousa,Porto,Felgueiras,115.74,58,575,145
+1304,Continente,Norte,Área Metropolitana do Porto,Porto,Gondomar,131.92,80,470,5
+1305,Continente,Norte,Tâmega e Sousa,Porto,Lousada,96.08,56,578,175
+1306,Continente,Norte,Área Metropolitana do Porto,Porto,Maia,82.95,70,255,35
+1307,Continente,Norte,Tâmega e Sousa,Porto,Marco de Canaveses,201.89,95,962,8
+1308,Continente,Norte,Área Metropolitana do Porto,Porto,Matosinhos,62.42,59,134,0
+1309,Continente,Norte,Tâmega e Sousa,Porto,Paços de Ferreira,70.99,46,570,175
+1310,Continente,Norte,Área Metropolitana do Porto,Porto,Paredes,156.76,79,519,25
+1311,Continente,Norte,Tâmega e Sousa,Porto,Penafiel,212.24,85,586,22
+1312,Continente,Norte,Área Metropolitana do Porto,Porto,Porto,41.42,36,157,0
+1313,Continente,Norte,Área Metropolitana do Porto,Porto,Póvoa de Varzim,82.21,63,202,0
+1314,Continente,Norte,Área Metropolitana do Porto,Porto,Santo Tirso,136.56,69,535,36
+1315,Continente,Norte,Área Metropolitana do Porto,Porto,Valongo,75.12,53,385,50
+1316,Continente,Norte,Área Metropolitana do Porto,Porto,Vila do Conde,149.03,68,235,0
+1317,Continente,Norte,Área Metropolitana do Porto,Porto,Vila Nova de Gaia,168.46,77,262,0
+1318,Continente,Norte,Área Metropolitana do Porto,Porto,Trofa,72,43,250,25
+1401,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Abrantes,714.69,183,317,18
+1402,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Alcanena,127.33,85,678,43
+1403,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Almeirim,222.12,84,171,5
+1404,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Alpiarça,95.36,46,132,9
+1405,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Benavente,521.38,124,78,0
+1406,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Cartaxo,158.17,72,130,3
+1407,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Chamusca,745.9,145,200,11
+1408,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Constância,80.37,51,224,22
+1409,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Coruche,1115.72,231,264,7
+1410,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Entroncamento,13.73,17,87,25
+1411,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Ferreira do Zêzere,190.38,94,451,125
+1412,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Golegã,84.32,49,95,14
+1413,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Mação,399.98,147,643,47
+1414,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Rio Maior,272.76,99,497,25
+1415,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Salvaterra de Magos,243.93,73,105,2
+1416,Continente,Oeste e Vale do Tejo,Lezíria do Tejo,Santarém,Santarém,552.54,180,529,3
+1417,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Sardoal,92.15,52,452,75
+1418,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Tomar,351.2,116,350,32
+1419,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Torres Novas,270,86,678,13
+1420,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Vila Nova da Barquinha,49.53,46,201,19
+1421,Continente,Oeste e Vale do Tejo,Médio Tejo,Santarém,Ourém,416.68,128,678,95
+1501,Continente,Alentejo,Alentejo Litoral,Setúbal,Alcácer do Sal,1499.87,213,254,0
+1502,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Alcochete,128.36,106,61,0
+1503,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Almada,70.01,66,125,0
+1504,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Barreiro,36.39,46,76,0
+1505,Continente,Alentejo,Alentejo Litoral,Setúbal,Grândola,825.94,227,325,0
+1506,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Moita,55.26,42,58,0
+1507,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Montijo,348.62,149,135,0
+1508,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Palmela,465.12,157,391,0
+1509,Continente,Alentejo,Alentejo Litoral,Setúbal,Santiago do Cacém,1059.69,214,370,0
+1510,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Seixal,95.45,50,81,0
+1511,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Sesimbra,195.72,87,380,0
+1512,Continente,Península de Setúbal,Península de Setúbal,Setúbal,Setúbal,230.33,101,501,0
+1513,Continente,Alentejo,Alentejo Litoral,Setúbal,Sines,203.3,112,250,0
+1601,Continente,Norte,Alto Minho,Viana do Castelo,Arcos de Valdevez,447.6,109,1416,17
+1602,Continente,Norte,Alto Minho,Viana do Castelo,Caminha,136.52,67,805,0
+1603,Continente,Norte,Alto Minho,Viana do Castelo,Melgaço,238.25,102,1336,25
+1604,Continente,Norte,Alto Minho,Viana do Castelo,Monção,211.31,71,1114,9
+1605,Continente,Norte,Alto Minho,Viana do Castelo,Paredes de Coura,138.19,57,883,125
+1606,Continente,Norte,Alto Minho,Viana do Castelo,Ponte da Barca,182.11,83,1359,25
+1607,Continente,Norte,Alto Minho,Viana do Castelo,Ponte de Lima,320.25,98,835,3
+1608,Continente,Norte,Alto Minho,Viana do Castelo,Valença,117.13,47,784,0
+1609,Continente,Norte,Alto Minho,Viana do Castelo,Viana do Castelo,319.02,98,823,0
+1610,Continente,Norte,Alto Minho,Viana do Castelo,Vila Nova de Cerveira,108.47,53,638,0
+1701,Continente,Norte,Douro,Vila Real,Alijó,297.6,97,1000,75
+1702,Continente,Norte,Alto Tâmega e Barroso,Vila Real,Boticas,321.96,122,1270,250
+1703,Continente,Norte,Alto Tâmega e Barroso,Vila Real,Chaves,591.23,166,1050,300
+1704,Continente,Norte,Douro,Vila Real,Mesão Frio,26.65,35,1038,50
+1705,Continente,Norte,Ave,Vila Real,Mondim de Basto,172.08,70,1307,100
+1706,Continente,Norte,Alto Tâmega e Barroso,Vila Real,Montalegre,805.46,195,1527,175
+1707,Continente,Norte,Douro,Vila Real,Murça,189.37,93,1031,175
+1708,Continente,Norte,Douro,Vila Real,Peso da Régua,94.86,81,1397,50
+1709,Continente,Norte,Alto Tâmega e Barroso,Vila Real,Ribeira de Pena,217.46,98,1286,153
+1710,Continente,Norte,Douro,Vila Real,Sabrosa,156.92,91,1100,75
+1711,Continente,Norte,Douro,Vila Real,Santa Marta de Penaguião,69.28,67,1416,75
+1712,Continente,Norte,Alto Tâmega e Barroso,Vila Real,Valpaços,548.74,148,1148,225
+1713,Continente,Norte,Alto Tâmega e Barroso,Vila Real,Vila Pouca de Aguiar,437.07,110,1205,225
+1714,Continente,Norte,Douro,Vila Real,Vila Real,378.8,120,1350,125
+1801,Continente,Norte,Douro,Viseu,Armamar,117.24,61,955,75
+1802,Continente,Centro,Viseu Dão Lafões,Viseu,Carregal do Sal,116.89,56,375,150
+1803,Continente,Centro,Viseu Dão Lafões,Viseu,Castro Daire,379.04,147,1375,200
+1804,Continente,Norte,Tâmega e Sousa,Viseu,Cinfães,239.29,93,1381,12
+1805,Continente,Norte,Douro,Viseu,Lamego,165.42,82,1122,50
+1806,Continente,Centro,Viseu Dão Lafões,Viseu,Mangualde,219.26,85,766,225
+1807,Continente,Norte,Douro,Viseu,Moimenta da Beira,219.97,88,1011,375
+1808,Continente,Centro,Região de Coimbra,Viseu,Mortágua,251.18,82,768,75
+1809,Continente,Centro,Viseu Dão Lafões,Viseu,Nelas,125.71,55,484,150
+1810,Continente,Centro,Viseu Dão Lafões,Viseu,Oliveira de Frades,145.35,103,1062,50
+1811,Continente,Centro,Viseu Dão Lafões,Viseu,Penalva do Castelo,134.34,62,724,325
+1812,Continente,Norte,Douro,Viseu,Penedono,133.71,64,1000,450
+1813,Continente,Norte,Tâmega e Sousa,Viseu,Resende,123.35,58,1218,50
+1814,Continente,Centro,Viseu Dão Lafões,Viseu,Santa Comba Dão,111.95,60,352,137
+1815,Continente,Norte,Douro,Viseu,São João da Pesqueira,266.11,100,994,75
+1816,Continente,Centro,Viseu Dão Lafões,Viseu,São Pedro do Sul,348.95,123,1119,75
+1817,Continente,Centro,Viseu Dão Lafões,Viseu,Sátão,201.94,78,859,375
+1818,Continente,Norte,Douro,Viseu,Sernancelhe,228.61,99,964,475
+1819,Continente,Norte,Douro,Viseu,Tabuaço,133.86,70,985,75
+1820,Continente,Norte,Douro,Viseu,Tarouca,100.08,73,1102,325
+1821,Continente,Centro,Viseu Dão Lafões,Viseu,Tondela,371.22,108,1075,133
+1822,Continente,Centro,Viseu Dão Lafões,Viseu,Vila Nova de Paiva,175.53,69,1036,550
+1823,Continente,Centro,Viseu Dão Lafões,Viseu,Viseu,507.1,123,899,200
+1824,Continente,Centro,Viseu Dão Lafões,Viseu,Vouzela,193.69,76,1043,125
+3101,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Calheta,111.51,63,1640,0
+3102,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Câmara de Lobos,52.17,46,1862,0
+3103,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Funchal,76.22,84,1818,0
+3104,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Machico,68.25,107,1480,0
+3105,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Ponta do Sol,46.26,34,1620,0
+3106,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Porto Moniz,82.92,57,1640,0
+3107,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Ribeira Brava,65.46,42,1725,0
+3108,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Santa Cruz,81.31,106,1415,0
+3109,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,Santana,95.47,56,1862,0
+3110,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha da Madeira,São Vicente,78.84,41,1725,0
+3201,Região Autónoma da Madeira,Região Autónoma da Madeira,Região Autónoma da Madeira,Ilha de Porto Santo,Porto Santo,42.68,107,517,0
+4101,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de Santa Maria,Vila do Porto,96.89,78,587,0
+4201,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Miguel,Lagoa,45.59,45,947,0
+4202,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Miguel,Nordeste,101.47,53,1103,0
+4203,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Miguel,Ponta Delgada,232.99,102,873,0
+4204,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Miguel,Povoação,106.41,64,1103,0
+4205,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Miguel,Ribeira Grande,180.15,120,877,0
+4206,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Miguel,Vila Franca do Campo,77.97,58,947,0
+4301,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha Terceira,Angra do Heroísmo,239,105,1021,0
+4302,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha Terceira,Praia da Vitória,161.27,90,808,0
+4401,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha da Graciosa,Santa Cruz da Graciosa,60.66,44,402,0
+4501,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Jorge,Calheta de São Jorge,126.26,74,942,0
+4502,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha de São Jorge,Velas,117.38,79,1053,0
+4601,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha do Pico,Lajes do Pico,155.31,96,2351,0
+4602,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha do Pico,Madalena,147.12,65,2351,0
+4603,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha do Pico,São Roque do Pico,142.36,82,2351,0
+4701,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha do Faial,Horta,173.06,80,1043,0
+4801,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha das Flores,Lajes das Flores,70.05,51,830,0
+4802,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha das Flores,Santa Cruz das Flores,70.91,52,914,0
+4901,Região Autónoma dos Açores,Região Autónoma dos Açores,Região Autónoma dos Açores,Ilha do Corvo,Corvo,17.11,21,718,0

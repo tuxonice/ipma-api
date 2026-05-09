@@ -6,6 +6,7 @@ namespace Tlab\IpmaApi;
 
 use Psr\SimpleCache\CacheInterface;
 use Tlab\IpmaApi\Service\DistrictsIslandsLocations;
+use Tlab\IpmaApi\Service\MunicipalityAreas;
 use Tlab\IpmaApi\Service\SeaLocations;
 use Tlab\IpmaApi\Service\WeatherStations;
 
@@ -30,5 +31,12 @@ class IpmaService
         int $ttlSeconds = 3600,
     ): WeatherStations {
         return new WeatherStations(new ApiConnector($cache, $ttlSeconds));
+    }
+
+    public static function createMunicipalityAreasApi(
+        CacheInterface $cache,
+        int $ttlSeconds = 3600,
+    ): MunicipalityAreas {
+        return new MunicipalityAreas(new ApiConnector($cache, $ttlSeconds));
     }
 }
