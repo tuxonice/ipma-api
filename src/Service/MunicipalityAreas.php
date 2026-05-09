@@ -12,7 +12,7 @@ use Tlab\IpmaApi\Utils;
 
 class MunicipalityAreas
 {
-    private const CSV_FILE = __DIR__ . '/../Data/dico.csv';
+    private const DEFAULT_CSV_FILE = __DIR__ . '/../Data/dico.csv';
     private const END_POINT = Endpoints::DISTRICTS_ISLANDS_LOCATIONS;
 
     /** @var list<MunicipalityArea> */
@@ -21,8 +21,13 @@ class MunicipalityAreas
     /** @var array<string, DistrictLocation> */
     private array $locationsMap;
 
-    public function __construct(private readonly ApiConnectorInterface $apiConnector)
-    {
+    private readonly string $csvFile;
+
+    public function __construct(
+        private readonly ApiConnectorInterface $apiConnector,
+        ?string $csvFile = null,
+    ) {
+        $this->csvFile = $csvFile ?? self::DEFAULT_CSV_FILE;
     }
 
     public function query(): self
@@ -210,9 +215,9 @@ class MunicipalityAreas
     private function loadCsvData(): array
     {
         $out = [];
-        $handle = fopen(self::CSV_FILE, 'r');
+        $handle = fopen($this->csvFile, 'r');
         if ($handle === false) {
-            throw new \RuntimeException('Unable to open CSV file: ' . self::CSV_FILE);
+            throw new \RuntimeException('Unable to open CSV file: ' . $this->csvFile);
         }
 
         $headers = fgetcsv($handle);

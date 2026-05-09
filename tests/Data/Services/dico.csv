@@ -1,0 +1,35 @@
+dico,nuts1,nuts2,nuts3,district,municipality,area,perimeter,altitudeMax,altitudeMin
+0105,Continente,Centro,Região de Aveiro,Aveiro,Aveiro,197.58,77,78,0
+0205,Continente,Alentejo,Baixo Alentejo,Beja,Beja,1147.12,165,1003,45
+0303,Continente,Norte,Área Metropolitana do Porto,Braga,Braga,183.51,76,538,15
+0308,Continente,Norte,Área Metropolitana do Porto,Braga,Guimarães,242.09,94,620,15
+0402,Continente,Norte,Alto Tâmega e Barroso,Bragança,Bragança,1173.47,182,1486,20
+0502,Continente,Centro,Beira Baixa,Castelo Branco,Castelo Branco,1438.32,185,1085,85
+0603,Continente,Centro,Região de Coimbra,Coimbra,Coimbra,319.51,89,545,9
+0705,Continente,Alentejo,Alentejo Central,Évora,Évora,1307.12,175,413,12
+0805,Continente,Algarve,Algarve,Faro,Faro,201.59,65,481,0
+0815,Continente,Algarve,Algarve,Faro,Sagres,150.10,52,300,5
+0811,Continente,Algarve,Algarve,Faro,Portimão,182.50,62,550,0
+0808,Continente,Algarve,Algarve,Faro,Loulé,216.00,68,520,5
+0907,Continente,Centro,Beiras e Serra da Estrela,Guarda,Guarda,712.10,125,1000,50
+1009,Continente,Centro,Região de Leiria,Leiria,Leiria,565.09,142,550,10
+1106,Continente,Área Metropolitana de Lisboa,Área Metropolitana de Lisboa,Lisboa,Lisboa,100.05,45,227,0
+1214,Continente,Alentejo,Alto Alentejo,Portalegre,Portalegre,447.40,92,650,20
+1312,Continente,Norte,Área Metropolitana do Porto,Porto,Porto,41.42,35,140,0
+1416,Continente,Alentejo,Lezíria do Tejo,Santarém,Santarém,552.50,105,250,5
+1512,Continente,Área Metropolitana de Lisboa,Península de Setúbal,Setúbal,Setúbal,171.90,65,500,0
+1513,Continente,Alentejo,Alentejo Litoral,Setúbal,Sines,203.30,75,250,10
+1609,Continente,Norte,Minho-Lima,Viana do Castelo,Viana do Castelo,319.50,89,800,0
+1714,Continente,Norte,Douro,Vila Real,Vila Real,378.80,95,1100,50
+1823,Continente,Centro,Viseu Dão Lafões,Viseu,Viseu,507.10,112,1000,40
+3103,Madeira,Região Autónoma da Madeira,Madeira,Funchal,Funchal,75.72,35,1800,0
+3201,Madeira,Região Autónoma da Madeira,Porto Santo,Porto Santo,Porto Santo,42.17,25,500,0
+4101,Açores,Região Autónoma dos Açores,Santa Maria,Vila do Porto,Vila do Porto,97.18,45,400,50
+4203,Açores,Região Autónoma dos Açores,São Miguel,Ponta Delgada,Ponta Delgada,232.81,85,800,10
+4301,Açores,Região Autónoma dos Açores,Terceira,Angra do Heroísmo,Angra do Heroísmo,238.80,88,1000,0
+4401,Açores,Região Autónoma dos Açores,Graciosa,Santa Cruz da Graciosa,Santa Cruz da Graciosa,60.66,35,400,20
+4502,Açores,Região Autónoma dos Açores,São Jorge,Velas,Velas,119.84,55,1000,0
+4602,Açores,Região Autónoma dos Açores,Pico,Madalena,Madalena,89.50,42,2000,0
+4701,Açores,Região Autónoma dos Açores,Faial,Horta,Horta,173.06,70,1000,0
+4802,Açores,Região Autónoma dos Açores,Flores,Santa Cruz das Flores,Santa Cruz das Flores,70.95,42,900,0
+4901,Açores,Região Autónoma dos Açores,Corvo,Vila do Corvo,Vila do Corvo,17.13,15,200,0
