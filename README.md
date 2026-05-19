@@ -190,3 +190,17 @@ Contributions are welcome! If you would like to contribute to this project, plea
 5.  Submit a pull request to the main repository.
 
 Please ensure that your code follows the existing coding style and that all tests pass before submitting a pull request.
+
+---
+
+## Legal Notice
+
+This package accesses data from the **Instituto Português do Mar e da Atmosfera, I.P. (IPMA)**.
+When using this data, you must comply with IPMA's [Terms and Conditions](https://api.ipma.pt/):
+
+- **Attribution required**: Always reference IPMA as the source of information
+- **Non-commercial use**: Data is free for personal or public use, but not for profit-making purposes
+- **Display requirements**: When showing IPMA data, include the IPMA logo and link to https://api.ipma.pt/
+- **No warranty**: IPMA provides data "as is" without guarantees of accuracy or availability
+
+The IPMA reserves the right to change or discontinue the API service at any time without notice.

@@ -1,0 +1,29 @@
+# Exclude development files from Composer dist packages
+# These files will not be downloaded when installing via Composer with --prefer-dist (default)
+
+# Development & testing
+/tests              export-ignore
+/phpunit.xml        export-ignore
+/phpunit.php        export-ignore
+/.phpunit.cache     export-ignore
+/coverage           export-ignore
+/bin/               export-ignore
+
+# Code quality tools
+/phpcs.xml          export-ignore
+/phpstan.neon       export-ignore
+
+# CI/CD
+/.github            export-ignore
+
+# Docker
+/docker-compose.yaml export-ignore
+/docker-entrypoint.sh export-ignore
+/Dockerfile          export-ignore
+
+# Build tools
+/Makefile            export-ignore
+
+
+# IDE
+/.idea             export-ignore
