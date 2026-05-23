@@ -10,6 +10,10 @@ This PHP package provides an easy-to-use interface for the IPMA (Instituto Portu
 
 For more information about the official API, please visit https://api.ipma.pt/ (only in Portuguese).
 
+> [!IMPORTANT]
+> This package is unofficial and IS NOT affiliated with, endorsed by, or maintained by **Instituto Português do Mar e da Atmosfera**, I. P. (IPMA, I.P.)
+> It only provides a PHP client for the public API available at https://api.ipma.pt/.
+
 **Warning:** This is a work in progress package! While it is actively maintained, some features may be incomplete or subject to change.
 
 ## Getting Started
@@ -200,7 +204,11 @@ When using this data, you must comply with IPMA's [Terms and Conditions](https:/
 
 - **Attribution required**: Always reference IPMA as the source of information
 - **Non-commercial use**: Data is free for personal or public use, but not for profit-making purposes
-- **Display requirements**: When showing IPMA data, include the IPMA logo and link to https://api.ipma.pt/
+- When displaying IPMA information in web pages or hyperdocuments, IPMA states that the IPMA logo-symbol should be used and linked/referenced to the IPMA website.
 - **No warranty**: IPMA provides data "as is" without guarantees of accuracy or availability
+
+IPMA asks API users to read the usage conditions and to send an email to
+webmaster@ipma.pt informing them of the use and purpose of the service,
+for statistics and service improvement purposes.
 
 The IPMA reserves the right to change or discontinue the API service at any time without notice.
